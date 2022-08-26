@@ -11,6 +11,7 @@ Thomas Neyman
 ## Our Assignment Prompt
 
 ####CS4488 Fall 2022 Project:
+
 ####ISU ARM360 Assembly/Machine Code Emulator
 
 Implement a VERY simple emulator for a minimalist subset of ARM assembly, similar to a 16bit version of the instruction set on an IBM 360 or 1130. The emulator will be similar to the Marie, which I suggest checking out.  This assembly emulator could be used in CS1337 to teach assembly and machine code.
