@@ -3,10 +3,6 @@
  */
 package CS4488.Capstone.Library.Tools;
 
-
-
-import org.apache.commons.text.WordUtils;
-
 public class Hex4d {
 
 }
