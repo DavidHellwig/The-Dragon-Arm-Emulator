@@ -3,6 +3,61 @@
  */
 package CS4488.Capstone.Library.Tools;
 
-public class Hex4d {
+import CS4488.Capstone.Library.BackEndSystemInterfaces.NumberConverterInterface;
 
+import java.io.Serializable;
+
+public class Hex4d implements NumberConverterInterface, Serializable {
+
+    private Short value;
+
+    public Hex4d(){
+        value = 0;
+    }
+
+    private void cleanString(String s){}
+
+
+
+
+    @Override
+    public void setValue(Short number) {
+
+    }
+    @Override
+    public void setValue(String number) {
+
+    }
+    @Override
+    public Short getShort() {
+        return null;
+    }
+    @Override
+    public String getString() {
+        return null;
+    }
+    @Override
+    public int getFirst() {
+        return 0;
+    }
+    @Override
+    public int getSecond() {
+        return 0;
+    }
+    @Override
+    public int getThird() {
+        return 0;
+    }
+    @Override
+    public int getForth() {
+        return 0;
+    }
+    @Override
+    public int getMiddle2() {
+        return 0;
+    }
+    @Override
+    public int getLast2() {
+        return 0;
+    }
 }

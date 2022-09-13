@@ -5,8 +5,40 @@ package CS4488.Capstone.Executor;
 
 
 
+import CS4488.Capstone.Library.BackEndSystemInterfaces.ExecutorInterface;
+import CS4488.Capstone.Library.Tools.ProgramState;
 import org.apache.commons.text.WordUtils;
 
-public class ExecutorFacade {
+public class ExecutorFacade implements ExecutorInterface {
 
+
+    @Override
+    public void setProgramState(ProgramState state) {
+
+    }
+
+    @Override
+    public boolean hasState() {
+        return false;
+    }
+
+    @Override
+    public boolean next() {
+        return false;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public void clearState() {
+
+    }
+
+    @Override
+    public String getLastExceptionMessage() {
+        return null;
+    }
 }
