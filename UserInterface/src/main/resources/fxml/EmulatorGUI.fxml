@@ -40,12 +40,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CS4488.Capstone.UserInterface.EmulatorGUIController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="1080.0" prefWidth="1920.0" VBox.vgrow="ALWAYS">
       <children>
             <Button layoutX="8.0" layoutY="8.0" mnemonicParsing="false" text="Load" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Button layoutX="591.0" layoutY="8.0" mnemonicParsing="false" text="Exit" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Button fx:id="exitButton" layoutX="591.0" layoutY="8.0" mnemonicParsing="false" onAction="#exit" text="Exit" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <TextField layoutX="472.0" layoutY="38.0" prefHeight="318.0" prefWidth="130.0" AnchorPane.bottomAnchor="10.0" />
             <Text layoutX="84.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input" />
             <Text layoutX="514.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ouput" />
