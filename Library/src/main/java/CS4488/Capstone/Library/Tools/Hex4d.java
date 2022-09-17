@@ -6,39 +6,185 @@ package CS4488.Capstone.Library.Tools;
 import CS4488.Capstone.Library.BackEndSystemInterfaces.NumberConverterInterface;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class Hex4d implements NumberConverterInterface, Serializable {
 
-    private Short value;
+    private short decimal;
+    private char[] hex;
 
     public Hex4d(){
-        value = 0;
+        decimal = 0;
+        hex = new char[4];
+        for (char c:hex) {
+            c = '0';
+        }
     }
 
-    private void cleanString(String s){}
+    private void cleanString(String s){
+        s.stripTrailing().stripLeading().toLowerCase();
+        if (s.length()>4){
+            s = s.substring(0,3);
+        }
+    }
 
+    private Short hexToDecimal(char[] hex){
+                int index = 3;
+        int power = 0;
+        int result = 0;
 
+        while (index > -1){
+            result = result + (hexValue(hex[index]) * (int)Math.pow(16, power));
+            index = index - 1;
+            power = power + 1;
+        }
+        return (short) result;
+    }
+    private char[] decimalToHex(short value){
+        char[] hex = new char[4];
+        int index = 3;
+        int remainder;
+        int v = value;
 
+        //TODO This while loop can be written with either index to 0, or v to 0.
+        while (index > -1){
+            remainder = v%16;
+            v = v/16;
+            hex[index] = hexChar(remainder);
+            index = index - 1;
+        }
+        return hex;
+    }
+    private char hexChar(int n){
+        char result = '0';
+        switch (n){
+            case 0: result = '0';
+                break;
+            case 1:
+                result = '1';
+                break;
+            case 2:
+                result = '2';
+                break;
+            case 3:
+                result = '3';
+                break;
+            case 4:
+                result = '4';
+                break;
+            case 5:
+                result = '5';
+                break;
+            case 6:
+                result = '6';
+                break;
+            case 7:
+                result = '7';
+                break;
+            case 8:
+                result = '8';
+                break;
+            case 9:
+                result = '9';
+                break;
+            case 10:
+                result = 'a';
+                break;
+            case 11:
+                result = 'b';
+                break;
+            case 12:
+                result = 'c';
+                break;
+            case 13:
+                result = 'd';
+                break;
+            case 14:
+                result = 'e';
+                break;
+            case 15:
+                result = 'f';
+                break;
+        }
+        return result;
+    }
+    private int hexValue(char n){
+        int result = 0;
+        switch (n){
+            case '0':
+                result = 0;
+                break;
+            case '1':
+                result = 1;
+                break;
+            case '2':
+                result = 2;
+                break;
+            case '3':
+                result = 3;
+                break;
+            case '4':
+                result = 4;
+                break;
+            case '5':
+                result = 5;
+                break;
+            case '6':
+                result = 6;
+                break;
+            case '7':
+                result = 7;
+                break;
+            case '8':
+                result = 8;
+                break;
+            case '9':
+                result = 9;
+                break;
+            case 'a':
+                result = 10;
+                break;
+            case 'b':
+                result = 11;
+                break;
+            case 'c':
+                result = 12;
+                break;
+            case 'd':
+                result = 13;
+                break;
+            case 'e':
+                result = 14;
+                break;
+            case 'f':
+                result = 15;
+                break;
+        }
+        return result;
+    }
 
     @Override
     public void setValue(Short number) {
-
+        decimal = number;
+        hex = decimalToHex(this.decimal);
     }
     @Override
     public void setValue(String number) {
-
+        cleanString(number);
+        hex = number.toCharArray();
+        decimal = hexToDecimal(this.hex);
     }
     @Override
     public Short getShort() {
-        return null;
+        return decimal;
     }
     @Override
     public String getString() {
-        return null;
+        return hex;
     }
     @Override
     public int getFirst() {
-        return 0;
+        return hex.charAt(0);
     }
     @Override
     public int getSecond() {
