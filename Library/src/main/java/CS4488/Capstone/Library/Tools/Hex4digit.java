@@ -4,31 +4,25 @@
 package CS4488.Capstone.Library.Tools;
 
 import CS4488.Capstone.Library.BackEndSystemInterfaces.NumberConverterInterface;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Locale;
 
-public class Hex4d implements NumberConverterInterface, Serializable {
-
-    private short decimal;
+public class Hex4digit implements NumberConverterInterface, Serializable {
+    // Instance Variables
     private char[] hex;
 
-    public Hex4d(){
-        decimal = 0;
+    // Constructor
+    public Hex4digit(){
         hex = new char[4];
         for (char c:hex) {
             c = '0';
         }
     }
 
-    private void cleanString(String s){
-        s.stripTrailing().stripLeading().toLowerCase();
-        if (s.length()>4){
-            s = s.substring(0,3);
-        }
-    }
-
-    private Short hexToDecimal(char[] hex){
+    // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal
+    public static Short hexToDecimal(char[] hex){
                 int index = 3;
         int power = 0;
         int result = 0;
@@ -40,7 +34,7 @@ public class Hex4d implements NumberConverterInterface, Serializable {
         }
         return (short) result;
     }
-    private char[] decimalToHex(short value){
+    public static char[] decimalToHex(short value){
         char[] hex = new char[4];
         int index = 3;
         int remainder;
@@ -55,7 +49,7 @@ public class Hex4d implements NumberConverterInterface, Serializable {
         }
         return hex;
     }
-    private char hexChar(int n){
+    public static char hexChar(int n){
         char result = '0';
         switch (n){
             case 0: result = '0';
@@ -108,7 +102,7 @@ public class Hex4d implements NumberConverterInterface, Serializable {
         }
         return result;
     }
-    private int hexValue(char n){
+    public static int hexValue(char n){
         int result = 0;
         switch (n){
             case '0':
@@ -163,47 +157,66 @@ public class Hex4d implements NumberConverterInterface, Serializable {
         return result;
     }
 
+    // Utility Methods
+    private void cleanString(String s){
+        s.stripTrailing().stripLeading().toLowerCase().replaceAll("[^0-9a-f]","");
+        if (s.length()>4){
+            s = s.substring(0,3);
+        }
+    }
+
+    // Setters
     @Override
     public void setValue(Short number) {
-        decimal = number;
-        hex = decimalToHex(this.decimal);
+        hex = decimalToHex(number);
     }
     @Override
     public void setValue(String number) {
         cleanString(number);
         hex = number.toCharArray();
-        decimal = hexToDecimal(this.hex);
     }
+    public void setValue(char[] number) {
+        String toSet = new String(number);
+        cleanString(toSet);
+        hex = toSet.toCharArray();
+    }
+
+    public void setFirst(char first) {
+        hex[0] = first;
+    }
+
+    public void setSecond(char second) {
+        hex[1] = second;
+    }
+
+    public void setThird(char third) {
+        hex[2] = third;
+    }
+
+    public void setForth(char forth) {
+        hex[3] = forth;
+    }
+
     @Override
     public Short getShort() {
-        return decimal;
+        return hexToDecimal(this.hex);
     }
     @Override
-    public String getString() {
+    public char[] getHexChars() {
         return hex;
     }
     @Override
-    public int getFirst() {
-        return hex.charAt(0);
+    public int getMiddle2Value() {
+        char[] middle2 = new char[2];
+        middle2[0] = hex[1];
+        middle2[1] = hex[2];
+        return hexToDecimal(middle2);
     }
     @Override
-    public int getSecond() {
-        return 0;
-    }
-    @Override
-    public int getThird() {
-        return 0;
-    }
-    @Override
-    public int getForth() {
-        return 0;
-    }
-    @Override
-    public int getMiddle2() {
-        return 0;
-    }
-    @Override
-    public int getLast2() {
-        return 0;
+    public int getLast2Value() {
+        char[] last2 = new char[2];
+        last2[0] = hex[2];
+        last2[1] = hex[3];
+        return hexToDecimal(last2);
     }
 }

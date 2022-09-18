@@ -1,6 +1,6 @@
 package CS4488.Capstone.Library.BackEndSystemInterfaces;
 
-import CS4488.Capstone.Library.Tools.Hex4d;
+import CS4488.Capstone.Library.Tools.Hex4digit;
 
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public interface TranslatorInterface {
      *
      * @return Arraylist of Hex4d lines of code.
      */
-    public ArrayList<Hex4d> translateToMachine();
+    public ArrayList<Hex4digit> translateToMachine();
 
     /**
      * This method gets the description of what went wrong should a process fail.

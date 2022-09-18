@@ -6,8 +6,7 @@ package CS4488.Capstone.Translator;
 
 
 import CS4488.Capstone.Library.BackEndSystemInterfaces.TranslatorInterface;
-import CS4488.Capstone.Library.Tools.Hex4d;
-import org.apache.commons.text.WordUtils;
+import CS4488.Capstone.Library.Tools.Hex4digit;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class TranslatorFacade implements TranslatorInterface {
     }
 
     @Override
-    public ArrayList<Hex4d> translateToMachine() {
+    public ArrayList<Hex4digit> translateToMachine() {
         return null;
     }
 

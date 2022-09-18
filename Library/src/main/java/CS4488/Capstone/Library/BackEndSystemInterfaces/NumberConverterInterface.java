@@ -5,12 +5,8 @@ public interface NumberConverterInterface {
     public void setValue(Short number);
     public void setValue(String number);
     public Short getShort();
-    public String getString();
-    public int getFirst();
-    public int getSecond();
-    public int getThird();
-    public int getForth();
-    public int getMiddle2();
-    public int getLast2();
+    public char[] getHexChars();
+    public int getMiddle2Value();
+    public int getLast2Value();
 
 }
