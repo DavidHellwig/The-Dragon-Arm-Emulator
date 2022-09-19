@@ -14,12 +14,14 @@ public interface ProgramStateAccess {
      *
      * @return a Copy Array Program State
      */
-    public ProgramState getProgramStateCopy();
+    public ProgramState getReadableCopy();
+
+    public ProgramState getProgramState();
 
     /**
      * The Input must be passed into the backend ahead of it being 'read' byt the emulation.
      *
      * @param in the input in the Input Box.
      */
-    public void sendInput(Hex4digit in);
+    public void sendInput(String in);
 }
