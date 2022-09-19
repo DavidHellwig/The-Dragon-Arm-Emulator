@@ -1,5 +1,10 @@
 package CS4488.Capstone.Library.BackEndSystemInterfaces;
-
+/**
+ * Number converter methods ned by the system
+ *
+ * @version 1.0
+ * @author Traae
+ */
 public interface NumberConverterInterface {
 
     public void setValue(Short number);

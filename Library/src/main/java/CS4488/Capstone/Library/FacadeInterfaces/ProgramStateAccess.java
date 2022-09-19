@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 /**
  * This interface dictates the method of access to the Program state by the UI
+ *
+ * @version 1.0
+ * @author Traae
  */
 public interface ProgramStateAccess {
     /**
@@ -19,9 +22,15 @@ public interface ProgramStateAccess {
     public ProgramState getProgramState();
 
     /**
-     * The Input must be passed into the backend ahead of it being 'read' byt the emulation.
+     * The Input must be passed into the backend ahead of it being 'read' by the emulation.
      *
-     * @param in the input in the Input Box.
+     * @param input the input in the Input Box.
      */
-    public void sendInput(String in);
+    public void sendInput(char[] input);
+
+    /**
+     * get Output, simple as.
+     * @return digits of Hex characters.
+     */
+    public char[] getOutput();
 }

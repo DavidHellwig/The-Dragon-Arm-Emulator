@@ -4,11 +4,16 @@
 package CS4488.Capstone.Library.Tools;
 
 import CS4488.Capstone.Library.BackEndSystemInterfaces.NumberConverterInterface;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.Serializable;
-import java.util.Locale;
 
+/**
+ * Hex4Digit
+ *
+ * A class that holds a char[4] that represents a 4 digit hexadecimal number.
+ * Contains various utilities for conversions.
+ * @version 1.0
+ * @author Traae
+ */
 public class Hex4digit implements NumberConverterInterface, Serializable {
     // Instance Variables
     private char[] hex;
@@ -19,6 +24,14 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
         for (char c:hex) {
             c = '0';
         }
+    }
+    public Hex4digit(char[] value){
+        hex = new char[4];
+        this.setValue(value);
+    }
+    public Hex4digit(short value){
+        hex = new char[4];
+        this.setValue(value);
     }
 
     // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal

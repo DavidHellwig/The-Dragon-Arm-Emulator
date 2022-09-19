@@ -15,6 +15,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ * The File Manager
+ *
+ * @version 0.0
+ * @author Traae
+ */
 public class FileManager {
 
 

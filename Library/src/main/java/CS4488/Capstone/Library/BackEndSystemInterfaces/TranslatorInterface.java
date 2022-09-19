@@ -4,6 +4,12 @@ import CS4488.Capstone.Library.Tools.Hex4digit;
 
 import java.util.ArrayList;
 
+/**
+ * The Methods that interaction with the Translator will require
+ *
+ * @version 1.0
+ * @author Traae
+ */
 public interface TranslatorInterface {
 
     /***

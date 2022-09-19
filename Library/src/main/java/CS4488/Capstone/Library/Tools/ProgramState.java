@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * This class is the Emulator's program sate.
+ * It's just a data class, but a complex one.
  *
  * This Class is a Double-ton, like a singleton pattern but with a main instance and a cloned instance.
  *
@@ -16,6 +17,8 @@ import java.util.ArrayList;
  * Note: the readableState is only copied when called upon,
  * if the main instance is used it will bypass the excess processing power.
  *
+ * @version 1.0
+ * @author Traae
  */
 public class ProgramState implements ProgramStateInterface {
 
@@ -55,7 +58,7 @@ public class ProgramState implements ProgramStateInterface {
     }
 
     // SINGLETON INSTANCE GETTER
-    public ProgramState getInstance(){
+    public static ProgramState getInstance(){
         if (emulationState == null){
             emulationState = new ProgramState();
         }
@@ -63,15 +66,14 @@ public class ProgramState implements ProgramStateInterface {
     }
 
     // DOUBLETON READ-ONLY CLONE GETTER
-    public ProgramState getReadableState(){
+    public static ProgramState getReadableState(){
         if (readableState == null){
             readableState = new ProgramState();
         }
-        cloneState();
         return readableState;
     }
     // read only clone function.
-    private void cloneState(){
+    public void writeStateToReadable(){
         // copy the register values
         for (int i=0; i<REGISTER_COUNT; i++){
             readableState.registers[i].setValue(emulationState.registers[i].getHexChars());
