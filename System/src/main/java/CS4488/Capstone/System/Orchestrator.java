@@ -31,8 +31,8 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     ExecutorFacade executorFacade;
     FileManager fileManager;
 
-
-    private Orchestrator(){
+    //Changed to public by David on 9/19, if broken look here
+    public Orchestrator(){
         state = ProgramState.getInstance();
         readable = ProgramState.getReadableState();
         //translator = ;

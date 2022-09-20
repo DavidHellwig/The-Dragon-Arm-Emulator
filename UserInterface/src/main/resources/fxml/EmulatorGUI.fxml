@@ -42,7 +42,7 @@
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CS4488.Capstone.UserInterface.EmulatorGUIController">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="1080.0" prefWidth="1920.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="1080.0" prefWidth="709.0" VBox.vgrow="ALWAYS">
       <children>
             <Button layoutX="8.0" layoutY="8.0" mnemonicParsing="false" text="Load" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <Button fx:id="exitButton" layoutX="591.0" layoutY="8.0" mnemonicParsing="false" onAction="#exit" text="Exit" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
@@ -68,6 +68,10 @@
             <Text layoutX="273.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="?" />
             <Text layoutX="281.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="?" />
             <Text layoutX="217.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="?" />
+            <TextField fx:id="conversionTextField" layoutX="326.0" layoutY="72.0" prefHeight="25.0" prefWidth="130.0" promptText="Enter decimal or hex " />
+            <Text layoutX="355.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hex Converter" wrappingWidth="116.103515625" />
+            <Button fx:id="hexConverterDecimalToHexButton" layoutX="338.0" layoutY="100.0" mnemonicParsing="false" onAction="#decimalToHex" text="Decimal to Hex" />
+            <Button layoutX="338.0" layoutY="127.0" mnemonicParsing="false" text="Hex to Decimal" />
       </children>
     </AnchorPane>
   </children>
