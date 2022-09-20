@@ -3,10 +3,20 @@ package CS4488.Capstone.Translator;
 import java.util.*;
 
 public class InstructionParser {
+
+    private static InstructionParser singleton = null;
     private final Map<String, String> parser
             = new HashMap<>();
 
-    public InstructionParser(){
+
+    public static InstructionParser  getInstance(){
+        if(singleton == null){
+            singleton = new InstructionParser();
+        }
+       return singleton;
+    }
+
+    private InstructionParser(){
         loadInstructions();
         loadRegisters();
         loadMemory();

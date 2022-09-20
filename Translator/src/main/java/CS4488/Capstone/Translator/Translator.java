@@ -1,5 +1,8 @@
 package CS4488.Capstone.Translator;
 
+
+import CS4488.Capstone.Library.BackEndSystemInterfaces.TranslatorInterface;
+import CS4488.Capstone.Library.Tools.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Translator implements TranslatorInterface{
+public class Translator implements TranslatorInterface {
 
     private String file;
     private boolean loaded;
@@ -25,10 +28,10 @@ public class Translator implements TranslatorInterface{
         this.file = file;
     }
 
-    @Override
-    public boolean loadFile(String path) throws Exception {
-         this.file = readFile(path);
-        return !this.file.equals("");
+   @Override
+    public boolean loadFile(String path) {
+        //this.file = readFile(path);
+        return this.file.equals("");
     }
 
     @Override
@@ -38,7 +41,12 @@ public class Translator implements TranslatorInterface{
     }
 
     @Override
-    public ArrayList<Short> translateToMachine() {
+    public ArrayList<Hex4d> translateToMachine() {
+        return null;
+    }
+
+    @Override
+    public String getLastExceptionMessage() {
         return null;
     }
 
@@ -68,7 +76,7 @@ public class Translator implements TranslatorInterface{
     }
 
     public ArrayList<String> convertToHex(String [] parsedFile){
-        InstructionParser instructionParser = new InstructionParser();
+        InstructionParser instructionParser =  InstructionParser.getInstance();
 
         ArrayList<String> hexFile = new ArrayList<>();
         for(int i = 0; i< parsedFile.length; i++){
