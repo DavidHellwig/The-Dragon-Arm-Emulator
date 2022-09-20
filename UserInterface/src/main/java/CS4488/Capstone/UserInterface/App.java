@@ -3,9 +3,34 @@
  */
 package CS4488.Capstone.UserInterface;
 
+import javafx.application.Application;
 
-public class App {
+import javafx.fxml.FXMLLoader;
+
+import javafx.scene.Parent;
+
+import javafx.scene.Scene;
+
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.Objects;
+
+
+public class App extends Application {
+
+    public void start(Stage primaryStage) throws IOException{
+        //I don't know why but my IDE automatically changed this line. If anything breaks this might be worth looking at
+        Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/EmulatorGUI.fxml")));
+
+        Scene scene = new Scene(parent);
+
+        primaryStage.setScene(scene);
+
+        primaryStage.show();
+    }
     public static void main(String[] args) {
+       App.launch();
 
     }
 }

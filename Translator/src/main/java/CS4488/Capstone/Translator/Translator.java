@@ -1,7 +1,7 @@
 package CS4488.Capstone.Translator;
 
 
-import CS4488.Capstone.Library.BackEndSystemInterfaces.TranslatorInterface;
+
 import CS4488.Capstone.Library.Tools.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -10,11 +10,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Translator implements TranslatorInterface {
+public class Translator  {
 
     private String file;
     private boolean loaded;
-    private ArrayList<Hex4d> translatedCode;
+    private ArrayList<Hex4digit> translatedCode;
 
     public Translator(String file) throws Exception {
         // Temp logic likely to change in the future release
@@ -30,7 +30,7 @@ public class Translator implements TranslatorInterface {
         this.file = file;
     }
 
-    public void setTranslatedCode(ArrayList<Hex4d> translatedCode) {
+    public void setTranslatedCode(ArrayList<Hex4digit> translatedCode) {
         this.translatedCode = translatedCode;
     }
 
@@ -42,34 +42,34 @@ public class Translator implements TranslatorInterface {
         return loaded;
     }
 
-    public ArrayList<Hex4d> getTranslatedCode() {
+    public ArrayList<Hex4digit> getTranslatedCode() {
         return translatedCode;
     }
 
-    @Override
+   // @Override
     public boolean loadFile(String path) {
         //this.file = readFile(path);
         return this.file.equals("");
     }
 
-    @Override
+   //@Override
     public void clearFile() {
         setFile("");
         setLoaded(false);
         setTranslatedCode(null);
     }
 
-    @Override
-    public ArrayList<Hex4d> translateToMachine() {
+   // @Override
+    public ArrayList<Hex4digit> translateToMachine() {
         return null;
     }
 
-    @Override
+   //@Override
     public String getLastExceptionMessage() {
         return null;
     }
 
-    @Override
+    //@Override
     public boolean isTranslatable() {
         return false;
     }

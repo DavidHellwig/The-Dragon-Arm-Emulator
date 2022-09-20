@@ -5,8 +5,91 @@ package CS4488.Capstone.System;
 
 
 
-import org.apache.commons.text.WordUtils;
+import CS4488.Capstone.Executor.ExecutorFacade;
+import CS4488.Capstone.Library.FacadeInterfaces.ExecutorAccess;
+import CS4488.Capstone.Library.FacadeInterfaces.NumberConverterAccess;
+import CS4488.Capstone.Library.FacadeInterfaces.ProgramStateAccess;
+import CS4488.Capstone.Library.FacadeInterfaces.TranslatorAccess;
+import CS4488.Capstone.Library.Tools.FileManager;
+import CS4488.Capstone.Library.Tools.Hex4digit;
+import CS4488.Capstone.Library.Tools.ProgramState;
+import CS4488.Capstone.Translator.TranslatorFacade;
 
-public class Orchestrator {
+/**
+ * The Back End Facade Class that orchestrates everything else.
+ *
+ * @version 0.0.9
+ * @author Traae
+ */
+public class Orchestrator implements ProgramStateAccess, TranslatorAccess, ExecutorAccess, NumberConverterAccess {
 
+    private static Orchestrator instance = null;
+
+    boolean inGodMode;
+    ProgramState state, readable;
+    TranslatorFacade translator;
+    ExecutorFacade executorFacade;
+    FileManager fileManager;
+
+
+    private Orchestrator(){
+        state = ProgramState.getInstance();
+        readable = ProgramState.getReadableState();
+        //translator = ;
+        //executor = ;
+        //fileManager = new FileManager();
+    }
+
+    public static Orchestrator getInstance() {
+        if (instance==null){
+            instance = new Orchestrator();
+        }
+        return instance;
+    }
+
+    @Override
+    public boolean next() {
+        return false;
+    }
+
+
+    @Override
+    public ProgramState getReadableCopy() {
+        state.writeStateToReadable();
+        return ProgramState.getReadableState();
+    }
+
+    @Override
+    public ProgramState getProgramState() {
+        if (inGodMode) {
+            return ProgramState.getInstance();
+        }
+        state.writeStateToReadable();
+        return ProgramState.getReadableState();
+    }
+
+    @Override
+    public void sendInput(char[] input) {
+        state.input.setValue(input);
+    }
+
+    @Override
+    public char[] getOutput() {
+        return state.output.getHexChars();
+    }
+
+    @Override
+    public boolean translateAndLoad(String path) {
+        return false;
+    }
+
+    @Override
+    public char[] convertToHexChars(Short number) {
+        return Hex4digit.decimalToHex(number);
+    }
+
+    @Override
+    public short convertToShort(char[] number) {
+        return Hex4digit.hexToDecimal(number);
+    }
 }
