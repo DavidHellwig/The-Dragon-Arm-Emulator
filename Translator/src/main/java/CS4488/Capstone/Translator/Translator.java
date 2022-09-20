@@ -4,38 +4,36 @@ package CS4488.Capstone.Translator;
 
 import CS4488.Capstone.Library.Tools.*;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class Translator  {
 
-    private String file;
+    private String armFile;
     private boolean loaded;
     private ArrayList<Hex4digit> translatedCode;
 
-    public Translator(String file) throws Exception {
+    public Translator(String armFile) throws Exception {
         // Temp logic likely to change in the future release
-        this.file = readFile(file);
-        this.loaded = this.file.equals("") ;
+        this.armFile = readFile(armFile);
+        this.loaded = this.armFile.equals("") ;
     }
 
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public void setArmFile(String armFile) {
+        this.armFile = armFile;
     }
 
     public void setTranslatedCode(ArrayList<Hex4digit> translatedCode) {
         this.translatedCode = translatedCode;
     }
 
-    public String getFile() {
-        return file;
+    public String getArmFile() {
+        return armFile;
     }
 
     public boolean isLoaded() {
@@ -49,12 +47,12 @@ public class Translator  {
    // @Override
     public boolean loadFile(String path) {
         //this.file = readFile(path);
-        return this.file.equals("");
+        return this.armFile.equals("");
     }
 
    //@Override
     public void clearFile() {
-        setFile("");
+        setArmFile("");
         setLoaded(false);
         setTranslatedCode(null);
     }
@@ -94,10 +92,11 @@ public class Translator  {
 
     }
 
-    public ArrayList<String> convertToHex(String [] parsedFile){
+    public ArrayList<Hex4digit> convertToHex(String [] parsedFile){
         InstructionParser instructionParser =  InstructionParser.getInstance();
 
         ArrayList<String> hexFile = new ArrayList<>();
+        ArrayList<Hex4digit> translatedFile = new ArrayList<>();
         for(int i = 0; i< parsedFile.length; i++){
 
             for (Map.Entry<String, String> me :
@@ -107,18 +106,27 @@ public class Translator  {
                 parsedFile[i] = parsedFile[i].replaceAll(key, value);
             }
 
+            // create hex digit
+            Hex4digit hex = new Hex4digit();
+            hex.setValue(parsedFile[i].trim());
+            translatedFile.add(hex);
+
             hexFile.add(parsedFile[i].trim());
+
         }
 
-        return hexFile;
+        this.translatedCode = translatedFile;
+        return this.translatedCode;
     }
 
     public static void main(String[] args) throws Exception {
         Translator translator = new Translator("Translator/src/main/java/CS4488/Capstone/Translator/armcode.txt");
-        ArrayList<String> list = translator.convertToHex(translator.parseFile(translator.file));
 
-        for(String file : list){
-            System.out.println(file);
+         ArrayList<Hex4digit> translatedCode = translator.convertToHex(translator.parseFile(translator.armFile));
+
+
+        for(Hex4digit code : translatedCode){
+            System.out.println(code.getHexChars());
         }
 //        System.out.println(translator.file);
     }
