@@ -14,10 +14,12 @@ public class Translator implements TranslatorInterface {
 
     private String file;
     private boolean loaded;
+    private ArrayList<Hex4d> translatedCode;
 
     public Translator(String file) throws Exception {
-        this.file = "";
-        this.loaded = loadFile(file);
+        // Temp logic likely to change in the future release
+        this.file = readFile(file);
+        this.loaded = this.file.equals("") ;
     }
 
     public void setLoaded(boolean loaded) {
@@ -28,7 +30,23 @@ public class Translator implements TranslatorInterface {
         this.file = file;
     }
 
-   @Override
+    public void setTranslatedCode(ArrayList<Hex4d> translatedCode) {
+        this.translatedCode = translatedCode;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public ArrayList<Hex4d> getTranslatedCode() {
+        return translatedCode;
+    }
+
+    @Override
     public boolean loadFile(String path) {
         //this.file = readFile(path);
         return this.file.equals("");
@@ -38,6 +56,7 @@ public class Translator implements TranslatorInterface {
     public void clearFile() {
         setFile("");
         setLoaded(false);
+        setTranslatedCode(null);
     }
 
     @Override
@@ -60,7 +79,7 @@ public class Translator implements TranslatorInterface {
         StringBuilder text = new StringBuilder();
 
         while (reader.ready()) {
-            text.append(reader.readLine()).append("\n");
+            text.append(reader.readLine());
         }
 
         return text.toString().toLowerCase();
@@ -80,7 +99,7 @@ public class Translator implements TranslatorInterface {
 
         ArrayList<String> hexFile = new ArrayList<>();
         for(int i = 0; i< parsedFile.length; i++){
-            //InstructionParser.parser
+
             for (Map.Entry<String, String> me :
                     instructionParser.getParser().entrySet()) {
                 String key = me.getKey();
