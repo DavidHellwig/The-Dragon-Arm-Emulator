@@ -4,6 +4,8 @@
 
 plugins {
     id 'CS4488.Capstone.java-application-conventions'
+
+    id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 dependencies {
@@ -28,4 +30,9 @@ application {
 }
 test {
     useJUnitPlatform()
+}
+
+javafx {
+    version = "12"
+    modules("javafx.controls", "javafx.fxml")
 }

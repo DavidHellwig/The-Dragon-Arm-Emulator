@@ -2,6 +2,12 @@ package CS4488.Capstone.Library.BackEndSystemInterfaces;
 
 import CS4488.Capstone.Library.Tools.ProgramState;
 
+/**
+ * The methods our system will need to interact with the executor
+ *
+ * @version 1.0
+ * @author Traae
+ */
 public interface ExecutorInterface {
 
     /***
