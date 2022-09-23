@@ -19,7 +19,7 @@ public interface TranslatorInterface {
      * @param path The String file describing the file path
      * @return success/fail
      */
-    public boolean loadFile(String path);
+    public boolean loadFile(String path) ;
 
     /***
      * This function closes out the file the translator has open and clears its data.
