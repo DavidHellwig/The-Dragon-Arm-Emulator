@@ -1,79 +1,100 @@
 package CS4488.Capstone.Executor;
 
 import CS4488.Capstone.Library.Tools.Hex4digit;
+import CS4488.Capstone.Library.Tools.ProgramState;
 
 public final class InstructionSet {
 
-    // 16 registers with some random values in them
-    public static int[] Registers = {4, 7, 19, 204, 219, 226, 9, 5, 17, 21, 36, 10, 11, 289, 304, 203};
+    // The program counter is the register (r15) that stores the
+    // memory address of the next instruction to be executed. It
+    // needs to be incremented after an instruction to go the
+    // next memory address where an instruction is held.
+    public static void incrementProgramCounter() {
+        System.out.println("Increment Program Counter");
+    }
 
     public static void halt() {
         System.out.println("Halt");
     }
 
-    public static void load(char mem, char reg) {
+    // finds a memory location from the program state and takes its Hex4digit
+    // value and sets it to the specified register's value.
+    public static void load(short mem, char reg) {
         System.out.println("Load");
+        ProgramState state = ProgramState.getInstance();
+        // Get the hex4digit object from the specified location in memory
+        Hex4digit value = state.pcHistory.get(mem).value;
+        // put that hex4digit value into the specified register
+        state.registers[Hex4digit.hexValue(reg)].setValue(value.getHexChars());
     }
 
-    public static void store(char mem, char reg) {
+    // get the specified memorySpace object in the pcHistory and set its
+    // Hex4digit value to that of the value in the specified register
+    public static void store(short mem, char reg) {
         System.out.println("Store");
+        ProgramState state = ProgramState.getInstance();
+        state.pcHistory.get(mem).value = state.registers[Hex4digit.hexValue(reg)];
     }
 
-    // TODO set up code to work with program state, not custom registers
-    // TODO increment stack pointer or whatever
     // add values of register 1 and register 2 and stores the result in register 3.
-    // function converts the characters from hex to integers which correspond to the
-    // positions in the temporary registers array acting as memory.
+    // function converts the characters from hex to shorts then converts the result
+    // back into hex to store in the resulting register.
     public static void add(char reg1, char reg2, char reg3) {
         System.out.println("Add");
-        // add the values from the 2 given registers
-        // store the result in the third given register
-        Registers[Hex4digit.hexValue(reg3)] = Registers[Hex4digit.hexValue(reg1)] + Registers[Hex4digit.hexValue(reg2)];
+        ProgramState state = ProgramState.getInstance();
+        // add the values from the 2 given registers. Must be converted to shorts to do the addition
+        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() + state.registers[Hex4digit.hexValue(reg2)].getShort());
+        // set the result to the Hex4digit's value in the third given register
+        state.registers[Hex4digit.hexValue(reg3)].setValue(result);
     }
 
-    // TODO set up code to work with program state, not custom registers
     // subtract value within first register by the value within the second register
-    // and stores the result in the third register.
-    // function converts the characters from hex to integers which correspond to the
-    // positions in the temporary registers array acting as memory.
+    // and store the result in the third register.
+    // function converts the characters from hex to shorts then converts the result
+    // back into hex to store in the resulting register
     public static void subt(char reg1, char reg2, char reg3) {
         System.out.println("Subt");
+        ProgramState state = ProgramState.getInstance();
         // subtract value from first register by the second register
-        // store the result in the position from third given register
-        Registers[Hex4digit.hexValue(reg3)] = Registers[Hex4digit.hexValue(reg1)] - Registers[Hex4digit.hexValue(reg2)];
+        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() - state.registers[Hex4digit.hexValue(reg2)].getShort());
+        // set the result to the Hex4digit's value in the third given register
+        state.registers[Hex4digit.hexValue(reg3)].setValue(result);
     }
 
-    // TODO set up code to work with program state, not custom registers
     // multiply the values from within first register and second register and store them
     // within third register.
-    // function converts the characters from hex to integers which correspond to the
-    // positions in the temporary registers array acting as memory.
+    // function converts the characters from hex to shorts then converts the result
+    // after multiplying back into hex to store in the third register.
     public static void mult(char reg1, char reg2, char reg3) {
         System.out.println("Mult");
-        Registers[Hex4digit.hexValue(reg3)] = Registers[Hex4digit.hexValue(reg1)] * Registers[Hex4digit.hexValue(reg2)];
+        ProgramState state = ProgramState.getInstance();
+        // multiply values from first and second register together
+        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() * state.registers[Hex4digit.hexValue(reg2)].getShort());
+        // store the result in the third given register
+        state.registers[Hex4digit.hexValue(reg3)].setValue(result);
     }
 
     public static void intDivide(char reg1, char reg2, char reg3) {
         System.out.println("IntDivide");
     }
 
-    public static void loadIndirect(char mem, char reg) {
+    public static void loadIndirect(short mem, char reg) {
         System.out.println("LoadIndirect");
     }
 
-    public static void storeIndirect(char mem, char reg) {
+    public static void storeIndirect(short mem, char reg) {
         System.out.println("StoreIndirect");
     }
 
-    public static void branch(char mem) {
+    public static void branch(short mem) {
         System.out.println("Branch");
     }
 
-    public static void branchNeg(char reg, char mem) {
+    public static void branchNeg(char reg, short mem) {
         System.out.println("BranchNeg");
     }
 
-    public static void branchPos(char reg, char mem) {
+    public static void branchPos(char reg, short mem) {
         System.out.println("BranchPos");
     }
 
