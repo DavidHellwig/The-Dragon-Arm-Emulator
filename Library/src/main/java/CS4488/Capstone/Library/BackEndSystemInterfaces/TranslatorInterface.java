@@ -1,9 +1,15 @@
 package CS4488.Capstone.Library.BackEndSystemInterfaces;
 
-import CS4488.Capstone.Library.Tools.Hex4d;
+import CS4488.Capstone.Library.Tools.Hex4digit;
 
 import java.util.ArrayList;
 
+/**
+ * The Methods that interaction with the Translator will require
+ *
+ * @version 1.0
+ * @author Traae
+ */
 public interface TranslatorInterface {
 
     /***
@@ -13,7 +19,7 @@ public interface TranslatorInterface {
      * @param path The String file describing the file path
      * @return success/fail
      */
-    public boolean loadFile(String path);
+    public boolean loadFile(String path) ;
 
     /***
      * This function closes out the file the translator has open and clears its data.
@@ -33,7 +39,7 @@ public interface TranslatorInterface {
      *
      * @return Arraylist of Hex4d lines of code.
      */
-    public ArrayList<Hex4d> translateToMachine();
+    public ArrayList<Hex4digit> translateToMachine();
 
     /**
      * This method gets the description of what went wrong should a process fail.

@@ -1,28 +1,36 @@
 package CS4488.Capstone.Library.FacadeInterfaces;
+import CS4488.Capstone.Library.Tools.Hex4digit;
+import CS4488.Capstone.Library.Tools.ProgramState;
 
 import java.util.ArrayList;
 
+/**
+ * This interface dictates the method of access to the Program state by the UI
+ *
+ * @version 1.0
+ * @author Traae
+ */
 public interface ProgramStateAccess {
-    public short[] getRegistersValues();
-    public short getR0();
-    public short getR1();
-    public short getR2();
-    public short getR3();
-    public short getR4();
-    public short getR5();
-    public short getR6();
-    public short getR7();
-    public short getR8();
-    public short getR9();
-    public short getRa();
-    public short getFp();
-    public short getIp();
-    public short getSp();
-    public short getLr();
-    public short getPc();
-    public void enterInput(Short input);
-    public Short getOutput();
-    public short[] getBaseMemoryValues();
-    public short[] getCurrentMemoryValues();
-    public ArrayList<short[]> getMemoryStateGrid();
+    /**
+     * This method provides a copy of the program state,
+     * To ensure the actual state isn't accessible.
+     *
+     * @return a Copy Array Program State
+     */
+    public ProgramState getReadableCopy();
+
+    public ProgramState getProgramState();
+
+    /**
+     * The Input must be passed into the backend ahead of it being 'read' by the emulation.
+     *
+     * @param input the input in the Input Box.
+     */
+    public void sendInput(char[] input);
+
+    /**
+     * get Output, simple as.
+     * @return digits of Hex characters.
+     */
+    public char[] getOutput();
 }
