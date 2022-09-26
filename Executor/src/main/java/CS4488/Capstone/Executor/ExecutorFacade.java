@@ -7,8 +7,10 @@ import org.apache.commons.text.WordUtils;
 
 public class ExecutorFacade implements ExecutorInterface {
 
-    // should be 3AF3
+    // should be 3AF3 Add register A and F and put it in 3
     private final Hex4digit word1 = new Hex4digit((short)15091);
+    // should be 3237 : Add register 2 and 3 and put it in 7
+    private final Hex4digit word2 = new Hex4digit((short)12855);
 
     public static void main(String[] args) {
         ExecutorFacade test = new ExecutorFacade();
@@ -18,8 +20,19 @@ public class ExecutorFacade implements ExecutorInterface {
     }
 
     public void testing() {
+        fillRegisters();
         // pass in the hex4digit object for testing instructions
-        determineInstruction(word1);
+        determineInstruction(word2);
+        System.out.println(ProgramState.getInstance().registers[7].getShort());
+    }
+
+    private void fillRegisters() {
+        ProgramState.getInstance().registers[0] = new Hex4digit((short)5438);
+        ProgramState.getInstance().registers[1] = new Hex4digit((short)6);
+        ProgramState.getInstance().registers[2] = new Hex4digit((short)34);
+        ProgramState.getInstance().registers[3] = new Hex4digit((short)73);
+        ProgramState.getInstance().registers[4] = new Hex4digit((short)153);
+        ProgramState.getInstance().registers[5] = new Hex4digit((short)865);
     }
 
     // takes in a hex4digit instruction and based on the first value
@@ -64,6 +77,13 @@ public class ExecutorFacade implements ExecutorInterface {
 
     @Override
     public boolean next() {
+        // Starting a new program, register 7 (the pc) should be
+        // initialized to '0', or the first step in memory
+        short currentStep = ProgramState.getInstance().registers[7].getShort();
+        Hex4digit instruction = ProgramState.getInstance().pcHistory.get(currentStep).value;
+        // figure out what the instruction is
+        determineInstruction(instruction);
+
         return false;
     }
 

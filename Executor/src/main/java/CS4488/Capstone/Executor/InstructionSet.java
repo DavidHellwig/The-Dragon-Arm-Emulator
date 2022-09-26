@@ -11,6 +11,12 @@ public final class InstructionSet {
     // next memory address where an instruction is held.
     public static void incrementProgramCounter() {
         System.out.println("Increment Program Counter");
+        // This should simply be moving the index in the memory ArrayList. so
+        // if you are executing the instruction at position 5 in the list, the
+        // program counter will increment to position 6 next. This is not the
+        // same as the actual memory address being incremented by 1. They are
+        // independent in the emulation.
+        ProgramState.getInstance().registers[7].setValue((short) (ProgramState.getInstance().registers[7].getShort() + 1));
     }
 
     public static void halt() {
