@@ -33,15 +33,15 @@ public class Translator  {
     }
 
     public String getArmFile() {
-        return armFile;
+        return this.armFile;
     }
 
     public boolean isLoaded() {
-        return loaded;
+        return this.loaded;
     }
 
     public ArrayList<Hex4digit> getTranslatedCode() {
-        return translatedCode;
+        return this.translatedCode;
     }
 
    // @Override
