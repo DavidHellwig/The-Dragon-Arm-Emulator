@@ -1,14 +1,21 @@
 package CS4488.Capstone.UserInterface;
 
+import CS4488.Capstone.Library.Tools.FileManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import CS4488.Capstone.System.Orchestrator;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+
+import java.io.File;
+import java.util.List;
 
 public class EmulatorGUIController {
     private Orchestrator orc = new Orchestrator();
+
+    private FileManager fm = new FileManager();
 
     @FXML
     private Button exitButton;
@@ -38,8 +45,23 @@ public class EmulatorGUIController {
     private TextField debug;
 
     @FXML
+    private TextField inputBox;
+
+    @FXML
+    private TextField outputBox;
+
+    @FXML
+    private TextField memoryBox;
+
+
+
+    @FXML
     private Button hexConverterHexToDecimalButton;
 
+    /**
+     * Convert a decimal to hex
+     * @param actionEvent
+     */
     @FXML
     void decimalToHex(ActionEvent actionEvent){
         String stringDecimal = conversionTextField.getText();
@@ -56,6 +78,10 @@ public class EmulatorGUIController {
 
     }
 
+    /**
+     * Convert hex to decimal
+     * @param actionEvent
+     */
     @FXML
     void hexToDecimal(ActionEvent actionEvent){
         String stringHex = conversionTextField.getText();
@@ -67,8 +93,24 @@ public class EmulatorGUIController {
 
     }
 
+    /**
+     * Load a file into the input box
+     * @param actionEvent
+     */
+    @FXML
+    void loadFile(ActionEvent actionEvent){
+        FileChooser txtChooser = new FileChooser();
+        txtChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Txt files","*.txt"));
+        File file = txtChooser.showOpenDialog(null);
+        if (file != null){
+            inputBox.setText(fm.fileToString(file.getAbsolutePath()));
+        }
+    }
 
 
+    /**
+     * Exit the program
+     */
     @FXML
     void exit(){
         System.exit(0);

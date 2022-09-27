@@ -18,7 +18,7 @@ public class FileManager {
 
     // SINGLETON instance, private constructor, and getInstance.
     private static FileManager instance;
-    private FileManager(){}
+    public FileManager(){}
     public FileManager getInstance(){
         return instance;
     }
