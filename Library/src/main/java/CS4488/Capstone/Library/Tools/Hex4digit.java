@@ -20,35 +20,40 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
 
     // Constructor
     public Hex4digit(){
-        hex = new char[4];
-        for (char c:hex) {
-            c = '0';
-        }
+        hex = makeBlankChar4();
     }
     public Hex4digit(char[] value){
-        hex = new char[4];
+        hex = makeBlankChar4();
         this.setValue(value);
     }
     public Hex4digit(short value){
-        hex = new char[4];
+        hex = makeBlankChar4();
         this.setValue(value);
     }
 
+    private static char[] makeBlankChar4(){
+        char[] array = new char[4];
+        for (char c:array) {
+            c = '0';
+        }
+        return array;
+    }
+
     // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal
-    public static Short hexToDecimal(char[] hex){
+    public static Short hexToDecimal(char[] hexArray){
                 int index = 3;
         int power = 0;
         int result = 0;
 
         while (index > -1){
-            result = result + (hexValue(hex[index]) * (int)Math.pow(16, power));
+            result = result + (hexValue(hexArray[index]) * (int)Math.pow(16, power));
             index = index - 1;
             power = power + 1;
         }
         return (short) result;
     }
     public static char[] decimalToHex(short value){
-        char[] hex = new char[4];
+        char[] output = makeBlankChar4();
         int index = 3;
         int remainder;
         int v = value;
@@ -57,10 +62,10 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
         while (index > -1){
             remainder = v%16;
             v = v/16;
-            hex[index] = hexChar(remainder);
+            output[index] = hexChar(remainder);
             index = index - 1;
         }
-        return hex;
+        return output;
     }
     public static char hexChar(int n){
         char result = '0';
