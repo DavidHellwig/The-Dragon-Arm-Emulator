@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import CS4488.Capstone.System.Orchestrator;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
@@ -45,13 +46,13 @@ public class EmulatorGUIController {
     private TextField debug;
 
     @FXML
-    private TextField inputBox;
+    private TextArea inputBox;
 
     @FXML
-    private TextField outputBox;
+    private TextArea outputBox;
 
     @FXML
-    private TextField memoryBox;
+    private TextArea memoryBox;
 
 
 
