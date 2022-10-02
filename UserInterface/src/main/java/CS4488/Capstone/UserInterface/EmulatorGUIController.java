@@ -4,7 +4,7 @@ import CS4488.Capstone.Library.Tools.FileManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+
 import CS4488.Capstone.System.Orchestrator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -74,8 +74,7 @@ public class EmulatorGUIController {
         conversionTextField.setText(String.copyValueOf(orc.convertToHexChars(decimal)));
 
 
-        //Why is this copyValueOf?
-        System.out.println(String.copyValueOf(orc.convertToHexChars(decimal)));
+
 
     }
 
@@ -95,7 +94,7 @@ public class EmulatorGUIController {
     }
 
     /**
-     * Load a file into the input box
+     * Load a file into the input box and load the program from the file
      * @param actionEvent
      */
     @FXML
@@ -106,6 +105,8 @@ public class EmulatorGUIController {
         if (file != null){
             inputBox.setText(fm.fileToString(file.getAbsolutePath()));
         }
+
+
     }
 
 
