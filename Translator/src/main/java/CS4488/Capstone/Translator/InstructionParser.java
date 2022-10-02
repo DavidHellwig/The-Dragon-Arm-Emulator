@@ -23,32 +23,54 @@ public class InstructionParser {
     }
 
     public Map<String, String> getParser() {
-        return parser;
+        return this.parser;
     }
 
     private void loadInstructions(){
-        parser.put("hlt", "0");
-        parser.put("ld", "1");
-        parser.put("st", "2");
-        parser.put("add", "3");
-        parser.put("sub", "4");
-        parser.put("br", "9");
+        this.parser.put("hlt", "0");
+        this.parser.put("ld", "1");
+        this.parser.put("st", "2");
+        this.parser.put("add", "3");
+        this.parser.put("sub", "4");
+        this.parser.put("br", "9");
 
     }
 
 
     private void loadRegisters(){
         for(int i = 0; i < 16; i++){
-            parser.put("r"+Integer.toHexString(i), Integer.toHexString(i));
+
+            // loads quick notation into parser
+            this.parser.put("r"+Integer.toHexString(i),
+                    Integer.toHexString(i));
+
+            // loads hex address notation to parser
+            this.parser.put("r0x"+Integer.toHexString(i),
+                    Integer.toHexString(i));
         }
+
+        // load special register names
+        this.parser.put("fp", Integer.toHexString(11));
+        this.parser.put("ip", Integer.toHexString(12));
+        this.parser.put("sp", Integer.toHexString(13));
+        this.parser.put("lr", Integer.toHexString(14));
+        this.parser.put("pc", Integer.toHexString(15));
+
     }
 
 
     private void loadMemory(){
         for(int i = 0; i < 16; i++){
+
             for(int j = 0; j < 16; j++){
-                parser.put("m"+Integer.toHexString(i)+ Integer.toHexString(j),
+                this.parser.put("m"+Integer.toHexString(i)+ Integer.toHexString(j),
                         Integer.toHexString(i)+ Integer.toHexString(j));
+
+
+                // loads hex address notation to parser
+                this.parser.put("m0x"+Integer.toHexString(i)+ Integer.toHexString(j),
+                        Integer.toHexString(i)+ Integer.toHexString(j));
+
             }
         }
     }
