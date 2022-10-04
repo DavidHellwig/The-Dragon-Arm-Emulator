@@ -6,21 +6,36 @@ import CS4488.Capstone.Library.Tools.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Translator  {
 
     private String armFile;
     private boolean loaded;
     private ArrayList<Hex4digit> translatedCode;
+    private static Translator singleton = null;
 
-    public Translator(String armFile) throws Exception {
+    private Translator(String armFile) throws Exception {
+
         // Temp logic likely to change in the future release
-        this.armFile = readFile(armFile);
-        this.loaded = this.armFile.equals("") ;
+        // load file
+        this.setArmFile(this.readFile(armFile));
+        this.setLoaded(!this.armFile.isEmpty());
+
+        // translate if loaded
+        if(this.isLoaded()){
+            this.setTranslatedCode(this.convertToHex(this.parseFile(this.armFile)));
+        }
     }
 
-    public void setLoaded(boolean loaded) {
+    public static Translator getInstance(String armFile) throws Exception {
+        if(singleton == null){
+            singleton = new Translator(armFile);
+        }
+        return singleton;
+    }
+
+
+    private void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
 
@@ -44,30 +59,20 @@ public class Translator  {
         return this.translatedCode;
     }
 
-   // @Override
-    public boolean loadFile(String path) {
-        //this.file = readFile(path);
-        return this.armFile.equals("");
-    }
 
-   //@Override
     public void clearFile() {
         setArmFile("");
         setLoaded(false);
         setTranslatedCode(null);
     }
 
-   // @Override
-    public ArrayList<Hex4digit> translateToMachine() {
-        return null;
-    }
 
-   //@Override
+
     public String getLastExceptionMessage() {
         return null;
     }
 
-    //@Override
+
     public boolean isTranslatable() {
         return false;
     }
@@ -84,7 +89,7 @@ public class Translator  {
     }
 
     public String [] parseFile(String armFile){
-        String noComments = armFile.replaceAll("@[a-zA-z0-9 ]+@", "").replaceAll("\\s", "");
+        String noComments = armFile.replaceAll("@[a-zA-z0-9 ]+@", "");
         //noComments.strip()
 
         //remove all white space .replaceAll("\\s", "")
@@ -92,29 +97,53 @@ public class Translator  {
 
     }
 
-    public ArrayList<Hex4digit> convertToHex(String [] parsedFile){
+    public ArrayList<Hex4digit> convertToHex(String [] parsedFile) throws Exception {
         InstructionParser instructionParser =  InstructionParser.getInstance();
 
-        ArrayList<String> hexFile = new ArrayList<>();
         ArrayList<Hex4digit> translatedFile = new ArrayList<>();
-        for(int i = 0; i< parsedFile.length; i++){
+        for (String line : parsedFile) {
 
-            for (Map.Entry<String, String> me :
-                    instructionParser.getParser().entrySet()) {
-                String key = me.getKey();
-                String value = me.getValue();
-                parsedFile[i] = parsedFile[i].replaceAll(key, value);
+            //NOTE: Try iterating through split(" ") string not dictionary
+            //System.out.println(parsedFile[i].trim());
+            StringBuilder builder = new StringBuilder();
+
+            for (String elem : line.trim().split(" ")) {
+                String instruction = instructionParser.getParser().get(elem);
+                if (instruction != null){
+                    builder.append(instruction);
+                }else{
+                    builder.append(elem);
+
+                }
+//                System.out.println("SIZE: "+parsedFile[i].trim().split(" ").length);
+//                System.out.println(elem);
+//                System.out.println(instruction);
             }
 
-            // create hex digit
-            Hex4digit hex = new Hex4digit();
-            hex.setValue(parsedFile[i].trim());
-            translatedFile.add(hex);
+            System.out.println("Translated instruct:"+builder);
 
-            hexFile.add(parsedFile[i].trim());
+            if (builder.length() > 4) {
 
+                //change error message
+                throw new Exception("Instruction memory overflow");
+
+            } else if (builder.length() < 4) {
+                // adds 0 until length == 4
+                while (builder.length() < 4) {
+                    builder.append("0");
+                }
+            }
+            String lineOfCode = builder.toString();
+
+            if (lineOfCode.matches("^[0-9a-f]+$")) {
+                // create hex digit
+                Hex4digit hex = new Hex4digit();
+                hex.setValue(lineOfCode);
+                translatedFile.add(hex);
+            } else {
+                throw new Exception("Instruction contains unknown characters.");
+            }
         }
-
         this.translatedCode = translatedFile;
         return this.translatedCode;
     }
