@@ -73,12 +73,15 @@ public class ExecutorFacade implements ExecutorInterface {
         if (!hasNext()) {
             return false;
         }
+
         // the next instruction that is going to be executed is indexed by the program Counter.
         // so in register 15, the index in memory is held for that instruction. So if the value
         // of register 15 is 7, that means index 7 in the memoryStateHistory will be executed
         Hex4digit instruction = ProgramState.getInstance().memoryStateHistory.get(MEMORYSTATEINDEX).get(ProgramState.getInstance().registers[15].getShort());
+
         // figure out what the instruction is and execute it
         determineInstruction(instruction);
+
         //then increment the memory index if successful
         incrementMemoryIndex();
 
@@ -87,6 +90,7 @@ public class ExecutorFacade implements ExecutorInterface {
 
     @Override
     public boolean hasNext() {
+        // if the program counter contains a -1, the halt command was executed
         return ProgramState.getInstance().registers[15].getShort() != (short) -1;
     }
 

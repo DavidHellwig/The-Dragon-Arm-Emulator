@@ -91,8 +91,14 @@ public final class InstructionSet {
         incrementProgramCounter();
     }
 
+    // divides the value from register 1 by the value in register 2,
+    // then stores the result in register 3
     public static void intDivide(char reg1, char reg2, char reg3) {
         System.out.println("IntDivide");
+        ProgramState state = ProgramState.getInstance();
+        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() / state.registers[Hex4digit.hexValue(reg2)].getShort());
+        state.registers[Hex4digit.hexValue(reg3)].setValue(result);
+        incrementProgramCounter();
     }
 
     public static void loadIndirect(short mem, char reg) {
@@ -103,8 +109,10 @@ public final class InstructionSet {
         System.out.println("StoreIndirect");
     }
 
+    // Change the program counter to be the specified memory index
     public static void branch(short mem) {
         System.out.println("Branch");
+        ProgramState.getInstance().registers[15].setValue(mem);
     }
 
     public static void branchNeg(char reg, short mem) {
