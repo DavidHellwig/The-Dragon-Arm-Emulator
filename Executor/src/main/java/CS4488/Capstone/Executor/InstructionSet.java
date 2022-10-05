@@ -16,30 +16,38 @@ public final class InstructionSet {
         // program counter will increment to position 6 next. This is not the
         // same as the actual memory address being incremented by 1. They are
         // independent in the emulation.
-        ProgramState.getInstance().registers[7].setValue((short) (ProgramState.getInstance().registers[7].getShort() + 1));
+        ProgramState.getInstance().registers[15].setValue( (short)(ProgramState.getInstance().registers[15].getShort() + 1));
     }
 
+    // putting a -1 into the program counter lets the executor know
+    // that the program is finished when reading from register 15
     public static void halt() {
         System.out.println("Halt");
+        ProgramState.getInstance().registers[15].setValue((short)-1);
     }
 
     // finds a memory location from the program state and takes its Hex4digit
     // value and sets it to the specified register's value.
-    public static void load(short mem, char reg) {
+    public static void load(short mem, char reg, int index) {
         System.out.println("Load");
         ProgramState state = ProgramState.getInstance();
         // Get the hex4digit object from the specified location in memory
-        Hex4digit value = state.pcHistory.get(mem).value;
+        Hex4digit value = state.memoryStateHistory.get(index).get(mem);
         // put that hex4digit value into the specified register
         state.registers[Hex4digit.hexValue(reg)].setValue(value.getHexChars());
+        incrementProgramCounter();
     }
 
-    // get the specified memorySpace object in the pcHistory and set its
+    // get the specified memory index in the memory state and set its
     // Hex4digit value to that of the value in the specified register
-    public static void store(short mem, char reg) {
+    public static void store(short mem, char reg, int index) {
         System.out.println("Store");
         ProgramState state = ProgramState.getInstance();
-        state.pcHistory.get(mem).value = state.registers[Hex4digit.hexValue(reg)];
+        // get the Hex4digit object from the specified register
+        Hex4digit value = state.registers[Hex4digit.hexValue(reg)];
+        // set the memory spot specified to the value taken from the register
+        state.memoryStateHistory.get(index).get(mem).setValue(value.getHexChars());
+        incrementProgramCounter();
     }
 
     // add values of register 1 and register 2 and stores the result in register 3.
@@ -52,6 +60,7 @@ public final class InstructionSet {
         short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() + state.registers[Hex4digit.hexValue(reg2)].getShort());
         // set the result to the Hex4digit's value in the third given register
         state.registers[Hex4digit.hexValue(reg3)].setValue(result);
+        incrementProgramCounter();
     }
 
     // subtract value within first register by the value within the second register
@@ -65,6 +74,7 @@ public final class InstructionSet {
         short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() - state.registers[Hex4digit.hexValue(reg2)].getShort());
         // set the result to the Hex4digit's value in the third given register
         state.registers[Hex4digit.hexValue(reg3)].setValue(result);
+        incrementProgramCounter();
     }
 
     // multiply the values from within first register and second register and store them
@@ -78,6 +88,7 @@ public final class InstructionSet {
         short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() * state.registers[Hex4digit.hexValue(reg2)].getShort());
         // store the result in the third given register
         state.registers[Hex4digit.hexValue(reg3)].setValue(result);
+        incrementProgramCounter();
     }
 
     public static void intDivide(char reg1, char reg2, char reg3) {

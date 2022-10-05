@@ -12,18 +12,17 @@ public class ExecutorFacade implements ExecutorInterface {
     // should be 3237 : Add register 2 and 3 and put it in 7
     private final Hex4digit word2 = new Hex4digit((short)12855);
 
-    public static void main(String[] args) {
-        ExecutorFacade test = new ExecutorFacade();
+    // Holds the index of what place the memory is at in the arraylist
+    private int MEMORYSTATEINDEX = 0;
 
-
-        test.testing();
+    private void incrementMemoryIndex() {
+        MEMORYSTATEINDEX += 1;
     }
 
-    public void testing() {
-        fillRegisters();
-        // pass in the hex4digit object for testing instructions
-        determineInstruction(word2);
-        System.out.println(ProgramState.getInstance().registers[7].getShort());
+    public static void main(String[] args) {
+        ExecutorFacade test = new ExecutorFacade();
+        test.fillRegisters();
+        test.next();
     }
 
     private void fillRegisters() {
@@ -33,6 +32,9 @@ public class ExecutorFacade implements ExecutorInterface {
         ProgramState.getInstance().registers[3] = new Hex4digit((short)73);
         ProgramState.getInstance().registers[4] = new Hex4digit((short)153);
         ProgramState.getInstance().registers[5] = new Hex4digit((short)865);
+
+        // this should be store register 2 into memory space a8
+        ProgramState.getInstance().registers[15] = new Hex4digit((short)10882);
     }
 
     // takes in a hex4digit instruction and based on the first value
@@ -46,8 +48,8 @@ public class ExecutorFacade implements ExecutorInterface {
     private void determineInstruction(Hex4digit inst) {
         switch (inst.getHexChars()[0]) {
             case '0' -> InstructionSet.halt();
-            case '1' -> InstructionSet.load((short)inst.getMiddle2Value(), inst.getHexChars()[3]);
-            case '2' -> InstructionSet.store((short)inst.getMiddle2Value(), inst.getHexChars()[3]);
+            case '1' -> InstructionSet.load((short)inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
+            case '2' -> InstructionSet.store((short)inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
             case '3' -> InstructionSet.add(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
             case '4' -> InstructionSet.subt(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
             case '5' -> InstructionSet.mult(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
@@ -66,29 +68,35 @@ public class ExecutorFacade implements ExecutorInterface {
     }
 
     @Override
+    public boolean next() {
+        // Check to see if there is another instruction from the program Counter i.e. Register 15
+        if (!hasNext()) {
+            return false;
+        }
+        // the next instruction that is going to be executed is indexed by the program Counter.
+        // so in register 15, the index in memory is held for that instruction. So if the value
+        // of register 15 is 7, that means index 7 in the memoryStateHistory will be executed
+        Hex4digit instruction = ProgramState.getInstance().memoryStateHistory.get(MEMORYSTATEINDEX).get(ProgramState.getInstance().registers[15].getShort());
+        // figure out what the instruction is and execute it
+        determineInstruction(instruction);
+        //then increment the memory index if successful
+        incrementMemoryIndex();
+
+        return true;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return ProgramState.getInstance().registers[15].getShort() != (short) -1;
+    }
+
+    @Override
     public void setProgramState(ProgramState state) {
 
     }
 
     @Override
     public boolean hasState() {
-        return false;
-    }
-
-    @Override
-    public boolean next() {
-        // Starting a new program, register 7 (the pc) should be
-        // initialized to '0', or the first step in memory
-        short currentStep = ProgramState.getInstance().registers[7].getShort();
-        Hex4digit instruction = ProgramState.getInstance().pcHistory.get(currentStep).value;
-        // figure out what the instruction is
-        determineInstruction(instruction);
-
-        return false;
-    }
-
-    @Override
-    public boolean hasNext() {
         return false;
     }
 

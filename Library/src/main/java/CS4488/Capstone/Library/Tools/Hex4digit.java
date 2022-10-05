@@ -36,7 +36,7 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
 
     // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal
     public static Short hexToDecimal(char[] hex){
-                int index = 3;
+        int index = 3;
         int power = 0;
         int result = 0;
 
@@ -223,13 +223,29 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
         char[] middle2 = new char[2];
         middle2[0] = hex[1];
         middle2[1] = hex[2];
-        return hexToDecimal(middle2);
+        //return hexToDecimal(middle2);
+        return hexToDecimalShorter(middle2);
     }
     @Override
     public int getLast2Value() {
         char[] last2 = new char[2];
         last2[0] = hex[2];
         last2[1] = hex[3];
-        return hexToDecimal(last2);
+        //return hexToDecimal(last2);
+        return hexToDecimalShorter(last2);
     }
+
+    public static Short hexToDecimalShorter(char[] hex){
+        int index = 1;
+        int power = 0;
+        int result = 0;
+
+        while (index > -1){
+            result = result + (hexValue(hex[index]) * (int)Math.pow(16, power));
+            index = index - 1;
+            power = power + 1;
+        }
+        return (short) result;
+    }
+
 }
