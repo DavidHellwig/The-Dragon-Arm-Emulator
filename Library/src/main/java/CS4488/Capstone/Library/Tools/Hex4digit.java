@@ -5,6 +5,7 @@ package CS4488.Capstone.Library.Tools;
 
 import CS4488.Capstone.Library.BackEndSystemInterfaces.NumberConverterInterface;
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * Hex4Digit
@@ -41,7 +42,7 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
 
     // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal
     public static Short hexToDecimal(char[] hexArray){
-                int index = 3;
+                int index = hexArray.length;
         int power = 0;
         int result = 0;
 

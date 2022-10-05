@@ -15,6 +15,8 @@ import CS4488.Capstone.Library.Tools.Hex4digit;
 import CS4488.Capstone.Library.Tools.ProgramState;
 import CS4488.Capstone.Translator.TranslatorFacade;
 
+import java.io.File;
+
 /**
  * The Back End Facade Class that orchestrates everything else.
  *
@@ -22,22 +24,21 @@ import CS4488.Capstone.Translator.TranslatorFacade;
  * @author Traae
  */
 public class Orchestrator implements ProgramStateAccess, TranslatorAccess, ExecutorAccess, NumberConverterAccess {
-
+    // SINGLETON INSTANCE
     private static Orchestrator instance = null;
 
-    boolean inGodMode;
-    ProgramState state, readable;
+    // INSTANCE VARIABLES
+    ProgramState state;
     TranslatorFacade translator;
-    ExecutorFacade executorFacade;
+    ExecutorFacade executor;
     FileManager fileManager;
 
 
     private Orchestrator(){
         state = ProgramState.getInstance();
-        readable = ProgramState.getReadableState();
         //translator = ;
         //executor = ;
-        //fileManager = new FileManager();
+        fileManager = FileManager.getInstance();
     }
 
     public static Orchestrator getInstance() {
@@ -54,18 +55,8 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
 
 
     @Override
-    public ProgramState getReadableCopy() {
-        state.writeStateToReadable();
-        return ProgramState.getReadableState();
-    }
-
-    @Override
     public ProgramState getProgramState() {
-        if (inGodMode) {
             return ProgramState.getInstance();
-        }
-        state.writeStateToReadable();
-        return ProgramState.getReadableState();
     }
 
     @Override
