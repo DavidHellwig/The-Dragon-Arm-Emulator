@@ -1,0 +1,33 @@
+@This is a series of Branching statements based off of a handfull on inputs, like plinko.
+br m06
+#0123
+#4567
+#89ab
+#cdef
+ld m01 r4
+ld m02 r5
+ld m03 r6
+ld m04 r7
+rd r0
+rd r1
+rd r2
+rd r3
+st m01 r0
+st m02 r1
+st m03 r2
+st m04 r3
+sub r0 r1 r0
+sub r1 r2 r1
+sub r2 r3 r2
+brz r0 m19
+brn r1 m1b
+brp r2 m1d
+br m1f
+wr r4
+hlt
+wr r5
+hlt
+wr r6
+hlt
+wr r7
+hlt
