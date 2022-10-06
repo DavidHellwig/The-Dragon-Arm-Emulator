@@ -54,8 +54,8 @@ public class ExecutorFacade implements ExecutorInterface {
             case '4' -> InstructionSet.subt(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
             case '5' -> InstructionSet.mult(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
             case '6' -> InstructionSet.intDivide(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
-            case '7' -> InstructionSet.loadIndirect((short)inst.getMiddle2Value(), inst.getHexChars()[3]);
-            case '8' -> InstructionSet.storeIndirect((short)inst.getMiddle2Value(), inst.getHexChars()[3]);
+            case '7' -> InstructionSet.loadIndirect((short)inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
+            case '8' -> InstructionSet.storeIndirect((short)inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
             case '9' -> InstructionSet.branch((short)inst.getMiddle2Value());
             case 'a' -> InstructionSet.branchNeg(inst.getHexChars()[1], (short)inst.getLast2Value());
             case 'b' -> InstructionSet.branchPos(inst.getHexChars()[1], (short)inst.getLast2Value());
