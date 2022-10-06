@@ -1,5 +1,5 @@
 add r0 r1 r2; @This is a comment baby@
 ld m0a r1;
-Sub r1 r2 r3;    @999 numbers@ @Testagain @
-br
+sub r1 r2 r3;    @999 numbers@ @Testagain @
+br m0f
 

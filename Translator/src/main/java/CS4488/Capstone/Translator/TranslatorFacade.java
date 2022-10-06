@@ -12,14 +12,21 @@ import java.util.ArrayList;
 
 public class TranslatorFacade implements TranslatorInterface {
 
+    private Translator translator;
+
+    public TranslatorFacade(String armFile) throws Exception {
+        this.translator = Translator.getInstance(armFile);
+
+    }
+
     @Override
     public boolean loadFile(String path) {
-        return false;
+        return translator.isLoaded();
     }
 
     @Override
     public void clearFile() {
-
+        translator.clearFile();
     }
 
     @Override
@@ -29,7 +36,7 @@ public class TranslatorFacade implements TranslatorInterface {
 
     @Override
     public ArrayList<Hex4digit> translateToMachine() {
-        return null;
+        return translator.getTranslatedCode();
     }
 
     @Override
