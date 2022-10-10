@@ -1,26 +1,23 @@
 package CS4488.Capstone.UserInterface;
 
 import CS4488.Capstone.Library.Tools.FileManager;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 
 import CS4488.Capstone.System.Orchestrator;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.List;
+import java.util.*;
 
 public class EmulatorGUIController {
     private Orchestrator orc = new Orchestrator();
 
 
 
-    //may be useless
-    private ObservableList<Integer> memoryinfo;
 
     @FXML
     private Button exitButton;
@@ -55,13 +52,20 @@ public class EmulatorGUIController {
     @FXML
     private TextArea outputBox;
 
-//    @FXML
-//    private TextArea memoryBox;
+    @FXML
+    private TableView memoryTable;
+
+    @FXML
+    private TableColumn memoryLocationColumn;
 
 
 
     @FXML
     private Button hexConverterHexToDecimalButton;
+
+    public EmulatorGUIController() {
+    }
+
 
     /**
      * Convert a decimal to hex
@@ -76,6 +80,8 @@ public class EmulatorGUIController {
 
         //TODO fix this because it will not work if you hit the button more than once
         conversionTextField.setText(String.copyValueOf(orc.convertToHexChars(decimal)));
+
+
 
     }
 
@@ -92,6 +98,7 @@ public class EmulatorGUIController {
         conversionTextField.setText(String.valueOf(orc.convertToShort(charHex)));
 
 
+
     }
 
     /**
@@ -104,8 +111,25 @@ public class EmulatorGUIController {
         txtChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Txt files","*.txt"));
         File file = txtChooser.showOpenDialog(null);
         if (file != null){
-            //inputBox.setText(fm.fileToString(file.getAbsolutePath()));
+            //Removing this until potential conflicts sorted out
+            //inputBox.setText(orc.fileManager.fileToString(file.getAbsolutePath()));
         }
+
+
+
+    }
+
+    /**
+     * This will load default memory values into the memory table. This should never be allowed to be used directly
+     * by the user
+     */
+    void initializeMemoryTable(){
+        ObservableList<char[]> locColumnValues = FXCollections.observableArrayList();
+        for(int i = 0; i<256;i++){
+            locColumnValues.add(orc.convertToHexChars((short)i));
+        }
+        int x = 0;
+        //memoryLocationColumn.getColumns().addAll(locColumnValues);
 
 
     }
