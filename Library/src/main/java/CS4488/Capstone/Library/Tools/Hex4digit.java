@@ -42,14 +42,16 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
 
     // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal
     public static Short hexToDecimal(char[] hexArray){
-        int index = hexArray.length - 1;
-        int power = 0;
+        System.out.println("Length: " + hexArray.length);
+        int index = hexArray.length-1;
+        int power = 1;
         int result = 0;
 
         while (index > -1){
-            result = result + (hexValue(hexArray[index]) * (int)Math.pow(16, power));
+            result = result + (hexValue(hexArray[index]) * power);
             index = index - 1;
-            power = power + 1;
+            power = power * 16;
+
         }
         return (short) result;
     }
