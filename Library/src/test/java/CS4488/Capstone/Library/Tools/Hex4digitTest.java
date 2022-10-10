@@ -1,12 +1,67 @@
 package CS4488.Capstone.Library.Tools;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class Hex4digitTest {
+
+    ArrayList<Integer> testNumbers;
+    ArrayList<char[]> testHexes;
+
+    @Before
+    void init(){
+        char[] hex = new char[4];
+        hex[0] = '0';
+        hex[1] = '0';
+        hex[2] = '0';
+        hex[3] = '0';
+
+        testNumbers = new ArrayList<>();
+        testHexes = new ArrayList<>();
+
+        testNumbers.add(0);
+        testHexes.add(hex.clone());
+
+        testNumbers.add(1);
+        hex[3] = '1';
+        testHexes.add(hex.clone());
+
+        testNumbers.add(16);
+        hex[3] = '0';
+        hex[2] = '1';
+        testHexes.add(hex.clone());
+
+        testNumbers.add(256);
+        hex[2] = '0';
+        hex[1] = '1';
+        testHexes.add(hex.clone());
+
+        testNumbers.add(4096);
+        hex[1] = '0';
+        hex[0] = '1';
+        testHexes.add(hex.clone());
+
+        testNumbers.add(32767);
+        hex[0] = 'f';
+        hex[1] = 'f';
+        hex[2] = 'f';
+        hex[3] = 'f';
+        testHexes.add(hex.clone());
+
+
+
+
+
+
+    }
+
+
+
     private void hexToDecimalTrial(Random random){
         int size = random.nextInt(4);
         if (size == 0) { size = 4; }
@@ -35,9 +90,7 @@ class Hex4digitTest {
     void decimalToHex() {
 //        boolean result;
 //
-//        int test1, test2, test3, test4;
 //
-//        char[] expected1, expected2, expected
 //
 //
 //        result = (0 ==)
