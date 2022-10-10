@@ -1,5 +1,7 @@
 package CS4488.Capstone.Library.Tools;
 
+import CS4488.Capstone.Library.BackEndSystemInterfaces.FileManagerInterface;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,9 +19,16 @@ import java.nio.file.Paths;
 public class FileManager {
 
     // SINGLETON instance, private constructor, and getInstance.
-    private static FileManager instance;
-    public FileManager(){}
-    public FileManager getInstance(){
+
+
+
+    private static FileManager instance = null;
+    private FileManager(){}
+    public static FileManager getInstance(){
+        if (instance == null){
+            instance = new FileManager();
+        }
+
         return instance;
     }
 
@@ -64,6 +73,7 @@ public class FileManager {
         }
 
     }
+
 
 
 }

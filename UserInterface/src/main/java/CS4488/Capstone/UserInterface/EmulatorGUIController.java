@@ -17,7 +17,7 @@ import java.util.List;
 public class EmulatorGUIController {
     private Orchestrator orc = new Orchestrator();
 
-    private FileManager fm = new FileManager();
+
 
     //may be useless
     private ObservableList<Integer> memoryinfo;
@@ -104,7 +104,7 @@ public class EmulatorGUIController {
         txtChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Txt files","*.txt"));
         File file = txtChooser.showOpenDialog(null);
         if (file != null){
-            inputBox.setText(fm.fileToString(file.getAbsolutePath()));
+            //inputBox.setText(fm.fileToString(file.getAbsolutePath()));
         }
 
 

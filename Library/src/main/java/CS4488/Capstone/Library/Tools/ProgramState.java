@@ -25,24 +25,16 @@ public class ProgramState implements ProgramStateInterface {
     // Constants and Class instances
     private static final int REGISTER_COUNT = 16;
     private static ProgramState emulationState=null;
-    private static ProgramState readableState=null;
 
     // Sub-class for tracking the program counter's history
-    public class memorySpace {
-        public Hex4digit value;
-        public int memoryLocation;
-        public memorySpace(){
-            value = new Hex4digit();
-            memoryLocation = 0;
-        }
-    }
+
     // INSTANCE VARIABLES
     // Registers
     public Hex4digit[] registers;
     // I/O
     public Hex4digit input, output;
     // Memory & State
-    public ArrayList<memorySpace> pcHistory;
+    public ArrayList<MemoryHistorySpace> pcHistory;
     public ArrayList<ArrayList<Hex4digit>> memoryStateHistory;
 
     // PRIVATE SINGLETON CONSTRUCTOR
@@ -65,46 +57,10 @@ public class ProgramState implements ProgramStateInterface {
         return emulationState;
     }
 
-    // DOUBLETON READ-ONLY CLONE GETTER
-    public static ProgramState getReadableState(){
-        if (readableState == null){
-            readableState = new ProgramState();
-        }
-        return readableState;
-    }
-    // read only clone function.
-    public void writeStateToReadable(){
-        // copy the register values
-        for (int i=0; i<REGISTER_COUNT; i++){
-            readableState.registers[i].setValue(emulationState.registers[i].getHexChars());
-        }
-        // copy i/o
-        readableState.input.setValue(emulationState.input.getHexChars());
-        readableState.output.setValue(emulationState.output.getHexChars());
-        // copy the list of memory spaces
-        readableState.pcHistory.clear();
-        for (memorySpace m: emulationState.pcHistory){
-            memorySpace toAdd = new memorySpace();
-            toAdd.value.setValue(m.value.getHexChars());
-            toAdd.memoryLocation = m.memoryLocation;
-            readableState.pcHistory.add(toAdd);
-        }
-        // copy the list of lists of program memory.
-        memoryStateHistory.clear();
-        for (ArrayList<Hex4digit> arrayHex : emulationState.memoryStateHistory){
-            ArrayList<Hex4digit> listToAdd = new ArrayList<>();
-            for (Hex4digit h : arrayHex){
-                Hex4digit hexToAdd = new Hex4digit();
-                hexToAdd.setValue(h.getHexChars());
-            }
-            memoryStateHistory.add(listToAdd);
-        }
-    }
-
     // Program State Interface
     @Override
     public boolean initializeState(ArrayList<Hex4digit> code) {
-        memorySpace pc = new memorySpace();
+        MemoryHistorySpace pc = new MemoryHistorySpace();
         pc.memoryLocation = 0;
         pc.value.setValue(code.get(0).getHexChars());
         pcHistory.add(pc);
@@ -125,3 +81,33 @@ public class ProgramState implements ProgramStateInterface {
     }
 
 }
+
+
+//    // read only clone function.
+//    public void writeStateToReadable(){
+//        // copy the register values
+//        for (int i=0; i<REGISTER_COUNT; i++){
+//            readableState.registers[i].setValue(emulationState.registers[i].getHexChars());
+//        }
+//        // copy i/o
+//        readableState.input.setValue(emulationState.input.getHexChars());
+//        readableState.output.setValue(emulationState.output.getHexChars());
+//        // copy the list of memory spaces
+//        readableState.pcHistory.clear();
+//        for (memorySpace m: emulationState.pcHistory){
+//            memorySpace toAdd = new memorySpace();
+//            toAdd.value.setValue(m.value.getHexChars());
+//            toAdd.memoryLocation = m.memoryLocation;
+//            readableState.pcHistory.add(toAdd);
+//        }
+//        // copy the list of lists of program memory.
+//        memoryStateHistory.clear();
+//        for (ArrayList<Hex4digit> arrayHex : emulationState.memoryStateHistory){
+//            ArrayList<Hex4digit> listToAdd = new ArrayList<>();
+//            for (Hex4digit h : arrayHex){
+//                Hex4digit hexToAdd = new Hex4digit();
+//                hexToAdd.setValue(h.getHexChars());
+//            }
+//            memoryStateHistory.add(listToAdd);
+//        }
+//    }

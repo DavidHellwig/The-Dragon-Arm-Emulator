@@ -109,13 +109,18 @@ public class Translator  {
 
             for (String elem : line.trim().split(" ")) {
                 String instruction = instructionParser.getParser().get(elem);
-                builder.append(instruction);
+                if (instruction != null){
+                    builder.append(instruction);
+                }else{
+                    builder.append(elem);
+
+                }
 //                System.out.println("SIZE: "+parsedFile[i].trim().split(" ").length);
 //                System.out.println(elem);
 //                System.out.println(instruction);
             }
 
-            //  System.out.println("Translated instruct:"+builder);
+            System.out.println("Translated instruct:"+builder);
 
             if (builder.length() > 4) {
 

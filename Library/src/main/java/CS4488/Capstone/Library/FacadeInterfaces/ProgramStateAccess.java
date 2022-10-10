@@ -17,7 +17,7 @@ public interface ProgramStateAccess {
      *
      * @return a Copy Array Program State
      */
-    public ProgramState getReadableCopy();
+    //public ProgramState getReadableCopy();
 
     public ProgramState getProgramState();
 
