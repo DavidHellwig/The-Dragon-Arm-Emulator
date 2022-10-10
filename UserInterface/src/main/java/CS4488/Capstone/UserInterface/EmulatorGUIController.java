@@ -1,6 +1,7 @@
 package CS4488.Capstone.UserInterface;
 
 import CS4488.Capstone.Library.Tools.FileManager;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,6 +18,9 @@ public class EmulatorGUIController {
     private Orchestrator orc = new Orchestrator();
 
     private FileManager fm = new FileManager();
+
+    //may be useless
+    private ObservableList<Integer> memoryinfo;
 
     @FXML
     private Button exitButton;
@@ -51,8 +55,8 @@ public class EmulatorGUIController {
     @FXML
     private TextArea outputBox;
 
-    @FXML
-    private TextArea memoryBox;
+//    @FXML
+//    private TextArea memoryBox;
 
 
 
@@ -72,9 +76,6 @@ public class EmulatorGUIController {
 
         //TODO fix this because it will not work if you hit the button more than once
         conversionTextField.setText(String.copyValueOf(orc.convertToHexChars(decimal)));
-
-
-
 
     }
 
