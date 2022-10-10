@@ -42,7 +42,7 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
 
     // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal
     public static Short hexToDecimal(char[] hexArray){
-        int index = hexArray.length;
+        int index = hexArray.length - 1;
         int power = 0;
         int result = 0;
 
