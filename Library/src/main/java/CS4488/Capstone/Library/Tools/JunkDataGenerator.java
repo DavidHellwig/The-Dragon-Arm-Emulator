@@ -12,6 +12,13 @@ import java.util.Random;
 public class JunkDataGenerator {
     private static Random random = new Random();
 
+    public static char getRandomHexChar(){
+        char result = '0';
+        int c = random.nextInt(16);
+        result = Hex4digit.hexChar(c);
+        return result;
+    }
+
     public static char getJunkChar(){
         char result = '0';
         int c = random.nextInt(16);
