@@ -63,18 +63,7 @@ class Hex4digitTest {
 
 
     private void hexToDecimalTrial(Random random){
-        int size = random.nextInt(4);
-        if (size == 0) { size = 4; }
-
-        char[] input1 = new char[size];
-        int length = input1.length;
-        for (int i = 0; i<length; i++){
-            input1[i] = JunkDataGenerator.getRandomHexChar();
-        }
-        short output;
-        System.out.println("\n\nInput " + new String(input1));
-        output = Hex4digit.hexToDecimal(input1);
-
+        
     }
     @Test
     void hexToDecimal() {
