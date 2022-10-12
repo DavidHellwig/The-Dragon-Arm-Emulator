@@ -60,9 +60,21 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     @Override
     public boolean next() {
         resetError();
-        boolean result = executor.next();
+        boolean result = executor.hasState();
         if (!result){
             error = executor.getLastExceptionMessage();
+        }
+        else {
+            result = executor.hasNext();
+            if (!result){
+                error = executor.getLastExceptionMessage();
+            }
+        }
+        if (result){
+            result = executor.next();
+            if (!result){
+                error = executor.getLastExceptionMessage();
+            }
         }
         return result;
     }
@@ -87,16 +99,25 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     public boolean translateAndLoad(String path) {
         resetError();
         boolean result = translator.loadFile(path);
-        if (translator.isTranslatable()){
-            state.initializeState(translator.translateToMachine());
-            executor.setProgramState(state);
-            translator.clearFile();
+        if (result) {
+
+            result = translator.isTranslatable();
+            if (result){
+                state.initializeState(translator.translateToMachine());
+                executor.setProgramState(state);
+                translator.clearFile();
+            }
+            else {
+                error = translator.getLastExceptionMessage();
+            }
         }
         else {
             error = translator.getLastExceptionMessage();
         }
+
         return result;
     }
+
 
     @Override
     public char[] convertToHexChars(Short number) {
