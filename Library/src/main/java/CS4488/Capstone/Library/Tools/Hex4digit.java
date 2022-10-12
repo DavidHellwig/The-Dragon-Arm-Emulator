@@ -265,6 +265,11 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
     }
     @Override
     public char[] getHexChars() {
+        String s = new String(hex);
+        s.replaceAll("[^0-9a-f]", "");
+        return s.toCharArray();
+    }
+    public char[] getSignedChars() {
         return hex;
     }
     @Override
