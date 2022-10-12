@@ -5,7 +5,6 @@ package CS4488.Capstone.Library.Tools;
 
 import CS4488.Capstone.Library.BackEndSystemInterfaces.NumberConverterInterface;
 import java.io.Serializable;
-import java.util.Random;
 
 /**
  * Hex4Digit
@@ -19,50 +18,51 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
     // Instance Variables
     private char[] hex;
 
-    // Constructor
+    // Constructors
     public Hex4digit(){
-        hex = makeBlankChar4();
+        hex = makeBlankChar5();
     }
     public Hex4digit(char[] value){
-        hex = makeBlankChar4();
-        this.setValue(value);
+        hex = cleanCharHex(value);
     }
     public Hex4digit(short value){
-        hex = makeBlankChar4();
-        this.setValue(value);
+        this.hex = decimalToHex(value);
     }
 
-    private static char[] makeBlankChar4(){
-        char[] array = new char[4];
-        for (char c:array) {
-            c = '0';
-        }
-        return array;
-    }
 
     // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal
     public static Short hexToDecimal(char[] hexArray){
-        System.out.println("Length: " + hexArray.length);
+        hexArray = cleanCharHex(hexArray);
         int index = hexArray.length-1;
         int power = 1;
         int result = 0;
 
-        while (index > -1){
+        while (index > 0){
             result = result + (hexValue(hexArray[index]) * power);
             index = index - 1;
             power = power * 16;
 
         }
+
+        if (hexArray[0] == '-'){
+            result = result * -1;
+        }
+
         return (short) result;
     }
     public static char[] decimalToHex(short value){
-        char[] output = makeBlankChar4();
-        int index = 3;
+        char[] output = makeBlankChar5();
+        int index = output.length-1;
         int remainder;
         int v = value;
 
-        //TODO This while loop can be written with either index to 0, or v to 0.
-        while (index > -1){
+        // Check for the sign, and then flip so the math works.
+        if (value<0){
+            output[0] = '-';
+            v = v *-1;
+        }
+
+        while (index > 0){
             remainder = v%16;
             v = v/16;
             output[index] = hexChar(remainder);
@@ -178,12 +178,51 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
         return result;
     }
 
-    // Utility Methods
-    private void cleanString(String s){
-        s.stripTrailing().stripLeading().toLowerCase().replaceAll("[^0-9a-f]","");
-        if (s.length()>4){
-            s = s.substring(0,3);
+     //Utility Methods
+    private static char[] cleanCharHex(char[] toClean){
+        // Set up the result.
+        char[] result = makeBlankChar5();
+
+        // Convert toClean to a String for use of some functions.
+        String input = new String(toClean);
+        input.stripLeading().stripTrailing().toLowerCase().replaceAll("[^+-0-9a-f]", "");
+
+        // check for negative (result will be set to positive by default)
+        if (input.charAt(0) == '-'){ result[0] = '-'; }
+
+        // clean out the sign
+        input.replaceAll("[+-]", "");
+
+        // Double countdown loop,
+        // Counting down from the last index of each to fill in result starting from the 1's digit.
+        int toCleanIndex = input.length()-1;
+        int resultIndex = 4;
+        while ((resultIndex>-1) && (toCleanIndex>-1)){
+            result[resultIndex] = input.charAt(toCleanIndex);
+            resultIndex--;
+            toCleanIndex--;
         }
+        return result;
+    }
+
+    /**
+     * @param c charater
+     * @return -1 if c is '-', else 1
+     */
+    private static int signToInt(char c){
+        int result = 1;
+        if (c == '-') {
+            result = -1;
+        }
+        return result;
+    }
+    private static char[] makeBlankChar5(){
+        char[] array = new char[5];
+        array[0] = '+';
+        for (int i=1; i<5; i++) {
+            array[i] = '0';
+        }
+        return array;
     }
 
     // Setters
@@ -193,51 +232,58 @@ public class Hex4digit implements NumberConverterInterface, Serializable {
     }
     @Override
     public void setValue(String number) {
-        cleanString(number);
-        hex = number.toCharArray();
+        hex = cleanCharHex(number.toCharArray());
     }
     public void setValue(char[] number) {
-        String toSet = new String(number);
-        cleanString(toSet);
-        hex = toSet.toCharArray();
+        hex = cleanCharHex(number);
+    }
+
+    public void setSign(boolean isPositive){
+        if (isPositive) { hex[0] = '+';}
+        else { hex[0] = '-'; }
     }
 
     public void setFirst(char first) {
-        hex[0] = first;
+        hex[1] = first;
     }
 
     public void setSecond(char second) {
-        hex[1] = second;
+        hex[2] = second;
     }
 
     public void setThird(char third) {
-        hex[2] = third;
+        hex[3] = third;
     }
 
     public void setForth(char forth) {
-        hex[3] = forth;
+        hex[4] = forth;
     }
 
     @Override
     public Short getShort() {
-        return hexToDecimal(this.hex);
+        return (short) (signToInt(hex[0]) * hexToDecimal(this.hex));
     }
     @Override
     public char[] getHexChars() {
+        String s = new String(hex);
+        s.replaceAll("[^0-9a-f]", "");
+        return s.toCharArray();
+    }
+    public char[] getSignedChars() {
         return hex;
     }
     @Override
     public int getMiddle2Value() {
         char[] middle2 = new char[2];
-        middle2[0] = hex[1];
-        middle2[1] = hex[2];
+        middle2[0] = hex[2];
+        middle2[1] = hex[3];
         return hexToDecimal(middle2);
     }
     @Override
     public int getLast2Value() {
         char[] last2 = new char[2];
-        last2[0] = hex[2];
-        last2[1] = hex[3];
+        last2[0] = hex[3];
+        last2[1] = hex[4];
         return hexToDecimal(last2);
     }
 }
