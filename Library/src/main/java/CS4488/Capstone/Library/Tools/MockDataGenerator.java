@@ -9,7 +9,7 @@ import java.util.Random;
  * @author Traae
  * @version 1.0
  */
-public class JunkDataGenerator {
+public class MockDataGenerator {
     private static Random random = new Random();
 
     public static char getRandomHexChar(){

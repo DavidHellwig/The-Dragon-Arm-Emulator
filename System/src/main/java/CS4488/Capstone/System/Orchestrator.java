@@ -15,8 +15,6 @@ import CS4488.Capstone.Library.Tools.Hex4digit;
 import CS4488.Capstone.Library.Tools.ProgramState;
 import CS4488.Capstone.Translator.TranslatorFacade;
 
-import java.io.File;
-
 /**
  * The Back End Facade Class that orchestrates everything else.
  *
@@ -28,17 +26,20 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     private static Orchestrator instance = null;
 
     // INSTANCE VARIABLES
-    ProgramState state;
-    TranslatorFacade translator;
-    ExecutorFacade executor;
-    FileManager fileManager;
+    private ProgramState state;
+    private TranslatorFacade translator;
+    private ExecutorFacade executor;
+    private FileManager fileManager;
+    private String error;
+
 
 
     private Orchestrator(){
         state = ProgramState.getInstance();
-        //translator = ;
-        //executor = ;
+        // translator = new TranslatorFacade();
+        executor = new ExecutorFacade();
         fileManager = FileManager.getInstance();
+        this.resetError();
     }
 
     public static Orchestrator getInstance() {
@@ -48,9 +49,22 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         return instance;
     }
 
+    private void resetError(){
+        error = "Orchestrator: No Error.";
+    }
+
+    public String getError() {
+        return error;
+    }
+
     @Override
     public boolean next() {
-        return false;
+        resetError();
+        boolean result = executor.next();
+        if (!result){
+            error = executor.getLastExceptionMessage();
+        }
+        return result;
     }
 
 
@@ -71,7 +85,17 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
 
     @Override
     public boolean translateAndLoad(String path) {
-        return false;
+        resetError();
+        boolean result = translator.loadFile(path);
+        if (translator.isTranslatable()){
+            state.initializeState(translator.translateToMachine());
+            executor.setProgramState(state);
+            translator.clearFile();
+        }
+        else {
+            error = translator.getLastExceptionMessage();
+        }
+        return result;
     }
 
     @Override
