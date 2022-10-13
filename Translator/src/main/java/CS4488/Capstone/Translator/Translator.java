@@ -19,7 +19,7 @@ public class Translator  {
         // Temp logic likely to change in the future release
         // load file
         this.setArmFile(this.readFile(armFile));
-        this.setLoaded(!this.armFile.isEmpty());
+        this.setLoaded(!this.getArmFile().isEmpty());
 
         // translate if loaded
         if(this.isLoaded()){
@@ -63,7 +63,7 @@ public class Translator  {
     public void clearFile() {
         setArmFile("");
         setLoaded(false);
-        setTranslatedCode(null);
+        setTranslatedCode(new ArrayList<>());
     }
 
 
@@ -88,7 +88,7 @@ public class Translator  {
         return text.toString().toLowerCase();
     }
 
-    public String [] parseFile(String armFile){
+    private String [] parseFile(String armFile){
         String noComments = armFile.replaceAll("@[a-zA-z0-9 ]+@", "");
         //noComments.strip()
 
@@ -97,10 +97,17 @@ public class Translator  {
 
     }
 
-    public ArrayList<Hex4digit> convertToHex(String [] parsedFile) throws Exception {
+    private void setLabels(String lineOfCode, String [] parsedFile, int lineIndex){
+
+    }
+
+
+
+    private ArrayList<Hex4digit> convertToHex(String [] parsedFile) throws Exception {
         InstructionParser instructionParser =  InstructionParser.getInstance();
 
         ArrayList<Hex4digit> translatedFile = new ArrayList<>();
+        int lineIndex = 0;
         for (String line : parsedFile) {
 
             //NOTE: Try iterating through split(" ") string not dictionary
@@ -108,7 +115,17 @@ public class Translator  {
             StringBuilder builder = new StringBuilder();
 
             for (String elem : line.trim().split(" ")) {
-                String instruction = instructionParser.getParser().get(elem);
+                String instruction = "";
+                // check if label
+                if(elem.equals("label")){
+                    //pass current string line, string array, currentLine count
+                    // in method that converts the labels
+                    System.out.println("Label");
+                    setLabels(line, parsedFile, lineIndex);
+                }else{
+                     instruction = instructionParser.getParser().get(elem);
+                }
+
                 if (instruction != null){
                     builder.append(instruction);
                 }else{
@@ -143,6 +160,8 @@ public class Translator  {
             } else {
                 throw new Exception("Instruction contains unknown characters.");
             }
+
+            lineIndex++;
         }
         this.translatedCode = translatedFile;
         return this.translatedCode;
