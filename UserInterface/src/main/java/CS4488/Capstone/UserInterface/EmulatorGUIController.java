@@ -1,6 +1,6 @@
 package CS4488.Capstone.UserInterface;
 
-import CS4488.Capstone.Library.Tools.FileManager;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,15 +9,15 @@ import javafx.scene.control.*;
 
 import CS4488.Capstone.System.Orchestrator;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 
 import java.io.File;
-import java.util.*;
 
 public class EmulatorGUIController {
     private Orchestrator orc = new Orchestrator();
 
 
-
+    private ObservableList<Integer> locColumnValues = FXCollections.observableArrayList();
 
     @FXML
     private Button exitButton;
@@ -53,10 +53,48 @@ public class EmulatorGUIController {
     private TextArea outputBox;
 
     @FXML
-    private TableView memoryTable;
+    private TableView<Integer> memoryTable;
 
     @FXML
-    private TableColumn memoryLocationColumn;
+    private TableColumn<Integer,String> memoryLocationColumn;
+    //This is annoying to look at
+    @FXML
+    private TableColumn<Integer,Integer> col0;
+
+    @FXML
+    private TableColumn<Integer,Integer> col1;
+
+    private TableColumn<Integer,Integer> col2;
+
+    private TableColumn<Integer,Integer> col3;
+
+    private TableColumn<Integer,Integer> col4;
+
+    private TableColumn<Integer,Integer> col5;
+
+    private TableColumn<Integer,Integer> col6;
+
+    private TableColumn<Integer,Integer> col7;
+
+    private TableColumn<Integer,Integer> col8;
+
+    private TableColumn<Integer,Integer> col9;
+
+    private TableColumn<Integer,Integer> colA;
+
+    private TableColumn<Integer,Integer> colB;
+
+    private TableColumn<Integer,Integer> colC;
+
+    private TableColumn<Integer,Integer> colD;
+
+    private TableColumn<Integer,Integer> colE;
+
+    private TableColumn<Integer,Integer> colF;
+
+
+
+
 
 
 
@@ -64,6 +102,7 @@ public class EmulatorGUIController {
     private Button hexConverterHexToDecimalButton;
 
     public EmulatorGUIController() {
+        initializeMemoryTable();
     }
 
 
@@ -73,13 +112,20 @@ public class EmulatorGUIController {
      */
     @FXML
     void decimalToHex(ActionEvent actionEvent){
+
         String stringDecimal = conversionTextField.getText();
 
-        short decimal = Short.valueOf(stringDecimal);
 
+        try{
 
-        //TODO fix this because it will not work if you hit the button more than once
-        conversionTextField.setText(String.copyValueOf(orc.convertToHexChars(decimal)));
+            short decimal = Short.valueOf(stringDecimal);
+            conversionTextField.setText(String.copyValueOf(orc.convertToHexChars(decimal)));
+        }
+        catch(Exception exception){
+            ;
+        }
+
+        
 
 
 
@@ -92,10 +138,15 @@ public class EmulatorGUIController {
     @FXML
     void hexToDecimal(ActionEvent actionEvent){
         String stringHex = conversionTextField.getText();
-
+        try{
         char[] charHex = stringHex.toCharArray();
-        //TODO fix this because it will not work if you hit the button more than once
-        conversionTextField.setText(String.valueOf(orc.convertToShort(charHex)));
+            conversionTextField.setText(String.valueOf(orc.convertToShort(charHex)));
+        }
+        catch (Exception exception){
+            ;
+        }
+
+
 
 
 
@@ -107,6 +158,7 @@ public class EmulatorGUIController {
      */
     @FXML
     void loadFile(ActionEvent actionEvent){
+
         FileChooser txtChooser = new FileChooser();
         txtChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Txt files","*.txt"));
         File file = txtChooser.showOpenDialog(null);
@@ -124,14 +176,8 @@ public class EmulatorGUIController {
      * by the user
      */
     void initializeMemoryTable(){
-        ObservableList<char[]> locColumnValues = FXCollections.observableArrayList();
-        for(int i = 0; i<256;i++){
-            locColumnValues.add(orc.convertToHexChars((short)i));
-        }
-        int x = 0;
-        //memoryLocationColumn.getColumns().addAll(locColumnValues);
 
-
+        //TODO fix memory table as it sucks a**
     }
 
 

@@ -69,20 +69,20 @@
                   <Button mnemonicParsing="false" text="Abort" />
               </buttons>
             </ButtonBar>
-            <TextField layoutX="669.0" layoutY="131.0" prefHeight="17.0" prefWidth="44.0" />
-            <TextField layoutX="669.0" layoutY="182.0" prefHeight="17.0" prefWidth="44.0" />
-            <TextField layoutX="671.0" layoutY="232.0" prefHeight="17.0" prefWidth="44.0" />
-            <TextField layoutX="671.0" layoutY="280.0" prefHeight="17.0" prefWidth="44.0" />
-            <Text layoutX="684.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PC" />
-            <Text layoutX="690.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="?" />
-            <Text layoutX="688.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="?" />
+            <TextField layoutX="647.0" layoutY="114.0" prefHeight="17.0" prefWidth="44.0" />
+            <TextField layoutX="647.0" layoutY="163.0" prefHeight="17.0" prefWidth="44.0" />
+            <TextField layoutX="649.0" layoutY="219.0" prefHeight="17.0" prefWidth="44.0" />
+            <TextField layoutX="647.0" layoutY="272.0" prefHeight="17.0" prefWidth="44.0" />
+            <Text layoutX="662.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PC" />
+            <Text layoutX="663.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IN" />
+            <Text layoutX="660.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AC" wrappingWidth="22.169921875" />
             <TextField fx:id="conversionTextField" layoutX="1073.0" layoutY="486.0" prefHeight="25.0" prefWidth="130.0" promptText="Enter decimal or hex " />
             <Text layoutX="1096.0" layoutY="471.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hex Converter" wrappingWidth="116.103515625" />
             <Button fx:id="hexConverterDecimalToHexButton" layoutX="1025.0" layoutY="520.0" mnemonicParsing="false" onAction="#decimalToHex" text="Decimal to Hex" />
             <Button fx:id="hexConverterHexToDecimalButton" layoutX="1148.0" layoutY="520.0" mnemonicParsing="false" onAction="#hexToDecimal" text="Hex to Decimal" />
-            <Text layoutX="690.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" text="?" />
+            <Text layoutX="657.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OUT" />
             <TextArea fx:id="inputBox" layoutX="94.0" layoutY="71.0" prefHeight="305.0" prefWidth="412.0" promptText="Enter code here" />
-            <TableView layoutX="307.0" layoutY="401.0" prefHeight="305.0" prefWidth="702.0">
+            <TableView fx:id="memoryTable" layoutX="307.0" layoutY="401.0" prefHeight="305.0" prefWidth="702.0">
               <columns>
                   <TableColumn fx:id="memoryLocationColumn" prefWidth="39.0" text="Loc" />
                 <TableColumn prefWidth="39.0" text="0" />
