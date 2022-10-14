@@ -9,7 +9,7 @@ public class InstructionParser {
             = new HashMap<>();
 
 
-    public static InstructionParser  getInstance(){
+    public static InstructionParser getInstance(){
         if(singleton == null){
             singleton = new InstructionParser();
         }
@@ -32,24 +32,32 @@ public class InstructionParser {
         this.parser.put("st", "2");
         this.parser.put("add", "3");
         this.parser.put("sub", "4");
+        this.parser.put("mul", "5");
+        this.parser.put("div", "6");
+        this.parser.put("ldi", "7");
+        this.parser.put("sti", "8");
         this.parser.put("br", "9");
-
+        this.parser.put("brz", "a");
+        this.parser.put("brn", "b");
+        this.parser.put("brp", "c");
+        this.parser.put("rd", "d");
+        this.parser.put("wr", "e");
+        this.parser.put("ldc", "f");
     }
 
 
     private void loadRegisters(){
         for(int i = 0; i < 16; i++){
 
-            // loads quick notation into parser
-            this.parser.put("r"+Integer.toHexString(i),
-                    Integer.toHexString(i));
+            // loads quick notation into map
+            String hexI = Integer.toHexString(i);
+            this.parser.put("r"+hexI, hexI);
 
-            // loads hex address notation to parser
-            this.parser.put("r0x"+Integer.toHexString(i),
-                    Integer.toHexString(i));
+            // loads hex address notation to map
+//            this.parser.put("r0x"+hexI, hexI);
         }
 
-        // load special register names
+        // load special register address
         this.parser.put("fp", Integer.toHexString(11));
         this.parser.put("ip", Integer.toHexString(12));
         this.parser.put("sp", Integer.toHexString(13));
@@ -63,13 +71,15 @@ public class InstructionParser {
         for(int i = 0; i < 16; i++){
 
             for(int j = 0; j < 16; j++){
-                this.parser.put("m"+Integer.toHexString(i)+ Integer.toHexString(j),
-                        Integer.toHexString(i)+ Integer.toHexString(j));
 
+                String hexI = Integer.toHexString(i);
+                String hexJ = Integer.toHexString(j);
 
-                // loads hex address notation to parser
-                this.parser.put("m0x"+Integer.toHexString(i)+ Integer.toHexString(j),
-                        Integer.toHexString(i)+ Integer.toHexString(j));
+                // loads short address notation to map
+                this.parser.put("m"+hexI+ hexJ, hexI+ hexJ);
+
+                // loads hex address notation to map
+//                this.parser.put("m0x"+hexI+ hexJ, hexI+ hexJ);
 
             }
         }
