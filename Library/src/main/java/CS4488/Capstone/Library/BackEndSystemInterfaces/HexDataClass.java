@@ -5,7 +5,7 @@ package CS4488.Capstone.Library.BackEndSystemInterfaces;
  * @version 1.0
  * @author Traae
  */
-public interface NumberConverterInterface {
+public interface HexDataClass {
 
     public void setValue(Short number);
     public void setValue(String number);
