@@ -107,7 +107,7 @@ public class EmulatorGUIController {
         String stringHex = conversionTextField.getText();
         try{
         char[] charHex = stringHex.toCharArray();
-            conversionTextField.setText(String.valueOf(orc.convertToShort(charHex)));
+            conversionTextField.setText(String.valueOf(orc.convertToInt(charHex)));
         }
         catch (Exception ignored){
         }
@@ -135,22 +135,22 @@ public class EmulatorGUIController {
             inputBox.setText(orc.loadFile(file.getAbsolutePath()));
         }
 
-        initializeMemoryTable();
+
 
 
 
     }
     @FXML
-    void initializeMemoryTable(){
+    void initializeMemoryTable(ActionEvent actionEvent){
         short annoying = 0;
-        RAM = new String[256][16];
-        for (int i = 1;i<255;i++){
-            for(int j = 1; j< 16; j++){
+        RAM = new String[256][17];
+        for (int i = 1;i<256;i++){
+            for(int j = 1; j < 17; j++){
                 RAM[i][j] = String.valueOf(orc.convertToHexChars(annoying));
             }
         }
-        RAM[0][0] = "Loc";
-        for(int i = 1;i<16;i++){
+        RAM[0][0] = "Loc     ";
+        for(int i = 1;i<17;i++){
             short painful = (short)(i-1);
             RAM[0][i] = String.valueOf(orc.convertToHexChars(painful));
         }
@@ -158,10 +158,21 @@ public class EmulatorGUIController {
             short location = (short)(i-1);
             RAM[i][0] = String.valueOf(orc.convertToHexChars(location));
         }
+        printRAMValues();
 
+    }
 
-        //memoryTable.setText(RAM[0][0]);
-        
+    @FXML
+    void printRAMValues(){
+
+        String memArray = "";
+        for (int i = 0; i< 256;i++){
+            for( int j = 0; j < 16; j++){
+                memArray += RAM[i][j] + "  ";
+            }
+            memArray += "\n";
+        }
+        memoryTable.setText(memArray);
     }
 
 
