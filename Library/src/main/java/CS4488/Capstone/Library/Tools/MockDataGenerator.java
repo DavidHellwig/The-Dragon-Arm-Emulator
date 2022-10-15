@@ -19,6 +19,35 @@ public class MockDataGenerator {
         return result;
     }
 
+    public static int getRandomHexValue(){
+        return random.nextInt(16);
+    }
+
+    public static int getRandomHexValue4(){
+        int result = 1;
+        result = result * (random.nextInt(15) + 1);
+        result = result * (random.nextInt(15) + 1);
+        result = result * (random.nextInt(15) + 1);
+        result = result * (random.nextInt(15) + 1);
+        if (random.nextBoolean()){
+            result = result * -1;
+        }
+        return result;
+    }
+
+    public static char[] getRandomHexChar5(){
+        char[] result = new char[5];
+        for (int i=1; i<5; i++) {
+            result[i] = getRandomHexChar();
+        }
+        result[0] = '-';
+        if (random.nextBoolean()){
+            result[0] = '+';
+        }
+
+        return result;
+    }
+
     public static char getJunkChar(){
         char result = '0';
         int c = random.nextInt(16);
@@ -27,8 +56,8 @@ public class MockDataGenerator {
     }
     public static char[] getJunkChar4(){
         char[] result = new char[4];
-        for (char c: result) {
-            c = getJunkChar();
+        for (int i=0; i<4; i++) {
+            result[i] = getJunkChar();
         }
        return result;
     }

@@ -11,14 +11,14 @@ import static CS4488.Capstone.Library.Tools.HexadecimalConverter.*;
 /**
  * Hex4Digit
  *
- * A class that holds a char[4] that represents a 4 digit hexadecimal number.
- * Contains various utilities for conversions.
+ * should go from 65535 to -65536
+ *
  * @version 1.0
  * @author Traae
  */
 public class Hex4digit implements HexDataClass {
     // Instance Variables
-    private short hex;
+    private int hex;
 
     // Constructors
     public Hex4digit(){
@@ -27,13 +27,13 @@ public class Hex4digit implements HexDataClass {
     public Hex4digit(char[] value){
         hex = hexToDecimal(value);
     }
-    public Hex4digit(short value){
+    public Hex4digit(int value){
         hex = value;
     }
 
     // Setters
     @Override
-    public void setValue(Short number) {
+    public void setValue(int number) {
         hex = number;
     }
     @Override
@@ -90,7 +90,7 @@ public class Hex4digit implements HexDataClass {
     }
 
     @Override
-    public Short getShort() {
+    public int getValue() {
         return hex;
     }
     @Override
@@ -116,5 +116,11 @@ public class Hex4digit implements HexDataClass {
         int result = HexadecimalConverter.hexValue(hexChars[3])
                 + HexadecimalConverter.hexValue(hexChars[4]);
         return result;
+    }
+    public static char hexChar(int n){
+        return HexadecimalConverter.hexChar(n);
+    }
+    public static int hexValue(char n){
+        return HexadecimalConverter.hexValue(n);
     }
 }

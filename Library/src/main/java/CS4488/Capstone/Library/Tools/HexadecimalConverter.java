@@ -1,44 +1,52 @@
 package CS4488.Capstone.Library.Tools;
 
+import java.security.PublicKey;
+
 public class HexadecimalConverter {
+    public static final int MAX = 65535;
+    public static final int MIN = -65536;
     // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal
-    public static Short hexToDecimal(char[] hexArray){
+    public static int hexToDecimal(char[] hexArray){
         hexArray = cleanCharHex(hexArray);
         int index = hexArray.length-1;
         int power = 1;
         int result = 0;
 
+        boolean isNegative = (hexArray[0] == '-');
+
         while (index > 0){
             result = result + (hexValue(hexArray[index]) * power);
             index = index - 1;
             power = power * 16;
-
         }
 
-        if (hexArray[0] == '-'){
+        if (isNegative){
             result = result * -1;
         }
 
-        return (short) result;
+        return result;
     }
-    public static char[] decimalToHex(short value){
+    public static char[] decimalToHex(int value){
+        value = hex4digitValueWrap(value);
         char[] output = makeBlankChar5();
         int index = output.length-1;
         int remainder;
-        int v = value;
+        boolean isNegative = (value<0);
 
-        // Check for the sign, and then flip so the math works.
-        if (value<0){
+
+        if (isNegative){
             output[0] = '-';
-            //v = v *-1; TODO: figure out the correct way we want to display negative numbers, and how that works with 2's compliment.
+            value = value *-1;
         }
 
         while (index > 0){
-            remainder = v%16;
-            v = v/16;
+            remainder = value%16;
+            value = value/16;
             output[index] = hexChar(remainder);
             index = index - 1;
         }
+
+
         return output;
     }
     public static char hexChar(int n){
@@ -148,7 +156,16 @@ public class HexadecimalConverter {
         }
         return result;
     }
+    public static int hex4digitValueWrap(int n){
+        if (n > MAX){
+            n = MIN + (n - MAX);
+        }
+        else if (n < MIN){
+            n = MAX + (n - MIN);
+        }
 
+        return n;
+    }
     public static char[] cleanCharHex(char[] toClean){
         // Set up the result.
         char[] result = makeBlankChar5();
