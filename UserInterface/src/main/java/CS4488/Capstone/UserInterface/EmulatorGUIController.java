@@ -1,5 +1,8 @@
 package CS4488.Capstone.UserInterface;
 
+
+import CS4488.Capstone.Library.Tools.ProgramState;
+
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,16 +11,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import CS4488.Capstone.System.Orchestrator;
+
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
+
 import java.io.File;
+import java.util.ArrayList;
 
 public class EmulatorGUIController {
-    private Orchestrator orc = new Orchestrator();
+    private final Orchestrator orc = new Orchestrator();
 
+    private String[][] RAM;
 
-    private ObservableList<Integer> locColumnValues = FXCollections.observableArrayList();
 
     @FXML
     private Button exitButton;
@@ -44,7 +51,7 @@ public class EmulatorGUIController {
     private TextField conversionTextField;
 
     @FXML
-    private TextField debug;
+    private Button debug;
 
     @FXML
     private TextArea inputBox;
@@ -53,56 +60,15 @@ public class EmulatorGUIController {
     private TextArea outputBox;
 
     @FXML
-    private TableView<Integer> memoryTable;
-
-    @FXML
-    private TableColumn<Integer,String> memoryLocationColumn;
-    //This is annoying to look at
-    @FXML
-    private TableColumn<Integer,Integer> col0;
-
-    @FXML
-    private TableColumn<Integer,Integer> col1;
-
-    private TableColumn<Integer,Integer> col2;
-
-    private TableColumn<Integer,Integer> col3;
-
-    private TableColumn<Integer,Integer> col4;
-
-    private TableColumn<Integer,Integer> col5;
-
-    private TableColumn<Integer,Integer> col6;
-
-    private TableColumn<Integer,Integer> col7;
-
-    private TableColumn<Integer,Integer> col8;
-
-    private TableColumn<Integer,Integer> col9;
-
-    private TableColumn<Integer,Integer> colA;
-
-    private TableColumn<Integer,Integer> colB;
-
-    private TableColumn<Integer,Integer> colC;
-
-    private TableColumn<Integer,Integer> colD;
-
-    private TableColumn<Integer,Integer> colE;
-
-    private TableColumn<Integer,Integer> colF;
-
-
-
-
-
-
+    private TextArea memoryTable;
+    
 
     @FXML
     private Button hexConverterHexToDecimalButton;
 
     public EmulatorGUIController() {
-        initializeMemoryTable();
+
+
     }
 
 
@@ -118,14 +84,15 @@ public class EmulatorGUIController {
 
         try{
 
-            short decimal = Short.valueOf(stringDecimal);
+            short decimal = Short.parseShort(stringDecimal);
             conversionTextField.setText(String.copyValueOf(orc.convertToHexChars(decimal)));
         }
-        catch(Exception exception){
-            ;
+        catch(Exception ignored){
         }
 
-        
+
+
+
 
 
 
@@ -142,8 +109,7 @@ public class EmulatorGUIController {
         char[] charHex = stringHex.toCharArray();
             conversionTextField.setText(String.valueOf(orc.convertToShort(charHex)));
         }
-        catch (Exception exception){
-            ;
+        catch (Exception ignored){
         }
 
 
@@ -163,22 +129,44 @@ public class EmulatorGUIController {
         txtChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Txt files","*.txt"));
         File file = txtChooser.showOpenDialog(null);
         if (file != null){
-            //Removing this until potential conflicts sorted out
-            //inputBox.setText(orc.fileManager.fileToString(file.getAbsolutePath()));
+
+
+
+            inputBox.setText(orc.loadFile(file.getAbsolutePath()));
+        }
+
+        initializeMemoryTable();
+
+
+
+    }
+    @FXML
+    void initializeMemoryTable(){
+        short annoying = 0;
+        RAM = new String[256][16];
+        for (int i = 1;i<255;i++){
+            for(int j = 1; j< 16; j++){
+                RAM[i][j] = String.valueOf(orc.convertToHexChars(annoying));
+            }
+        }
+        RAM[0][0] = "Loc";
+        for(int i = 1;i<16;i++){
+            short painful = (short)(i-1);
+            RAM[0][i] = String.valueOf(orc.convertToHexChars(painful));
+        }
+        for(int i = 1;i<256;i++){
+            short location = (short)(i-1);
+            RAM[i][0] = String.valueOf(orc.convertToHexChars(location));
         }
 
 
-
+        //memoryTable.setText(RAM[0][0]);
+        
     }
 
-    /**
-     * This will load default memory values into the memory table. This should never be allowed to be used directly
-     * by the user
-     */
-    void initializeMemoryTable(){
 
-        //TODO fix memory table as it sucks a**
-    }
+
+
 
 
     /**

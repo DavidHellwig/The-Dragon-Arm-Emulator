@@ -83,4 +83,15 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     public short convertToShort(char[] number) {
         return Hex4digit.hexToDecimal(number);
     }
+
+
+    /**
+     * Returns the contents of a file
+     * @param path a file path
+     * @return txt file contents
+     */
+    public String loadFile(String path){
+
+        return fileManager.fileToString(path);
+    }
 }
