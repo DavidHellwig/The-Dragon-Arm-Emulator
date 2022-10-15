@@ -3,241 +3,124 @@
  */
 package CS4488.Capstone.Library.Tools;
 
-import CS4488.Capstone.Library.BackEndSystemInterfaces.NumberConverterInterface;
-import java.io.Serializable;
-import java.util.Random;
+import CS4488.Capstone.Library.BackEndSystemInterfaces.HexDataClass;
+
+
+import static CS4488.Capstone.Library.Tools.HexadecimalConverter.*;
 
 /**
  * Hex4Digit
  *
- * A class that holds a char[4] that represents a 4 digit hexadecimal number.
- * Contains various utilities for conversions.
+ * should go from 65535 to -65536
+ *
  * @version 1.0
  * @author Traae
  */
-public class Hex4digit implements NumberConverterInterface, Serializable {
+public class Hex4digit implements HexDataClass {
     // Instance Variables
-    private char[] hex;
+    private int hex;
 
-    // Constructor
+    // Constructors
     public Hex4digit(){
-        hex = makeBlankChar4();
+        hex = 0;
     }
     public Hex4digit(char[] value){
-        hex = makeBlankChar4();
-        this.setValue(value);
+        hex = hexToDecimal(value);
     }
-    public Hex4digit(short value){
-        hex = makeBlankChar4();
-        this.setValue(value);
-    }
-
-    private static char[] makeBlankChar4(){
-        char[] array = new char[4];
-        for (char c:array) {
-            c = '0';
-        }
-        return array;
-    }
-
-    // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal
-    public static Short hexToDecimal(char[] hexArray){
-        System.out.println("Length: " + hexArray.length);
-        int index = hexArray.length-1;
-        int power = 1;
-        int result = 0;
-
-        while (index > -1){
-            result = result + (hexValue(hexArray[index]) * power);
-            index = index - 1;
-            power = power * 16;
-
-        }
-        return (short) result;
-    }
-    public static char[] decimalToHex(short value){
-        char[] output = makeBlankChar4();
-        int index = 3;
-        int remainder;
-        int v = value;
-
-        //TODO This while loop can be written with either index to 0, or v to 0.
-        while (index > -1){
-            remainder = v%16;
-            v = v/16;
-            output[index] = hexChar(remainder);
-            index = index - 1;
-        }
-        return output;
-    }
-    public static char hexChar(int n){
-        char result = '0';
-        switch (n){
-            case 0: result = '0';
-                break;
-            case 1:
-                result = '1';
-                break;
-            case 2:
-                result = '2';
-                break;
-            case 3:
-                result = '3';
-                break;
-            case 4:
-                result = '4';
-                break;
-            case 5:
-                result = '5';
-                break;
-            case 6:
-                result = '6';
-                break;
-            case 7:
-                result = '7';
-                break;
-            case 8:
-                result = '8';
-                break;
-            case 9:
-                result = '9';
-                break;
-            case 10:
-                result = 'a';
-                break;
-            case 11:
-                result = 'b';
-                break;
-            case 12:
-                result = 'c';
-                break;
-            case 13:
-                result = 'd';
-                break;
-            case 14:
-                result = 'e';
-                break;
-            case 15:
-                result = 'f';
-                break;
-        }
-        return result;
-    }
-    public static int hexValue(char n){
-        int result = 0;
-        switch (n){
-            case '0':
-                result = 0;
-                break;
-            case '1':
-                result = 1;
-                break;
-            case '2':
-                result = 2;
-                break;
-            case '3':
-                result = 3;
-                break;
-            case '4':
-                result = 4;
-                break;
-            case '5':
-                result = 5;
-                break;
-            case '6':
-                result = 6;
-                break;
-            case '7':
-                result = 7;
-                break;
-            case '8':
-                result = 8;
-                break;
-            case '9':
-                result = 9;
-                break;
-            case 'a':
-                result = 10;
-                break;
-            case 'b':
-                result = 11;
-                break;
-            case 'c':
-                result = 12;
-                break;
-            case 'd':
-                result = 13;
-                break;
-            case 'e':
-                result = 14;
-                break;
-            case 'f':
-                result = 15;
-                break;
-        }
-        return result;
-    }
-
-    // Utility Methods
-    private void cleanString(String s){
-        s.stripTrailing().stripLeading().toLowerCase().replaceAll("[^0-9a-f]","");
-        if (s.length()>4){
-            s = s.substring(0,3);
-        }
+    public Hex4digit(int value){
+        hex = value;
     }
 
     // Setters
     @Override
-    public void setValue(Short number) {
-        hex = decimalToHex(number);
+    public void setValue(int number) {
+        hex = number;
     }
     @Override
     public void setValue(String number) {
-        cleanString(number);
-        hex = number.toCharArray();
+        hex = HexadecimalConverter.hexToDecimal(number.toCharArray());
     }
     public void setValue(char[] number) {
-        String toSet = new String(number);
-        cleanString(toSet);
-        hex = toSet.toCharArray();
+        hex = HexadecimalConverter.hexToDecimal(number);
     }
 
     public void setFirst(char first) {
-        hex[0] = first;
+        char[] change = HexadecimalConverter.makeBlankChar5();
+        change[1] = first;
+        hex = HexadecimalConverter.hexToDecimal(change);
     }
-
     public void setSecond(char second) {
-        hex[1] = second;
+        char[] change = HexadecimalConverter.makeBlankChar5();
+        change[2] = second;
+        hex = HexadecimalConverter.hexToDecimal(change);
     }
-
     public void setThird(char third) {
-        hex[2] = third;
+        char[] change = HexadecimalConverter.makeBlankChar5();
+        change[3] = third;
+        hex = HexadecimalConverter.hexToDecimal(change);
+    }
+    public void setFourth(char fourth) {
+        char[] change = HexadecimalConverter.makeBlankChar5();
+        change[4] = fourth;
+        hex = HexadecimalConverter.hexToDecimal(change);
     }
 
-    public void setForth(char forth) {
-        hex[3] = forth;
+    // GETTERS
+    public boolean isPositive(){
+        return (hex >= 0);
+    }
+    public char getSign(){
+        char result = '-';
+        if (this.isPositive()){
+            result = '+';
+        }
+        return result;
+    }
+    public char getFirst(){
+        return HexadecimalConverter.decimalToHex(hex)[1];
+    }
+    public char getSecond(){
+        return HexadecimalConverter.decimalToHex(hex)[2];
+    }
+    public char getThird(){
+        return HexadecimalConverter.decimalToHex(hex)[3];
+    }
+    public char getFourth(){
+        return HexadecimalConverter.decimalToHex(hex)[4];
     }
 
     @Override
-    public Short getShort() {
-        return hexToDecimal(this.hex);
-    }
-    @Override
-    public char[] getHexChars() {
+    public int getValue() {
         return hex;
     }
     @Override
+    public char[] getHexChars() {
+        String s = new String(HexadecimalConverter.decimalToHex(hex));
+        s.replaceAll("[^0-9a-f]", "");
+        return s.toCharArray();
+    }
+    public char[] getSignedHexChars() {
+        return HexadecimalConverter.decimalToHex(hex);
+    }
+
+    @Override
     public int getMiddle2Value() {
-        char[] middle2 = new char[2];
-        middle2[0] = hex[1];
-        middle2[1] = hex[2];
-        return hexToDecimal(middle2);
+        char[] hexChars = HexadecimalConverter.decimalToHex(hex) ;
+        int result = HexadecimalConverter.hexValue(hexChars[2])
+                + HexadecimalConverter.hexValue(hexChars[3]);
+        return result;
     }
     @Override
     public int getLast2Value() {
-        char[] last2 = new char[2];
-        last2[0] = hex[2];
-        last2[1] = hex[3];
-        return hexToDecimal(last2);
+        char[] hexChars = HexadecimalConverter.decimalToHex(hex) ;
+        int result = HexadecimalConverter.hexValue(hexChars[3])
+                + HexadecimalConverter.hexValue(hexChars[4]);
+        return result;
+    }
+    public static char hexChar(int n){
+        return HexadecimalConverter.hexChar(n);
+    }
+    public static int hexValue(char n){
+        return HexadecimalConverter.hexValue(n);
     }
 }
