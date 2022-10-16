@@ -151,12 +151,18 @@ public final class InstructionSet {
         System.out.println("LoadConstant");
     }
 
+    // Takes a hex4d from the output of the program state and assigns that
+    // value into the specified register location
     public static void readInt(char reg) {
         System.out.println("ReadInt");
+        ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].setValue(ProgramState.getInstance().output.getHexChars());
     }
 
+    // Takes a hex4d from a specified register and assigns that value
+    // to the program state's input
     public static void writeInt(char reg) {
         System.out.println("WriteInt");
+        ProgramState.getInstance().input.setValue(ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].getHexChars());
     }
 
 }
