@@ -22,6 +22,9 @@ public class HexadecimalConverter {
 
         if (isNegative){
             result = result * -1;
+            if (result == 0){
+                result = MIN;
+            }
         }
 
         return result;
