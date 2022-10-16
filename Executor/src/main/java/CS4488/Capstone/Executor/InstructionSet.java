@@ -16,7 +16,7 @@ public final class InstructionSet {
         // program counter will increment to position 6 next. This is not the
         // same as the actual memory address being incremented by 1. They are
         // independent in the emulation.
-        ProgramState.getInstance().registers[15].setValue( (short)(ProgramState.getInstance().registers[15].getShort() + 1));
+        ProgramState.getInstance().registers[15].setValue( (short)(ProgramState.getInstance().registers[15].getValue() + 1));
     }
 
     // putting a -1 into the program counter lets the executor know
@@ -57,7 +57,7 @@ public final class InstructionSet {
         System.out.println("Add");
         ProgramState state = ProgramState.getInstance();
         // add the values from the 2 given registers. Must be converted to shorts to do the addition
-        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() + state.registers[Hex4digit.hexValue(reg2)].getShort());
+        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getValue() + state.registers[Hex4digit.hexValue(reg2)].getValue());
         // set the result to the Hex4digit's value in the third given register
         state.registers[Hex4digit.hexValue(reg3)].setValue(result);
         incrementProgramCounter();
@@ -71,7 +71,7 @@ public final class InstructionSet {
         System.out.println("Subt");
         ProgramState state = ProgramState.getInstance();
         // subtract value from first register by the second register
-        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() - state.registers[Hex4digit.hexValue(reg2)].getShort());
+        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getValue() - state.registers[Hex4digit.hexValue(reg2)].getValue());
         // set the result to the Hex4digit's value in the third given register
         state.registers[Hex4digit.hexValue(reg3)].setValue(result);
         incrementProgramCounter();
@@ -85,7 +85,7 @@ public final class InstructionSet {
         System.out.println("Mult");
         ProgramState state = ProgramState.getInstance();
         // multiply values from first and second register together
-        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() * state.registers[Hex4digit.hexValue(reg2)].getShort());
+        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getValue() * state.registers[Hex4digit.hexValue(reg2)].getValue());
         // store the result in the third given register
         state.registers[Hex4digit.hexValue(reg3)].setValue(result);
         incrementProgramCounter();
@@ -96,7 +96,7 @@ public final class InstructionSet {
     public static void intDivide(char reg1, char reg2, char reg3) {
         System.out.println("IntDivide");
         ProgramState state = ProgramState.getInstance();
-        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getShort() / state.registers[Hex4digit.hexValue(reg2)].getShort());
+        short result = (short) (state.registers[Hex4digit.hexValue(reg1)].getValue() / state.registers[Hex4digit.hexValue(reg2)].getValue());
         state.registers[Hex4digit.hexValue(reg3)].setValue(result);
         incrementProgramCounter();
     }
@@ -133,7 +133,7 @@ public final class InstructionSet {
     // the value in the specified register is negative
     public static void branchNeg(char reg, short mem) {
         System.out.println("BranchNeg");
-        if (ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].getShort() < 0) {
+        if (ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].getValue() < 0) {
             ProgramState.getInstance().registers[15].setValue(mem);
         }
     }
@@ -142,7 +142,7 @@ public final class InstructionSet {
     // the value in the specified register is positive
     public static void branchPos(char reg, short mem) {
         System.out.println("BranchPos");
-        if (ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].getShort() >= 0) {
+        if (ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].getValue() >= 0) {
             ProgramState.getInstance().registers[15].setValue(mem);
         }
     }

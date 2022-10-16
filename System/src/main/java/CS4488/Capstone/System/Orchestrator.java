@@ -11,7 +11,7 @@ import CS4488.Capstone.Library.FacadeInterfaces.NumberConverterAccess;
 import CS4488.Capstone.Library.FacadeInterfaces.ProgramStateAccess;
 import CS4488.Capstone.Library.FacadeInterfaces.TranslatorAccess;
 import CS4488.Capstone.Library.Tools.FileManager;
-import CS4488.Capstone.Library.Tools.Hex4digit;
+import CS4488.Capstone.Library.Tools.HexadecimalConverter;
 import CS4488.Capstone.Library.Tools.ProgramState;
 import CS4488.Capstone.Translator.TranslatorFacade;
 
@@ -121,11 +121,11 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
 
     @Override
     public char[] convertToHexChars(Short number) {
-        return Hex4digit.decimalToHex(number);
+        return HexadecimalConverter.decimalToHex(number);
     }
 
     @Override
-    public short convertToShort(char[] number) {
-        return Hex4digit.hexToDecimal(number);
+    public int convertToInt(char[] number) {
+        return HexadecimalConverter.hexToDecimal(number);
     }
 }

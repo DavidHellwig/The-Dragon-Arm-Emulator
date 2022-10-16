@@ -10,5 +10,5 @@ import CS4488.Capstone.Library.Tools.Hex4digit;
  */
 public interface NumberConverterAccess {
     public char[] convertToHexChars(Short number);
-    public short convertToShort(char[] number);
+    public int convertToInt(char[] number);
 }

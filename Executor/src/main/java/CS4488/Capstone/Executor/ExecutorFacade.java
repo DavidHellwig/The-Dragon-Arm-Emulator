@@ -3,7 +3,6 @@ package CS4488.Capstone.Executor;
 import CS4488.Capstone.Library.BackEndSystemInterfaces.ExecutorInterface;
 import CS4488.Capstone.Library.Tools.ProgramState;
 import CS4488.Capstone.Library.Tools.Hex4digit;
-import org.apache.commons.text.WordUtils;
 
 public class ExecutorFacade implements ExecutorInterface {
 
@@ -77,7 +76,7 @@ public class ExecutorFacade implements ExecutorInterface {
         // the next instruction that is going to be executed is indexed by the program Counter.
         // so in register 15, the index in memory is held for that instruction. So if the value
         // of register 15 is 7, that means index 7 in the memoryStateHistory will be executed
-        Hex4digit instruction = ProgramState.getInstance().memoryStateHistory.get(MEMORYSTATEINDEX).get(ProgramState.getInstance().registers[15].getShort());
+        Hex4digit instruction = ProgramState.getInstance().memoryStateHistory.get(MEMORYSTATEINDEX).get(ProgramState.getInstance().registers[15].getValue());
 
         // figure out what the instruction is and execute it
         determineInstruction(instruction);
@@ -91,7 +90,7 @@ public class ExecutorFacade implements ExecutorInterface {
     @Override
     public boolean hasNext() {
         // if the program counter contains a -1, the halt command was executed
-        return ProgramState.getInstance().registers[15].getShort() != (short) -1;
+        return ProgramState.getInstance().registers[15].getValue() != -1;
     }
 
     @Override
