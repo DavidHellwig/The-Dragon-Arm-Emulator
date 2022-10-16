@@ -156,6 +156,7 @@ public final class InstructionSet {
     public static void readInt(char reg) {
         System.out.println("ReadInt");
         ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].setValue(ProgramState.getInstance().output.getHexChars());
+        incrementProgramCounter();
     }
 
     // Takes a hex4d from a specified register and assigns that value
@@ -163,6 +164,7 @@ public final class InstructionSet {
     public static void writeInt(char reg) {
         System.out.println("WriteInt");
         ProgramState.getInstance().input.setValue(ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].getHexChars());
+        incrementProgramCounter();
     }
 
 }

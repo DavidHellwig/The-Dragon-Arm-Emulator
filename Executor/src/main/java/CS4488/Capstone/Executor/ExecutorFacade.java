@@ -6,34 +6,11 @@ import CS4488.Capstone.Library.Tools.Hex4digit;
 
 public class ExecutorFacade implements ExecutorInterface {
 
-    // should be 3AF3 Add register A and F and put it in 3
-    private final Hex4digit word1 = new Hex4digit((short)15091);
-    // should be 3237 : Add register 2 and 3 and put it in 7
-    private final Hex4digit word2 = new Hex4digit((short)12855);
-
     // Holds the index of what place the memory is at in the arraylist
     private int MEMORYSTATEINDEX = 0;
 
     private void incrementMemoryIndex() {
         MEMORYSTATEINDEX += 1;
-    }
-
-    public static void main(String[] args) {
-        ExecutorFacade test = new ExecutorFacade();
-        test.fillRegisters();
-        test.next();
-    }
-
-    private void fillRegisters() {
-        ProgramState.getInstance().registers[0] = new Hex4digit((short)5438);
-        ProgramState.getInstance().registers[1] = new Hex4digit((short)6);
-        ProgramState.getInstance().registers[2] = new Hex4digit((short)34);
-        ProgramState.getInstance().registers[3] = new Hex4digit((short)73);
-        ProgramState.getInstance().registers[4] = new Hex4digit((short)153);
-        ProgramState.getInstance().registers[5] = new Hex4digit((short)865);
-
-        // this should be store register 2 into memory space a8
-        ProgramState.getInstance().registers[15] = new Hex4digit((short)10882);
     }
 
     // takes in a hex4digit instruction and based on the first value
@@ -68,6 +45,11 @@ public class ExecutorFacade implements ExecutorInterface {
 
     @Override
     public boolean next() {
+        // First, check to see if a ProgramState has been instantiated
+        if (!hasState()) {
+            setProgramState(ProgramState.getInstance());
+        }
+
         // Check to see if there is another instruction from the program Counter i.e. Register 15
         if (!hasNext()) {
             return false;
@@ -75,15 +57,16 @@ public class ExecutorFacade implements ExecutorInterface {
 
         // the next instruction that is going to be executed is indexed by the program Counter.
         // so in register 15, the index in memory is held for that instruction. So if the value
-        // of register 15 is 7, that means index 7 in the memoryStateHistory will be executed
+        // of register 15 is 7, that means index 7 in the memoryStateHistory will be executed.
+        // instruction = ArrayList[ ArrayList[ ProgramCounter ] ]
         Hex4digit instruction = ProgramState.getInstance().memoryStateHistory.get(MEMORYSTATEINDEX).get(ProgramState.getInstance().registers[15].getValue());
-
         // figure out what the instruction is and execute it
         determineInstruction(instruction);
-
-        //then increment the memory index if successful
+        // The memory index then needs to be incremented since the list will be copied over 1
         incrementMemoryIndex();
-
+        // Finally, the memory ArrayList needs to be copied over
+        // to the next index in the list of lists itself
+        ProgramState.getInstance().memoryStateHistory.add(MEMORYSTATEINDEX, ProgramState.getInstance().memoryStateHistory.get(MEMORYSTATEINDEX - 1));
         return true;
     }
 
@@ -95,12 +78,12 @@ public class ExecutorFacade implements ExecutorInterface {
 
     @Override
     public void setProgramState(ProgramState state) {
-
+        ProgramState.getInstance().memoryStateHistory.add(MEMORYSTATEINDEX, ProgramState.getInstance().memoryStateHistory.get(MEMORYSTATEINDEX - 1));
     }
 
     @Override
     public boolean hasState() {
-        return false;
+        return ProgramState.getInstance().memoryStateHistory.get(MEMORYSTATEINDEX).get(0) != null;
     }
 
     @Override
