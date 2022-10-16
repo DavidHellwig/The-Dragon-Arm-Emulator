@@ -9,6 +9,7 @@ public class ExecutorFacade implements ExecutorInterface {
     // Holds the index of what place the memory is at in the arraylist
     private int MEMORYSTATEINDEX = 0;
 
+    // Updates the index of what stage the memory is in
     private void incrementMemoryIndex() {
         MEMORYSTATEINDEX += 1;
     }
@@ -24,17 +25,17 @@ public class ExecutorFacade implements ExecutorInterface {
     private void determineInstruction(Hex4digit inst) {
         switch (inst.getHexChars()[0]) {
             case '0' -> InstructionSet.halt();
-            case '1' -> InstructionSet.load((short)inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
-            case '2' -> InstructionSet.store((short)inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
+            case '1' -> InstructionSet.load(inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
+            case '2' -> InstructionSet.store(inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
             case '3' -> InstructionSet.add(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
             case '4' -> InstructionSet.subt(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
             case '5' -> InstructionSet.mult(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
             case '6' -> InstructionSet.intDivide(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
-            case '7' -> InstructionSet.loadIndirect((short)inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
-            case '8' -> InstructionSet.storeIndirect((short)inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
-            case '9' -> InstructionSet.branch((short)inst.getMiddle2Value());
-            case 'a' -> InstructionSet.branchNeg(inst.getHexChars()[1], (short)inst.getLast2Value());
-            case 'b' -> InstructionSet.branchPos(inst.getHexChars()[1], (short)inst.getLast2Value());
+            case '7' -> InstructionSet.loadIndirect(inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
+            case '8' -> InstructionSet.storeIndirect(inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
+            case '9' -> InstructionSet.branch(inst.getMiddle2Value());
+            case 'a' -> InstructionSet.branchNeg(inst.getHexChars()[1], inst.getLast2Value());
+            case 'b' -> InstructionSet.branchPos(inst.getHexChars()[1], inst.getLast2Value());
             case 'c' -> InstructionSet.loadConstant(inst.getHexChars()[1]);
             case 'd' -> InstructionSet.readInt(inst.getHexChars()[1]);
             case 'e' -> InstructionSet.writeInt(inst.getHexChars()[1]);
@@ -78,7 +79,7 @@ public class ExecutorFacade implements ExecutorInterface {
 
     @Override
     public void setProgramState(ProgramState state) {
-        ProgramState.getInstance().memoryStateHistory.add(MEMORYSTATEINDEX, ProgramState.getInstance().memoryStateHistory.get(MEMORYSTATEINDEX - 1));
+        state.memoryStateHistory.add(MEMORYSTATEINDEX, state.memoryStateHistory.get(MEMORYSTATEINDEX - 1));
     }
 
     @Override
@@ -88,7 +89,8 @@ public class ExecutorFacade implements ExecutorInterface {
 
     @Override
     public void clearState() {
-
+        MEMORYSTATEINDEX = 0;
+        ProgramState.getInstance().memoryStateHistory.clear();
     }
 
     @Override

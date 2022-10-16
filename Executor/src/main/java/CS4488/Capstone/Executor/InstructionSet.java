@@ -28,7 +28,7 @@ public final class InstructionSet {
 
     // finds a memory location from the program state and takes its Hex4digit
     // value and sets it to the specified register's value.
-    public static void load(short mem, char reg, int index) {
+    public static void load(int mem, char reg, int index) {
         System.out.println("Load");
         ProgramState state = ProgramState.getInstance();
         // Get the hex4digit object from the specified location in memory
@@ -40,7 +40,7 @@ public final class InstructionSet {
 
     // get the specified memory index in the memory state and set its
     // Hex4digit value to that of the value in the specified register
-    public static void store(short mem, char reg, int index) {
+    public static void store(int mem, char reg, int index) {
         System.out.println("Store");
         ProgramState state = ProgramState.getInstance();
         // get the Hex4digit object from the specified register
@@ -101,7 +101,7 @@ public final class InstructionSet {
         incrementProgramCounter();
     }
 
-    public static void loadIndirect(short mem, char reg, int index) {
+    public static void loadIndirect(int mem, char reg, int index) {
         System.out.println("LoadIndirect");
         ProgramState state = ProgramState.getInstance();
         Hex4digit address = state.memoryStateHistory.get(index).get(mem);
@@ -109,7 +109,7 @@ public final class InstructionSet {
         state.registers[Hex4digit.hexChar(reg)].setValue(value.getHexChars());
     }
 
-    public static void storeIndirect(short mem, char reg, int index) {
+    public static void storeIndirect(int mem, char reg, int index) {
         System.out.println("StoreIndirect");
         ProgramState state = ProgramState.getInstance();
         // grab the hex4digit object that is in the specified register
@@ -124,14 +124,14 @@ public final class InstructionSet {
     }
 
     // Change the program counter to be the specified memory index
-    public static void branch(short mem) {
+    public static void branch(int mem) {
         System.out.println("Branch");
         ProgramState.getInstance().registers[15].setValue(mem);
     }
 
     // Changes the program counter to the specified memory index if
     // the value in the specified register is negative
-    public static void branchNeg(char reg, short mem) {
+    public static void branchNeg(char reg, int mem) {
         System.out.println("BranchNeg");
         if (ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].getValue() < 0) {
             ProgramState.getInstance().registers[15].setValue(mem);
@@ -140,7 +140,7 @@ public final class InstructionSet {
 
     // Changes the program counter to the specified memory index if
     // the value in the specified register is positive
-    public static void branchPos(char reg, short mem) {
+    public static void branchPos(char reg, int mem) {
         System.out.println("BranchPos");
         if (ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].getValue() >= 0) {
             ProgramState.getInstance().registers[15].setValue(mem);
