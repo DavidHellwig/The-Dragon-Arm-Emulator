@@ -31,7 +31,7 @@ public class Hex4digit implements HexDataClass {
         hex = value;
     }
 
-    // Setters
+    // SETTERS
     @Override
     public void setValue(int number) {
         hex = number;
@@ -43,24 +43,24 @@ public class Hex4digit implements HexDataClass {
     public void setValue(char[] number) {
         hex = HexadecimalConverter.hexToDecimal(number);
     }
-
+    // Set a single digit, potentially useful, but processing heavy.
     public void setFirst(char first) {
-        char[] change = HexadecimalConverter.makeBlankChar5();
-        change[1] = first;
-        hex = HexadecimalConverter.hexToDecimal(change);
+        char[] change = HexadecimalConverter.decimalToHex(hex);  // Convert to Hex.
+        change[1] = first;                                      // Change appropriate index.
+        hex = HexadecimalConverter.hexToDecimal(change);        // convert back.
     }
     public void setSecond(char second) {
-        char[] change = HexadecimalConverter.makeBlankChar5();
+        char[] change = HexadecimalConverter.decimalToHex(hex);
         change[2] = second;
         hex = HexadecimalConverter.hexToDecimal(change);
     }
     public void setThird(char third) {
-        char[] change = HexadecimalConverter.makeBlankChar5();
+        char[] change = HexadecimalConverter.decimalToHex(hex);
         change[3] = third;
         hex = HexadecimalConverter.hexToDecimal(change);
     }
     public void setFourth(char fourth) {
-        char[] change = HexadecimalConverter.makeBlankChar5();
+        char[] change = HexadecimalConverter.decimalToHex(hex);
         change[4] = fourth;
         hex = HexadecimalConverter.hexToDecimal(change);
     }
@@ -88,21 +88,33 @@ public class Hex4digit implements HexDataClass {
     public char getFourth(){
         return HexadecimalConverter.decimalToHex(hex)[4];
     }
-
     @Override
     public int getValue() {
         return hex;
     }
+
+    /**
+     * @return Hex characters without the +/-
+     */
     @Override
     public char[] getHexChars() {
         String s = new String(HexadecimalConverter.decimalToHex(hex));
         s.replaceAll("[^0-9a-f]", "");
         return s.toCharArray();
     }
+    /**
+     * @return Hex characters with the +/-
+     */
     public char[] getSignedHexChars() {
         return HexadecimalConverter.decimalToHex(hex);
     }
 
+    /**
+     * Return the integer sum of the middle digits.
+     * For determining a memory space value from inside an instruction, when the memory space is first
+     *
+     * @return the integer sum of the 2nd and 3rd digit
+     */
     @Override
     public int getMiddle2Value() {
         char[] hexChars = HexadecimalConverter.decimalToHex(hex) ;
@@ -110,6 +122,12 @@ public class Hex4digit implements HexDataClass {
                 + HexadecimalConverter.hexValue(hexChars[3]);
         return result;
     }
+    /**
+     * Return the integer sum of the middle digits.
+     * For determining a memory space value from inside an instruction, when the memory space is LAST
+     *
+     * @return the integer sum of the 3rd and 4th digit
+     */
     @Override
     public int getLast2Value() {
         char[] hexChars = HexadecimalConverter.decimalToHex(hex) ;
@@ -117,9 +135,13 @@ public class Hex4digit implements HexDataClass {
                 + HexadecimalConverter.hexValue(hexChars[4]);
         return result;
     }
+
+    // TODO These is a forwarding methods to the Converter to avoid breaking the build.
+    // TODO finish refactoring and delete this.
     public static char hexChar(int n){
         return HexadecimalConverter.hexChar(n);
     }
+    // TODO finish refactoring and delete this.
     public static int hexValue(char n){
         return HexadecimalConverter.hexValue(n);
     }
