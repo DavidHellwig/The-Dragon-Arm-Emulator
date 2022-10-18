@@ -3,29 +3,51 @@ package CS4488.Capstone.Library.Tools;
 import java.security.PublicKey;
 
 public class HexadecimalConverter {
+    // GLOBAL VARIABLE Min and Max for our 4 digit hexadecimal numbers
     public static final int MAX = 65535;
     public static final int MIN = -65536;
-    // Public Static Procedural Functions - Conversion Decimal<->Hexadecimal
+
+    // Public Static Procedural Functions- Conversion Decimal<->Hexadecimal
+
+    /**
+     * Hexidecimal Char[] to int Decimal value
+     * @param hexArray  any char[] will be accepted and cleaned to work.
+     * @return the integer value
+     */
     public static int hexToDecimal(char[] hexArray){
-        hexArray = cleanCharHex(hexArray);
+        hexArray = cleanCharHex(hexArray); // input scrub
         int index = hexArray.length-1;
         int power = 1;
         int result = 0;
 
+        // check for the negative sign.
         boolean isNegative = (hexArray[0] == '-');
 
+        // Hexadecimal conversion algorithm
         while (index > 0){
             result = result + (hexValue(hexArray[index]) * power);
             index = index - 1;
             power = power * 16;
         }
 
+        // If negative flip
         if (isNegative){
             result = result * -1;
+
+            // Special case for the min, due to 2's compliment trickery and Java number types.
+            if (result == 0){
+                result = MIN;
+            }
         }
 
         return result;
     }
+
+    /**
+     * int Decimal value to Hexidecimal Char[]
+     * @param value
+     * @return char[5] of the +/- & 4 hex digits
+     */
     public static char[] decimalToHex(int value){
         value = hex4digitValueWrap(value);
         char[] output = makeBlankChar5();
@@ -49,6 +71,12 @@ public class HexadecimalConverter {
 
         return output;
     }
+
+    /**
+     * Get a char of an int value
+     * @param n 0-15
+     * @return 0-9,a-f  otherwise 0;
+     */
     public static char hexChar(int n){
         char result = '0';
         switch (n){
@@ -99,9 +127,16 @@ public class HexadecimalConverter {
             case 15:
                 result = 'f';
                 break;
+            default: result = '0';
         }
         return result;
     }
+
+    /**
+     * get the int value of a hexadecimal char
+     * @param n 0-9,a-f
+     * @return 0-15, otherwise 0;
+     */
     public static int hexValue(char n){
         int result = 0;
         switch (n){
@@ -153,9 +188,17 @@ public class HexadecimalConverter {
             case 'f':
                 result = 15;
                 break;
+            default: result = 0;
         }
         return result;
     }
+
+    /**
+     * Prevent an int from being too big or small for a 4 digit hexadecimal.
+     * Will wrap around to the other side of the scale.
+     * @param n
+     * @return int value in range [MAX (65535), MIN (-65536)]
+     */
     public static int hex4digitValueWrap(int n){
         if (n > MAX){
             n = MIN + (n - MAX);
@@ -166,6 +209,21 @@ public class HexadecimalConverter {
 
         return n;
     }
+
+    /**
+     * Cleans a Char[]
+     *
+     * Cleans out any nonHexadecimal characters,
+     * returns a char[5] of only the Hex characters,
+     * keeps a '-' iff its in index 0, otherwise the result will have a '+'
+     *
+     * fills in the final array from the last position, i.e. the "1's" digit.
+     * If there are more than 4 hexadecimal digits the last 4 will stay.
+     * If there are less, they will start in the last index, and then be filled with 0's.
+     *
+     * @param toClean
+     * @return char[5] of hex character, +/-, and then 4 digits.
+     */
     public static char[] cleanCharHex(char[] toClean){
         // Set up the result.
         char[] result = makeBlankChar5();
@@ -191,7 +249,6 @@ public class HexadecimalConverter {
         }
         return result;
     }
-    //Utility Methods
 
 
     /**
@@ -205,6 +262,10 @@ public class HexadecimalConverter {
         }
         return result;
     }
+
+    /**
+     * @return char[5] = {+0000}
+     */
     public static char[] makeBlankChar5(){
         char[] array = new char[5];
         array[0] = '+';

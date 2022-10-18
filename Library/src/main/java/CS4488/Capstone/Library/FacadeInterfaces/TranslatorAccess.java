@@ -12,5 +12,5 @@ public interface TranslatorAccess {
      * @param path of the file
      * @return success/fail
      */
-    public boolean translateAndLoad(String path);
+    public boolean translateAndLoad(String path) throws Exception;
 }

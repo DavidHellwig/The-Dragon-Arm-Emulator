@@ -133,6 +133,25 @@ class HexadecimalConverterTest {
     }
 
     @Test
+    void minAndMaxConversionTest(){
+        String max = new String(HexadecimalConverter.decimalToHex(HexadecimalConverter.MAX));
+        String min = new String(HexadecimalConverter.decimalToHex(HexadecimalConverter.MIN));
+        System.out.println("Max Num: " + HexadecimalConverter.MAX);
+        System.out.println("Max Hex: " + max);
+        int a = HexadecimalConverter.hexToDecimal(max.toCharArray());
+        System.out.println("Undo: " + a);
+        System.out.println("Min Num: " + HexadecimalConverter.MIN);
+        System.out.println("Min Hex: " + min);
+        int b =HexadecimalConverter.hexToDecimal(min.toCharArray());
+        System.out.println("Undo: " + b);
+        boolean check;
+        check = (HexadecimalConverter.MAX == a);
+        check = (HexadecimalConverter.MIN == b);
+
+        assertTrue(check);
+    }
+
+    @Test
     void hexToDecimal() {
         init();
         populateHexes(testHexes);
