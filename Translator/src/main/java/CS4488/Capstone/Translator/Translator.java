@@ -21,10 +21,10 @@ public class Translator  {
         this.setArmFile(this.readFile(armFile));
         this.setLoaded(!this.getArmFile().isEmpty());
 
-//        // translate if loaded
-//        if(this.isLoaded()){
-//            this.setTranslatedCode(this.convertToHex(this.parseFile(this.armFile)));
-//        }
+        // translate if loaded
+        if(this.isLoaded()){
+            this.setTranslatedCode(this.convertToHex(this.parseFile(this.armFile)));
+        }
     }
 
     public static Translator getInstance(String armFile) throws Exception {
