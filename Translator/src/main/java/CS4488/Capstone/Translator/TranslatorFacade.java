@@ -31,7 +31,8 @@ public class TranslatorFacade implements TranslatorInterface {
 
     @Override
     public boolean isTranslatable() {
-        return false;
+
+        return translator.getTranslatedCode() != null;
     }
 
     @Override
