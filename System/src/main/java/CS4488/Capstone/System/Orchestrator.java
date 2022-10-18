@@ -96,7 +96,7 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     }
 
     @Override
-    public boolean translateAndLoad(String path) {
+    public boolean translateAndLoad(String path) throws Exception {
         resetError();
         boolean result = translator.loadFile(path);
         if (result) {
