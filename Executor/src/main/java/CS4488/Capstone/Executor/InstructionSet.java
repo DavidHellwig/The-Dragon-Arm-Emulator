@@ -130,6 +130,14 @@ public final class InstructionSet {
     }
 
     // Changes the program counter to the specified memory index if
+    // the value in the specified register is zero
+    public static void branchZero(char reg, int mem) {
+        if (ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].getValue() == 0) {
+            ProgramState.getInstance().registers[15].setValue(mem);
+        }
+    }
+
+    // Changes the program counter to the specified memory index if
     // the value in the specified register is negative
     public static void branchNeg(char reg, int mem) {
         System.out.println("BranchNeg");
@@ -145,10 +153,6 @@ public final class InstructionSet {
         if (ProgramState.getInstance().registers[Hex4digit.hexValue(reg)].getValue() >= 0) {
             ProgramState.getInstance().registers[15].setValue(mem);
         }
-    }
-
-    public static void loadConstant(char reg) {
-        System.out.println("LoadConstant");
     }
 
     // Takes a hex4d from the output of the program state and assigns that
