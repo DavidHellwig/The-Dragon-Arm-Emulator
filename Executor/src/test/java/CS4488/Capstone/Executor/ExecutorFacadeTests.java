@@ -85,7 +85,7 @@ public class ExecutorFacadeTests {
     }
 
     @Test
-    @DisplayName("Next function call when no more instructions remain")
+    @DisplayName("no more instructions remain")
     public void testNext_4() throws Exception {
         executor.next();
         executor.next();
@@ -96,7 +96,7 @@ public class ExecutorFacadeTests {
     }
 
     @Test
-    @DisplayName("Next function call when a Halt has been executed")
+    @DisplayName("Halt has been executed")
     public void testNext_5() throws Exception {
         // add a halt to the end of the program
         ProgramState.getInstance().memoryStateHistory.get(0).add(new Hex4digit(0));
@@ -110,11 +110,10 @@ public class ExecutorFacadeTests {
     }
 
     @Test
-    @DisplayName("Next function call when program counter is less than -1")
+    @DisplayName("Program counter is less than -1")
     public void testNext_6() throws Exception {
-        // add a subtraction instruction that will give a negative number and place it in the program counter
+        // add a subtraction instruction that will result in a negative number and place it in the program counter
         ProgramState.getInstance().memoryStateHistory.get(0).add(new Hex4digit(16415));
-        System.out.println(ProgramState.getInstance().memoryStateHistory.get(0).size());
         executor.next();
         executor.next();
         executor.next();
@@ -122,6 +121,33 @@ public class ExecutorFacadeTests {
         executor.next();
         Assertions.assertFalse(executor.next());
         Assertions.assertEquals("Program Counter tried to index negative memory", executor.getLastExceptionMessage());
+    }
+
+    @Test
+    @DisplayName("No state exists")
+    public void testNext_7() throws Exception {
+        ProgramState.getInstance().clearProgramState();
+        Assertions.assertFalse(executor.next());
+        Assertions.assertEquals("No state has been created", executor.getLastExceptionMessage());
+    }
+
+    @Test
+    @DisplayName("Test clearing the state")
+    public void testClearState() throws Exception {
+        executor.next();
+        executor.next();
+        executor.next();
+
+        executor.clearState();
+        Assertions.assertEquals(0, executor.getMEMORYSTATEINDEX());
+        Assertions.assertTrue(ProgramState.getInstance().memoryStateHistory.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Test for a state")
+    public void testHasState() throws Exception {
+        executor.next();
+        Assertions.assertTrue(executor.hasState());
     }
 
 }

@@ -5,6 +5,8 @@ import CS4488.Capstone.Library.Tools.MemoryHistorySpace;
 import CS4488.Capstone.Library.Tools.ProgramState;
 import CS4488.Capstone.Library.Tools.Hex4digit;
 
+import java.util.ArrayList;
+
 public class ExecutorFacade implements ExecutorInterface {
 
     // Holds the index of what place the memory is at in the arraylist
@@ -65,7 +67,7 @@ public class ExecutorFacade implements ExecutorInterface {
         // First, check to see if a ProgramState has been instantiated
         if (!hasState()) {
             System.out.println("Did not have state");
-            setProgramState(ProgramState.getInstance());
+            return false;
         }
 
         // Check to see if there is another instruction from the program Counter i.e. Register 15
@@ -115,18 +117,23 @@ public class ExecutorFacade implements ExecutorInterface {
 
     @Override
     public void setProgramState(ProgramState state) {
-        state.memoryStateHistory.add(MEMORYSTATEINDEX, state.memoryStateHistory.get(MEMORYSTATEINDEX - 1));
+        ArrayList<Hex4digit> code = new ArrayList<>();
+        state.initializeState(code);
     }
 
     @Override
     public boolean hasState() {
-        return ProgramState.getInstance().memoryStateHistory.get(MEMORYSTATEINDEX).get(0) != null;
+        if (ProgramState.getInstance().memoryStateHistory.isEmpty()) {
+            exceptionMessage = "No state has been created";
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void clearState() {
         MEMORYSTATEINDEX = 0;
-        ProgramState.getInstance().memoryStateHistory.clear();
+        ProgramState.getInstance().clearProgramState();
     }
 
     @Override
