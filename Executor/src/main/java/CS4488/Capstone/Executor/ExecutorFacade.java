@@ -10,7 +10,7 @@ public class ExecutorFacade implements ExecutorInterface {
     // Holds the index of what place the memory is at in the arraylist
     private int MEMORYSTATEINDEX = 0;
 
-    private String exceptionMessage = "";
+    private String exceptionMessage = "No Error";
 
     public int getMEMORYSTATEINDEX() {
         return MEMORYSTATEINDEX;
@@ -41,20 +41,20 @@ public class ExecutorFacade implements ExecutorInterface {
     private void determineInstruction(Hex4digit inst) {
         switch (inst.getHexChars()[1]) {
             case '0' -> InstructionSet.halt();
-            case '1' -> InstructionSet.load(inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
-            case '2' -> InstructionSet.store(inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
-            case '3' -> InstructionSet.add(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
-            case '4' -> InstructionSet.subt(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
-            case '5' -> InstructionSet.mult(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
-            case '6' -> InstructionSet.intDivide(inst.getHexChars()[1], inst.getHexChars()[2], inst.getHexChars()[3]);
-            case '7' -> InstructionSet.loadIndirect(inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
-            case '8' -> InstructionSet.storeIndirect(inst.getMiddle2Value(), inst.getHexChars()[3], MEMORYSTATEINDEX);
+            case '1' -> InstructionSet.load(inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
+            case '2' -> InstructionSet.store(inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
+            case '3' -> InstructionSet.add(inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
+            case '4' -> InstructionSet.subt(inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
+            case '5' -> InstructionSet.mult(inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
+            case '6' -> InstructionSet.intDivide(inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
+            case '7' -> InstructionSet.loadIndirect(inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
+            case '8' -> InstructionSet.storeIndirect(inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
             case '9' -> InstructionSet.branch(inst.getMiddle2Value());
-            case 'a' -> InstructionSet.branchZero(inst.getHexChars()[1], inst.getLast2Value());
-            case 'b' -> InstructionSet.branchNeg(inst.getHexChars()[1], inst.getLast2Value());
-            case 'c' -> InstructionSet.branchPos(inst.getHexChars()[1], inst.getLast2Value());
-            case 'd' -> InstructionSet.readInt(inst.getHexChars()[1]);
-            case 'e' -> InstructionSet.writeInt(inst.getHexChars()[1]);
+            case 'a' -> InstructionSet.branchZero(inst.getHexChars()[2], inst.getLast2Value());
+            case 'b' -> InstructionSet.branchNeg(inst.getHexChars()[2], inst.getLast2Value());
+            case 'c' -> InstructionSet.branchPos(inst.getHexChars()[2], inst.getLast2Value());
+            case 'd' -> InstructionSet.readInt(inst.getHexChars()[2]);
+            case 'e' -> InstructionSet.writeInt(inst.getHexChars()[2]);
             case 'f' -> System.out.println("Nothing");
             default -> System.out.println("Throw an error and halt");
         }
@@ -70,7 +70,7 @@ public class ExecutorFacade implements ExecutorInterface {
 
         // Check to see if there is another instruction from the program Counter i.e. Register 15
         if (!hasNext()) {
-            System.out.println("Did not have next");
+            System.out.println("Did not have next instruction");
             return false;
         }
 
@@ -103,6 +103,11 @@ public class ExecutorFacade implements ExecutorInterface {
         // if the program counter contains a -1, the halt command was executed
         if (ProgramState.getInstance().registers[15].getValue() == -1) {
             exceptionMessage = "A halt command was executed and the program has stopped";
+            return false;
+        }
+        // The program counter is trying to access negative memory, which makes no sense
+        if (ProgramState.getInstance().registers[15].getValue() < -1) {
+            exceptionMessage = "Program Counter tried to index negative memory";
             return false;
         }
         return true;

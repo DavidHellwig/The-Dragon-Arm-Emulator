@@ -109,4 +109,19 @@ public class ExecutorFacadeTests {
         Assertions.assertEquals("A halt command was executed and the program has stopped", executor.getLastExceptionMessage());
     }
 
+    @Test
+    @DisplayName("Next function call when program counter is less than -1")
+    public void testNext_6() throws Exception {
+        // add a subtraction instruction that will give a negative number and place it in the program counter
+        ProgramState.getInstance().memoryStateHistory.get(0).add(new Hex4digit(16415));
+        System.out.println(ProgramState.getInstance().memoryStateHistory.get(0).size());
+        executor.next();
+        executor.next();
+        executor.next();
+        executor.next();
+        executor.next();
+        Assertions.assertFalse(executor.next());
+        Assertions.assertEquals("Program Counter tried to index negative memory", executor.getLastExceptionMessage());
+    }
+
 }
