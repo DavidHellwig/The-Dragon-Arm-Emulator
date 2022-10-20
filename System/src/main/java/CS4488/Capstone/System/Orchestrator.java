@@ -79,6 +79,10 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         return result;
     }
 
+    public void clearProgram(){
+        executor.clearState();
+    }
+
 
     @Override
     public ProgramState getProgramState() {
@@ -103,6 +107,7 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
 
             result = translator.isTranslatable();
             if (result){
+                state.clearProgramState();
                 state.initializeState(translator.translateToMachine());
                 executor.setProgramState(state);
                 translator.clearFile();
