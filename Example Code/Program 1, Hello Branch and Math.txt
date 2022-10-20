@@ -1,9 +1,8 @@
 @ This is just be a simple 2+2=4 program using branch to create a variable space at the start of the program.
-br start:
-#0002
+br m02;
+#0002;
+ld m01 r0;
+ld m01 r1;
+add r0 r1 r2;
+hlt;
 
-start:
-ld m01 r0
-ld m01 r1
-add r0 r1 r2
-hlt
