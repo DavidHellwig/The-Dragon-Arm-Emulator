@@ -1,20 +1,14 @@
 package CS4488.Capstone.UserInterface;
 
 
-import CS4488.Capstone.Library.Tools.ProgramState;
-
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import CS4488.Capstone.Library.Tools.Hex4digit;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import CS4488.Capstone.System.Orchestrator;
 
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
-import javafx.util.Callback;
 
 
 import java.io.File;
@@ -46,6 +40,18 @@ public class EmulatorGUIController {
 
     @FXML
     private Button hexConverterDecimalToHexButton;
+
+    @FXML
+    private TextField pc;
+
+    @FXML
+    private TextField AC;
+
+    @FXML
+    private TextField IN;
+
+    @FXML
+    private TextField OUT;
 
     @FXML
     private TextField conversionTextField;
@@ -158,12 +164,12 @@ public class EmulatorGUIController {
             short location = (short)(i-1);
             RAM[i][0] = String.valueOf(orc.convertToHexChars(location));
         }
-        printRAMValues();
+        printInitialRAMValues();
 
     }
 
     @FXML
-    void printRAMValues(){
+    void printInitialRAMValues(){
 
         String memArray = "";
         for (int i = 0; i< 256;i++){
@@ -174,6 +180,68 @@ public class EmulatorGUIController {
         }
         memoryTable.setText(memArray);
     }
+    //Update RAM values, incomplete
+    @FXML
+    void updateRAMValues(){
+        //String newMemArray = orc.getProgramState();
+        ArrayList<ArrayList<Hex4digit>> newHex4DigitMemarray = orc.getProgramStateMemoryHistory();
+        int x = 0;
+    }
+
+    /**
+     * Execute step once
+     * @param actionEvent
+     */
+    @FXML
+    void next(ActionEvent actionEvent){
+        updateRAMValues();
+    }
+
+    /**
+     * Runs the program without stopping
+     * @param actionEvent
+     */
+    @FXML
+    void run(ActionEvent actionEvent){
+
+    }
+
+    /**
+     * get the current program counter
+     * @param actionEvent
+     */
+    @FXML
+    void getCurrentPC(ActionEvent actionEvent){
+
+    }
+
+    /**
+     * Update the ac
+     */
+    @FXML
+    void updateAC(){
+
+    }
+
+    /**
+     * abort the currently running program. Can be used while program is running step by step or running in totality
+     */
+    @FXML
+    void abortProgram(){
+        //ToDo use this to insert a halt statement into the program state so orc stops
+
+
+    }
+
+    /**
+     * Steps through the given code by 1 line
+     */
+    @FXML
+    void step(){
+
+    }
+
+
 
 
 

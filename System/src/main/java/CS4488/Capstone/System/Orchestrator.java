@@ -11,9 +11,12 @@ import CS4488.Capstone.Library.FacadeInterfaces.NumberConverterAccess;
 import CS4488.Capstone.Library.FacadeInterfaces.ProgramStateAccess;
 import CS4488.Capstone.Library.FacadeInterfaces.TranslatorAccess;
 import CS4488.Capstone.Library.Tools.FileManager;
+import CS4488.Capstone.Library.Tools.Hex4digit;
 import CS4488.Capstone.Library.Tools.HexadecimalConverter;
 import CS4488.Capstone.Library.Tools.ProgramState;
 import CS4488.Capstone.Translator.TranslatorFacade;
+
+import java.util.ArrayList;
 
 /**
  * The Back End Facade Class that orchestrates everything else.
@@ -139,4 +142,22 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
 
         return fileManager.fileToString(path);
     }
+
+    /**
+     * Returns the memory history of the program state, will need to refactor this later
+     * @return the memory history of program state
+     */
+    public ArrayList<ArrayList<Hex4digit>> getProgramStateMemoryHistory(){
+        return this.state.memoryStateHistory;
+    }
+
+    /**
+     * Stop the Orchestrator from running
+     */
+    /*public void endProgram(){
+        this.state.clearProgramState();
+
+    }*/
+
+
 }
