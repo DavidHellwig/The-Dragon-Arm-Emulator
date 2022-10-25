@@ -42,6 +42,6 @@ public class TranslatorFacade implements TranslatorInterface {
 
     @Override
     public String getLastExceptionMessage() {
-        return null;
+        return "Translator, Default Error";
     }
 }

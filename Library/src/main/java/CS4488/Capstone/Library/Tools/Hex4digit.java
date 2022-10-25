@@ -27,6 +27,9 @@ public class Hex4digit implements HexDataClass {
     public Hex4digit(char[] value){
         hex = hexToDecimal(value);
     }
+    public Hex4digit(String value){
+        hex = hexToDecimal(value.toCharArray());
+    }
     public Hex4digit(int value){
         hex = value;
     }

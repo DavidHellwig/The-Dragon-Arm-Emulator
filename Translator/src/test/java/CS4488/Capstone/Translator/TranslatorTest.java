@@ -7,7 +7,23 @@ import static org.junit.jupiter.api.Assertions.*;
 class TranslatorTest {
 
     @Test
-    void loadFile() {
+    void setArmFile() {
+    }
+
+    @Test
+    void setTranslatedCode() {
+    }
+
+    @Test
+    void getArmFile() {
+    }
+
+    @Test
+    void isLoaded() {
+    }
+
+    @Test
+    void getTranslatedCode() {
     }
 
     @Test
@@ -15,7 +31,7 @@ class TranslatorTest {
     }
 
     @Test
-    void translateToMachine() {
+    void getLastExceptionMessage() {
     }
 
     @Test
@@ -23,6 +39,10 @@ class TranslatorTest {
     }
 
     @Test
-    void parseFile() {
+    void convertToHex() {
+    }
+
+    @Test
+    void main() {
     }
 }
