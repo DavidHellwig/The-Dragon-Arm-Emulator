@@ -19,12 +19,16 @@ import java.nio.file.Paths;
 public class FileManager {
 
     // SINGLETON instance, private constructor, and getInstance.
+
+
+
     private static FileManager instance = null;
     private FileManager(){}
     public static FileManager getInstance(){
         if (instance == null){
             instance = new FileManager();
         }
+
         return instance;
     }
 
