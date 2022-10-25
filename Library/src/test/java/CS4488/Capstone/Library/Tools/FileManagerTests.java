@@ -12,9 +12,13 @@ class FileManagerTests {
 
     @Test
     void checkFile() {
+<<<<<<< HEAD
         assertTrue(file.checkFile(realFile));
         assertTrue((file.checkFile(badFile)));
         assertFalse(file.checkFile(fakeFile));
+=======
+
+>>>>>>> feature/integration1
     }
 
     @Test
