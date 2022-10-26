@@ -12,25 +12,43 @@ public class Translator  {
     private boolean loaded;
     private ArrayList<Hex4digit> translatedCode = null;
     private FileManager fileMan = FileManager.getInstance();
+    private static Translator singleton;
+    private String exceptionMessage = "No Error";
 
-    private static Translator singleton = null;
 
 
     private Translator(String armFile) throws Exception {
 
-        // Load, Read and Set Arm-file
+        //  Read and Set Arm-file
         this.setArmFile(this.readFile(armFile));
-        this.setLoaded(!(this.getArmFile().isEmpty())); // set if file is loaded successfully
+        // Check and set if file is read successfully
+        this.setLoaded(!(this.getArmFile().isEmpty()));
 
        // Translate if loaded
         if(this.isLoaded()){
             // Parse Arm-file for hex conversion
             String [] parsedFile = this.parseFile(this.getArmFile());
             // convert to hex code
-            this.setTranslatedCode(this.convertToHex(parsedFile));
+            ArrayList<Hex4digit> hex4dCode = this.convertToHex(parsedFile);
+
+            // if lines don't exceed memory space
+            if(hex4dCode.size() <= 256){
+                this.setTranslatedCode(hex4dCode);
+            }else{
+                this.setExceptionMessage("System Memory overflow, Lines exceed 256.");
+                System.out.println(this.getExceptionMessage());
+            }
+
         }
     }
 
+    /**
+     * If the singleton is null, create a new Translator object and assign it to the singleton. Otherwise, return the
+     * singleton
+     *
+     * @param armFile The name of the ARM file to be translated.
+     * @return The singleton instance of the Translator class.
+     */
     public static Translator getInstance(String armFile) throws Exception {
         if(singleton == null){
             singleton = new Translator(armFile);
@@ -39,47 +57,81 @@ public class Translator  {
     }
 
 
+    /**
+     * > This function sets the value of the loaded variable to the value of the loaded parameter
+     *
+     * @param loaded This is a boolean value that tells us whether the data has been loaded or not.
+     */
     private void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
 
+    /**
+     * This function sets the armFile variable to the value of the armFile parameter.
+     *
+     * @param armFile The path to the ARM template file.
+     */
     public void setArmFile(String armFile) {
         this.armFile = armFile;
     }
 
+    /**
+     * This function sets the translated code of the object to the given translated code
+     *
+     * @param translatedCode This is the arraylist that will hold the translated code.
+     */
     public void setTranslatedCode(ArrayList<Hex4digit> translatedCode) {
         this.translatedCode = translatedCode;
     }
 
+    /**
+     * This function returns the armFile variable
+     *
+     * @return The armFile variable is being returned.
+     */
     public String getArmFile() {
         return this.armFile;
     }
 
+    /**
+     * Returns true if the object is loaded, false otherwise.
+     *
+     * @return The boolean value of the loaded variable.
+     */
     public boolean isLoaded() {
         return this.loaded;
     }
 
+    /**
+     * This function returns the translated code of the current object
+     *
+     * @return The translated code.
+     */
     public ArrayList<Hex4digit> getTranslatedCode() {
         return this.translatedCode;
     }
 
 
+
     /**
-     *
+     * This function clears the file name, sets the loaded flag to false, and clears the translated code
      */
     public void clearFile() {
         setArmFile("");
         setLoaded(false);
         setTranslatedCode(null);
+        System.out.println("Clearing all files.");
     }
 
-    /**
-     *
-     * @param arr
-     * @param index
-     * @return
-     */
 
+    /**
+     * It creates a new array of size one less than the original array, copies all the elements except the element at the
+     * index to the new array, and returns the new array
+     *
+     * @param arr The array from which you want to remove an element.
+     * @param index The index of the element to be removed.
+     * @return The array with the element removed.
+     */
     private  String[] removeTheElement(String[] arr, int index) {
 
         // If the array is empty
@@ -113,15 +165,28 @@ public class Translator  {
         return anotherArray;
     }
 
-    public String getLastExceptionMessage() {
-        return null;
+    /**
+     * This function returns the exception message
+     *
+     * @return The exception message.
+     */
+    public String getExceptionMessage() {
+        return exceptionMessage;
     }
 
-
-    /***
+    /**
+     * This function sets the exception message
      *
-     * @param line
-     * @return
+     * @param exceptionMessage The message that will be displayed to the user.
+     */
+    public void setExceptionMessage(String exceptionMessage) {
+        this.exceptionMessage = exceptionMessage;
+    }
+
+    /**
+     * This function takes a string and removes all comments from it
+     * @param line The line of code that is being read in.
+     * @return The line without the comments.
      */
     public String removeComments(String line){
 
@@ -143,17 +208,24 @@ public class Translator  {
 
     }
 
+    /**
+     * It reads a file and returns the contents as a string
+     *
+     * @param file The ARM file to read from.
+     * @return A string of the text in the file.
+     */
 
     private String readFile(String file) {
-        String result = fileMan.readFile(file);
-        return result;
+        return fileMan.readFile(file);
     }
 
 
     /**
+     * It takes a string of ARM assembly code, removes all comments, replaces all hexadecimal instructions with their short
+     * equivalent, and returns an array of strings, each of which is a line of assembly code
      *
-     * @param armFile
-     * @return
+     * @param armFile The file that contains the ARM assembly code.
+     * @return An array of strings, each string is a line of the file.
      */
     private String [] parseFile(String armFile){
         String noComments = removeComments(armFile)
@@ -164,13 +236,16 @@ public class Translator  {
 
     }
 
-    /***
-     *
-     * @param lineOfCode
-     * @param parsedFile
-     * @param lineIndex
-     */
 
+    /**
+     * This function takes a line of code, the parsed file, and the line index. It then splits the line of code into an
+     * array, and if the line of code ends with a colon, it removes the element from the parsed file. Otherwise, it
+     * replaces the label with an empty string. It then replaces the label with the label address
+     *
+     * @param lineOfCode The line of code that is being parsed.
+     * @param parsedFile The array of strings that contains the parsed file.
+     * @param lineIndex The index of the line of code in the parsedFile array.
+     */
     private void setLabels(String lineOfCode, String [] parsedFile, int lineIndex){
         String[] lineArray = lineOfCode.split(":");
 
@@ -186,6 +261,13 @@ public class Translator  {
         this.replaceLabels(lineArray[0], labelAddress, parsedFile);
     }
 
+    /**
+     * This function replaces all instances of a label with a value
+     *
+     * @param replaced The label that is being replaced.
+     * @param value The value that will be replaced in the file.
+     * @param parsedFile The file that has been parsed into an array of strings.
+     */
     private void replaceLabels(String replaced, String value, String [] parsedFile){
         for(int i = 0; i< parsedFile.length; i++){
             parsedFile[i] = parsedFile[i].replaceAll(replaced, value);
@@ -193,13 +275,13 @@ public class Translator  {
     }
 
 
-    /***
+    /**
+     * This function takes in a string array of the parsed file and returns an arraylist of hex4digit objects
      *
-     * @param parsedFile
-     * @return
-     * @throws Exception
+     * @param parsedFile This is the file that has been parsed by the Parser class.
+     * @return An arraylist of hex4digit objects
      */
-    public ArrayList<Hex4digit> convertToHex(String [] parsedFile) throws Exception {
+    public ArrayList<Hex4digit> convertToHex(String [] parsedFile)  {
         InstructionParser instructionParser =  InstructionParser.getInstance();
 
         ArrayList<Hex4digit> translatedFile = new ArrayList<>();
@@ -208,7 +290,7 @@ public class Translator  {
             // label declaration
             if(line.contains(":")){
                 // replace all label occurrence
-                 setLabels(line.replaceAll("\\s", "")
+                 this.setLabels(line.replaceAll("\\s", "")
                        , parsedFile, lineIndex);
 
                  line = parsedFile[lineIndex];
@@ -244,7 +326,11 @@ public class Translator  {
 
 
             if (builder.length() > 4 && builder.charAt(0) != '-') {
-                throw new Exception("Instruction memory overflow");
+                String exception = String.format("Instruction memory is overflow occurred at Line %d.", lineIndex);
+                this.setExceptionMessage(exception);
+                this.clearFile();
+                System.out.println(this.getExceptionMessage());
+                break;
             }
 
 
@@ -256,18 +342,22 @@ public class Translator  {
                 hex.setValue(lineOfCode);
                 translatedFile.add(hex); // adds hex code to list
             } else {
-                throw new Exception("Instruction contains unknown characters.");
+                String exception = String.format("Line %d contains unknown instructions.", lineIndex);
+                this.setExceptionMessage(exception);
+                this.clearFile();
+                System.out.println(this.getExceptionMessage());
+                break;
             }
-
 
             lineIndex++;
         }
+        System.out.println("File successfully converted to hex code.");
 
         return translatedFile;
     }
 
     public static void main(String[] args) throws Exception {
-        //"Translator/src/main/java/CS4488/Capstone/Translator/armcode.txt"
+        //"Translator/src/main/java/CS4488/Capstone/Translator/Program 8 - Random Instructions.txt"
         //"Example Code/Program 1, Hello Branch and Math.txt"
         //"Example Code/Program 2, 4 Input 4 Operations.txt"
         //"Example Code/Program 3, Hello Memory.txt"
