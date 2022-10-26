@@ -28,10 +28,12 @@ public class Translator  {
             String [] parsedFile = this.parseFile(this.getArmFile());
             // convert to hex code
             ArrayList<Hex4digit> hex4dCode = this.convertToHex(parsedFile);
+
+            // if lines don't exceed memory space
             if(hex4dCode.size() <= 256){
                 this.setTranslatedCode(hex4dCode);
             }else{
-                this.setExceptionMessage("System Memory overflow.");
+                this.setExceptionMessage("System Memory overflow, Lines exceed 256.");
                 System.out.println(this.getExceptionMessage());
             }
 
@@ -116,6 +118,7 @@ public class Translator  {
         setArmFile("");
         setLoaded(false);
         setTranslatedCode(null);
+        System.out.println("Clearing all files.");
     }
 
 
@@ -204,6 +207,12 @@ public class Translator  {
 
     }
 
+    /**
+     * It reads a file and returns the contents as a string
+     *
+     * @param file The ARM file to read from.
+     * @return A string of the text in the file.
+     */
     private String readFile(String file) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         StringBuilder text = new StringBuilder();
@@ -277,7 +286,7 @@ public class Translator  {
      * @param parsedFile This is the file that has been parsed by the Parser class.
      * @return An arraylist of hex4digit objects
      */
-    public ArrayList<Hex4digit> convertToHex(String [] parsedFile) throws Exception {
+    public ArrayList<Hex4digit> convertToHex(String [] parsedFile)  {
         InstructionParser instructionParser =  InstructionParser.getInstance();
 
         ArrayList<Hex4digit> translatedFile = new ArrayList<>();
@@ -322,7 +331,8 @@ public class Translator  {
 
 
             if (builder.length() > 4 && builder.charAt(0) != '-') {
-                this.setExceptionMessage("Instruction memory overflow.");
+                String exception = String.format("Instruction memory is overflow occurred at Line %d.", lineIndex);
+                this.setExceptionMessage(exception);
                 this.clearFile();
                 System.out.println(this.getExceptionMessage());
                 break;
@@ -337,7 +347,8 @@ public class Translator  {
                 hex.setValue(lineOfCode);
                 translatedFile.add(hex); // adds hex code to list
             } else {
-                this.setExceptionMessage("Instruction contains unknown characters.");
+                String exception = String.format("Line %d contains unknown instructions.", lineIndex);
+                this.setExceptionMessage(exception);
                 this.clearFile();
                 System.out.println(this.getExceptionMessage());
                 break;
