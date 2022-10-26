@@ -3,17 +3,18 @@ package CS4488.Capstone.Translator;
 
 
 import CS4488.Capstone.Library.Tools.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Translator  {
-
+    // Instance variables
     private String armFile;
     private boolean loaded;
     private ArrayList<Hex4digit> translatedCode = null;
+    private FileManager fileMan = FileManager.getInstance();
+
     private static Translator singleton = null;
+
 
     private Translator(String armFile) throws Exception {
 
@@ -142,15 +143,10 @@ public class Translator  {
 
     }
 
-    private String readFile(String file) throws Exception {
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        StringBuilder text = new StringBuilder();
 
-        while (reader.ready()) {
-            text.append(reader.readLine());
-        }
-
-        return text.toString().toLowerCase();
+    private String readFile(String file) {
+        String result = fileMan.readFile(file);
+        return result;
     }
 
 

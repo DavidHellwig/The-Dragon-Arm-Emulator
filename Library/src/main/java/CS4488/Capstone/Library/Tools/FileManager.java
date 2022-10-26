@@ -2,6 +2,8 @@ package CS4488.Capstone.Library.Tools;
 
 import CS4488.Capstone.Library.BackEndSystemInterfaces.FileManagerInterface;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -63,6 +65,24 @@ public class FileManager {
                     e.toString() + "\n" + e.getMessage());
         }
         return readIn;
+    }
+
+    public String readFile(String file) {
+        StringBuilder text = new StringBuilder();
+
+        try{
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            while (reader.ready()) {
+                text.append(reader.readLine());
+            }
+            lastErrorMessage = defaultMessage;
+
+        }catch (IOException e){
+            lastErrorMessage = "File Manager: in readFile()\n" + e.getMessage();
+        }
+
+        return text.toString().toLowerCase();
     }
 
     /**
