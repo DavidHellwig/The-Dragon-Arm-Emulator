@@ -1,4 +1,4 @@
-@this program should take an input to set the program counter to.
+@this program should take an input to set the program counter to.@
 br m02;
 #0000;
 rd ip;

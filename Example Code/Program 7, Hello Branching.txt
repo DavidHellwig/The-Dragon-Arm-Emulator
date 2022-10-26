@@ -1,4 +1,4 @@
-@This is a series of Branching statements based off of a handfull on inputs, like plinko.
+@This is a series of Branching statements based off of a handfull on inputs, like plinko.@
 br m06 ; 00
 #0123 ; 01
 #4567 ; 02

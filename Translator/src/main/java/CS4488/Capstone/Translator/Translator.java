@@ -6,24 +6,27 @@ import CS4488.Capstone.Library.Tools.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Translator  {
 
     private String armFile;
     private boolean loaded;
-    private ArrayList<Hex4digit> translatedCode;
+    private ArrayList<Hex4digit> translatedCode = null;
     private static Translator singleton = null;
 
     private Translator(String armFile) throws Exception {
 
-        // Temp logic likely to change in the future release
-        // load file
+        // Load, Read and Set Arm-file
         this.setArmFile(this.readFile(armFile));
-        this.setLoaded(!this.getArmFile().isEmpty());
+        this.setLoaded(!(this.getArmFile().isEmpty())); // set if file is loaded successfully
 
-        // translate if loaded
+       // Translate if loaded
         if(this.isLoaded()){
-            this.setTranslatedCode(this.convertToHex(this.parseFile(this.armFile)));
+            // Parse Arm-file for hex conversion
+            String [] parsedFile = this.parseFile(this.getArmFile());
+            // convert to hex code
+            this.setTranslatedCode(this.convertToHex(parsedFile));
         }
     }
 
@@ -60,11 +63,21 @@ public class Translator  {
     }
 
 
+    /**
+     *
+     */
     public void clearFile() {
         setArmFile("");
         setLoaded(false);
-        setTranslatedCode(new ArrayList<>());
+        setTranslatedCode(null);
     }
+
+    /**
+     *
+     * @param arr
+     * @param index
+     * @return
+     */
 
     private  String[] removeTheElement(String[] arr, int index) {
 
@@ -104,8 +117,29 @@ public class Translator  {
     }
 
 
-    public boolean isTranslatable() {
-        return false;
+    /***
+     *
+     * @param line
+     * @return
+     */
+    public String removeComments(String line){
+
+        String lineCopy = line;
+
+        while(lineCopy.contains("@")){
+
+            int firstIndex = lineCopy.indexOf('@');
+            if(firstIndex + 1 < lineCopy.length()){
+                int endIndex = lineCopy.indexOf('@', firstIndex + 1);
+                if(endIndex + 1 <= lineCopy.length()){
+                    lineCopy = lineCopy.replace(lineCopy.substring(firstIndex, endIndex + 1), "");
+                }
+
+            }
+        }
+
+        return lineCopy;
+
     }
 
     private String readFile(String file) throws Exception {
@@ -119,15 +153,27 @@ public class Translator  {
         return text.toString().toLowerCase();
     }
 
-    private String [] parseFile(String armFile){
-        String noComments = armFile.replaceAll("@[a-zA-z0-9 ]+@", "").replaceAll("#", "").replaceAll("0x", "");
-        //noComments.strip()
 
-        //remove all white space .replaceAll("\\s", "")
-        //.replaceAll("0x", "")
+    /**
+     *
+     * @param armFile
+     * @return
+     */
+    private String [] parseFile(String armFile){
+        String noComments = removeComments(armFile)
+                .replaceAll("#", "")
+                .replaceAll("0x", "");
+
         return noComments.split(";");
 
     }
+
+    /***
+     *
+     * @param lineOfCode
+     * @param parsedFile
+     * @param lineIndex
+     */
 
     private void setLabels(String lineOfCode, String [] parsedFile, int lineIndex){
         String[] lineArray = lineOfCode.split(":");
@@ -151,15 +197,21 @@ public class Translator  {
     }
 
 
-
+    /***
+     *
+     * @param parsedFile
+     * @return
+     * @throws Exception
+     */
     public ArrayList<Hex4digit> convertToHex(String [] parsedFile) throws Exception {
         InstructionParser instructionParser =  InstructionParser.getInstance();
 
         ArrayList<Hex4digit> translatedFile = new ArrayList<>();
         int lineIndex = 0;
         for (String line : parsedFile) {
-
+            // label declaration
             if(line.contains(":")){
+                // replace all label occurrence
                  setLabels(line.replaceAll("\\s", "")
                        , parsedFile, lineIndex);
 
@@ -170,57 +222,69 @@ public class Translator  {
             //System.out.println(parsedFile[i].trim());
             StringBuilder builder = new StringBuilder();
 
-            for (String elem : line.trim().split(" ")) {
-                String instruction = instructionParser.getParser().get(elem);
+            // remove trailing space
+            line = line.trim();
 
-                if (instruction != null){
-                    builder.append(instruction);
-                }else{
-                    builder.append(elem);
-
-                }
+            if (line.isEmpty()){
+                continue;
             }
 
-            //System.out.println("Translated instruct:"+builder);
 
+            // split on each instruction
+            for (String elem : line.split(" ")) {
+                String instruction = "";
+                if(!elem.isEmpty()){
+                     instruction = instructionParser.getParser().get(elem);
+                }
+
+                // adds instruction code to string if it is valid
+                // else append unknown instruction
+                builder.append(Objects.requireNonNullElse(instruction, elem));
+            }
+
+//            System.out.println("Line: "+line);
+//
+//            System.out.println("Translated instruct:"+builder);
 
 
             if (builder.length() > 4 && builder.charAt(0) != '-') {
                 throw new Exception("Instruction memory overflow");
             }
-            //NOTE:  DEPRECATED HEX4D handles values less than 4
-//            } else if (builder.length() < 4) {
-//                // adds 0 until length == 4
-//                while (builder.length() < 4) {
-//                    builder.append("0");
-//                }
-//            }
+
 
             String lineOfCode = builder.toString();
+            // check if line matches hex format
             if (lineOfCode.matches("^[-0-9a-f]+$")) {
                 // create hex digit
                 Hex4digit hex = new Hex4digit();
                 hex.setValue(lineOfCode);
-                translatedFile.add(hex);
+                translatedFile.add(hex); // adds hex code to list
             } else {
                 throw new Exception("Instruction contains unknown characters.");
             }
 
+
             lineIndex++;
         }
 
-        this.setTranslatedCode(translatedFile);
-        return this.getTranslatedCode();
+        return translatedFile;
     }
 
     public static void main(String[] args) throws Exception {
-        Translator translator = new Translator("Translator/src/main/java/CS4488/Capstone/Translator/armcode.txt");
+        //"Translator/src/main/java/CS4488/Capstone/Translator/armcode.txt"
+        //"Example Code/Program 1, Hello Branch and Math.txt"
+        //"Example Code/Program 2, 4 Input 4 Operations.txt"
+        //"Example Code/Program 3, Hello Memory.txt"
+        //"Example Code/Program 4, Hello In Out.txt"
+        //Example Code/Program 6, Dangerous Input.txt
 
-         ArrayList<Hex4digit> translatedCode = translator.convertToHex(translator.parseFile(translator.armFile));
+
+         Translator translator = new Translator("Example Code/Program 2, 4 Input 4 Operations.txt");
+         ArrayList<Hex4digit> translatedCode = translator.getTranslatedCode();
 
         for(Hex4digit code : translatedCode){
             System.out.println(code.getHexChars());
         }
-//        System.out.println(translator.file);
+
     }
 }
