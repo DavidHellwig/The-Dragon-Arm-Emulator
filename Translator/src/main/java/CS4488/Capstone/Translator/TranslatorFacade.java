@@ -18,17 +18,31 @@ public class TranslatorFacade implements TranslatorInterface {
 
     }
 
+    /**
+     * > This function loads the ARM file and returns true if the file is loaded successfully
+     *
+     * @param armFile The path to the ARM file to load.
+     * @return A boolean value.
+     */
     @Override
     public boolean loadFile(String armFile) throws Exception {
         this.translator = Translator.getInstance(armFile);
         return this.translator.isLoaded();
     }
 
+    /**
+     * This function clears the file
+     */
     @Override
     public void clearFile() {
         translator.clearFile();
     }
 
+    /**
+     * > If the translator has translated code, then the translator is translatable
+     *
+     * @return The return value is a boolean.
+     */
     @Override
     public boolean isTranslatable() {
 
@@ -36,11 +50,22 @@ public class TranslatorFacade implements TranslatorInterface {
                 && this.translator.getTranslatedCode().size() != 0;
     }
 
+    /**
+     * > The function `translateToMachine()` returns an `ArrayList<Hex4digit>` which is the translated code of the
+     * `Translator` object
+     *
+     * @return The translated code.
+     */
     @Override
     public ArrayList<Hex4digit> translateToMachine() {
         return this.translator.getTranslatedCode();
     }
 
+    /**
+     * > This function returns the last exception message that was thrown by the translator
+     *
+     * @return The exception message.
+     */
     @Override
     public String getLastExceptionMessage() {
         return this.translator.getExceptionMessage();
