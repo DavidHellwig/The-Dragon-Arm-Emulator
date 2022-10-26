@@ -17,7 +17,6 @@ public class Translator  {
 
     private Translator(String armFile) throws Exception {
 
-
         // Load, Read and Set Arm-file
         this.setArmFile(this.readFile(armFile));
         this.setLoaded(!(this.getArmFile().isEmpty())); // set if file is loaded successfully
@@ -64,11 +63,21 @@ public class Translator  {
     }
 
 
+    /**
+     *
+     */
     public void clearFile() {
         setArmFile("");
         setLoaded(false);
         setTranslatedCode(null);
     }
+
+    /**
+     *
+     * @param arr
+     * @param index
+     * @return
+     */
 
     private  String[] removeTheElement(String[] arr, int index) {
 
@@ -108,18 +117,19 @@ public class Translator  {
     }
 
 
-    public boolean isTranslatable() {
-        return false;
-    }
-
+    /***
+     *
+     * @param line
+     * @return
+     */
     public String removeComments(String line){
 
         String lineCopy = line;
 
-
         while(lineCopy.contains("@")){
+
             int firstIndex = lineCopy.indexOf('@');
-            if(firstIndex + 1 < lineCopy.length() ){
+            if(firstIndex + 1 < lineCopy.length()){
                 int endIndex = lineCopy.indexOf('@', firstIndex + 1);
                 if(endIndex + 1 <= lineCopy.length()){
                     lineCopy = lineCopy.replace(lineCopy.substring(firstIndex, endIndex + 1), "");
@@ -143,6 +153,12 @@ public class Translator  {
         return text.toString().toLowerCase();
     }
 
+
+    /**
+     *
+     * @param armFile
+     * @return
+     */
     private String [] parseFile(String armFile){
         String noComments = removeComments(armFile)
                 .replaceAll("#", "")
@@ -151,6 +167,13 @@ public class Translator  {
         return noComments.split(";");
 
     }
+
+    /***
+     *
+     * @param lineOfCode
+     * @param parsedFile
+     * @param lineIndex
+     */
 
     private void setLabels(String lineOfCode, String [] parsedFile, int lineIndex){
         String[] lineArray = lineOfCode.split(":");
@@ -174,7 +197,12 @@ public class Translator  {
     }
 
 
-
+    /***
+     *
+     * @param parsedFile
+     * @return
+     * @throws Exception
+     */
     public ArrayList<Hex4digit> convertToHex(String [] parsedFile) throws Exception {
         InstructionParser instructionParser =  InstructionParser.getInstance();
 
@@ -251,7 +279,7 @@ public class Translator  {
         //Example Code/Program 6, Dangerous Input.txt
 
 
-         Translator translator = new Translator("Example Code/Program 1, Hello Branch and Math.txt");
+         Translator translator = new Translator("Example Code/Program 2, 4 Input 4 Operations.txt");
          ArrayList<Hex4digit> translatedCode = translator.getTranslatedCode();
 
         for(Hex4digit code : translatedCode){
