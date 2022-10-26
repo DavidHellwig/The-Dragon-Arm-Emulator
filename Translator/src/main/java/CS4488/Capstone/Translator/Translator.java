@@ -114,19 +114,21 @@ public class Translator  {
 
     public String removeComments(String line){
 
+        String lineCopy = line;
 
-        while(line.contains("@")){
-            int firstIndex = line.indexOf('@');
-            if(firstIndex + 1 < line.length() ){
-                int endIndex = line.indexOf('@', firstIndex + 1);
-                if(endIndex + 1 <= line.length()){
-                    line = line.replace(line.substring(firstIndex, endIndex + 1), "");
+
+        while(lineCopy.contains("@")){
+            int firstIndex = lineCopy.indexOf('@');
+            if(firstIndex + 1 < lineCopy.length() ){
+                int endIndex = lineCopy.indexOf('@', firstIndex + 1);
+                if(endIndex + 1 <= lineCopy.length()){
+                    lineCopy = lineCopy.replace(lineCopy.substring(firstIndex, endIndex + 1), "");
                 }
 
             }
         }
 
-        return line;
+        return lineCopy;
 
     }
 
