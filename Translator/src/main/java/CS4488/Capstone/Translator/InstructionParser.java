@@ -85,18 +85,5 @@ public class InstructionParser {
         }
     }
 
-    public static void main(String[] args) {
-        InstructionParser instructionParser= new InstructionParser();
-
-        for (Map.Entry<String, String> me :
-                instructionParser.parser.entrySet()) {
-
-            // Printing keys
-            System.out.print(me.getKey() + ":");
-            System.out.println(me.getValue());
-        }
-
-    }
-
 
 }

@@ -1,4 +1,4 @@
-@ This program should take 4 inputs then Add, subtract, Multiply, and Divide them.
+@ This program should take 4 inputs then Add, subtract, Multiply, and Divide them.@
 rd r0;
 rd r1;
 rd r2;

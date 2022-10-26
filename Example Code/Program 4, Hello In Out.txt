@@ -1,4 +1,4 @@
-@ This program should take and input, and return some output.
+@ This program should take and input, and return some output.@
 br m02;
 #0003;
 ld m01 r0;
