@@ -1,2 +1,2 @@
-@ Do Halt.
-hlt
+@ Do Halt.@
+hlt;

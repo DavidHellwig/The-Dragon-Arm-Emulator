@@ -71,10 +71,10 @@ public class ProgramState implements ProgramStateInterface {
     @Override
     public void clearProgramState() {
         for (int i=0; i<REGISTER_COUNT; i++){
-            registers[i].setValue((short)0);
+            registers[i].setValue(0);
         }
-        input.setValue((short)0);
-        output.setValue((short)0);
+        input.setValue(0);
+        output.setValue(0);
         for (ArrayList<Hex4digit> h: memoryStateHistory) {h.clear();}
         memoryStateHistory.clear();
         pcHistory.clear();

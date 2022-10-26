@@ -14,14 +14,14 @@ public class TranslatorFacade implements TranslatorInterface {
 
     private Translator translator;
 
-    public TranslatorFacade(String armFile) throws Exception {
-        this.translator = Translator.getInstance(armFile);
+    public TranslatorFacade() {
 
     }
 
     @Override
-    public boolean loadFile(String path) {
-        return translator.isLoaded();
+    public boolean loadFile(String armFile) throws Exception {
+        this.translator = Translator.getInstance(armFile);
+        return this.translator.isLoaded();
     }
 
     @Override
@@ -31,7 +31,9 @@ public class TranslatorFacade implements TranslatorInterface {
 
     @Override
     public boolean isTranslatable() {
-        return false;
+
+        return translator.getTranslatedCode() != null
+                && translator.getTranslatedCode().size() != 0;
     }
 
     @Override
@@ -41,6 +43,6 @@ public class TranslatorFacade implements TranslatorInterface {
 
     @Override
     public String getLastExceptionMessage() {
-        return null;
+        return "Translator, Default Error";
     }
 }

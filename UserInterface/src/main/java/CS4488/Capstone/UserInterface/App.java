@@ -23,14 +23,16 @@ public class App extends Application {
         //I don't know why but my IDE automatically changed this line. If anything breaks this might be worth looking at
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/EmulatorGUI.fxml")));
 
-        Scene scene = new Scene(parent);
+        Scene scene = new Scene(parent,1280,720);
 
         primaryStage.setScene(scene);
+
 
         primaryStage.show();
     }
     public static void main(String[] args) {
        App.launch();
+
 
     }
 }

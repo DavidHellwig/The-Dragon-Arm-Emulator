@@ -11,9 +11,12 @@ import CS4488.Capstone.Library.FacadeInterfaces.NumberConverterAccess;
 import CS4488.Capstone.Library.FacadeInterfaces.ProgramStateAccess;
 import CS4488.Capstone.Library.FacadeInterfaces.TranslatorAccess;
 import CS4488.Capstone.Library.Tools.FileManager;
+import CS4488.Capstone.Library.Tools.Hex4digit;
 import CS4488.Capstone.Library.Tools.HexadecimalConverter;
 import CS4488.Capstone.Library.Tools.ProgramState;
 import CS4488.Capstone.Translator.TranslatorFacade;
+
+import java.util.ArrayList;
 
 /**
  * The Back End Facade Class that orchestrates everything else.
@@ -33,8 +36,8 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     private String error;
 
 
-
-    private Orchestrator(){
+    //Changed to public by David on 9/19, if broken look here
+    public Orchestrator(){
         state = ProgramState.getInstance();
         // translator = new TranslatorFacade();
         executor = new ExecutorFacade();
@@ -79,6 +82,10 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         return result;
     }
 
+    public void clearProgram(){
+        executor.clearState();
+    }
+
 
     @Override
     public ProgramState getProgramState() {
@@ -96,13 +103,14 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     }
 
     @Override
-    public boolean translateAndLoad(String path) {
+    public boolean translateAndLoad(String path) throws Exception {
         resetError();
         boolean result = translator.loadFile(path);
         if (result) {
 
             result = translator.isTranslatable();
             if (result){
+                state.clearProgramState();
                 state.initializeState(translator.translateToMachine());
                 executor.setProgramState(state);
                 translator.clearFile();
@@ -128,4 +136,33 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     public int convertToInt(char[] number) {
         return HexadecimalConverter.hexToDecimal(number);
     }
+
+
+    /**
+     * Returns the contents of a file
+     * @param path a file path
+     * @return txt file contents
+     */
+    public String loadFile(String path){
+
+        return fileManager.fileToString(path);
+    }
+
+    /**
+     * Returns the memory history of the program state, will need to refactor this later
+     * @return the memory history of program state
+     */
+    public ArrayList<ArrayList<Hex4digit>> getProgramStateMemoryHistory(){
+        return this.state.memoryStateHistory;
+    }
+
+    /**
+     * Stop the Orchestrator from running
+     */
+    /*public void endProgram(){
+        this.state.clearProgramState();
+
+    }*/
+
+
 }
