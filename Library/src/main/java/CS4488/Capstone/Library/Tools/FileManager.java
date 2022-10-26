@@ -5,6 +5,7 @@ import CS4488.Capstone.Library.BackEndSystemInterfaces.FileManagerInterface;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
 
 
 /**
@@ -17,18 +18,21 @@ import java.nio.file.Paths;
  * @author Traae
  */
 public class FileManager {
+    private static String defaultMessage = "No Current Error";
+    private String lastErrorMessage;
+
+
 
     // SINGLETON instance, private constructor, and getInstance.
-
-
-
     private static FileManager instance = null;
-    private FileManager(){}
+    private FileManager(){
+        lastErrorMessage = defaultMessage;
+    }
     public static FileManager getInstance(){
         if (instance == null){
             instance = new FileManager();
-        }
 
+        }
         return instance;
     }
 
@@ -38,7 +42,9 @@ public class FileManager {
      * @return is/is not readable;
      */
     public boolean checkFile(String pathString) {
-        return Files.isReadable(Paths.get(pathString));
+        boolean result = Files.isReadable(Paths.get(pathString));
+        lastErrorMessage = defaultMessage;
+        return result;
     }
 
     /**
@@ -50,10 +56,11 @@ public class FileManager {
         String readIn = "";
         try {
             readIn = Files.readString(Paths.get(pathString));
+            lastErrorMessage = defaultMessage;
         }
         catch (IOException e){
-            System.out.println(e.toString());
-            System.out.println(e.getMessage());
+            lastErrorMessage = ("FileManager.fileToString() Failure:\n" +
+                    e.toString() + "\n" + e.getMessage());
         }
         return readIn;
     }
@@ -63,17 +70,24 @@ public class FileManager {
      * @param FileContents
      * @param FilePath
      */
-    public void saveStringToFile(String FileContents, String FilePath) {
-       try {
-            Files.writeString(Paths.get(FilePath), FileContents);
+    public boolean saveStringToFile(String FileContents, String FilePath) {
+       boolean result;
+        result = Files.isWritable(Paths.get(FilePath));
+        if (result){
+            try {
+                Files.writeString(Paths.get(FilePath), FileContents);
+                lastErrorMessage = defaultMessage;
+            }
+            catch (Exception e){
+                result = false;
+                lastErrorMessage = ("FileManager.saveStringToFile() Failure:\n" +
+                        e.toString() + "\n" + e.getMessage());
+            }
         }
-        catch (Exception e){
-            System.out.println(e.toString());
-            System.out.println(e.getMessage());
-        }
-
+        return result;
     }
 
-
-
+    public String getLastErrorMessage() {
+        return lastErrorMessage;
+    }
 }

@@ -39,7 +39,7 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     //Changed to public by David on 9/19, if broken look here
     public Orchestrator(){
         state = ProgramState.getInstance();
-        // translator = new TranslatorFacade();
+        translator = new TranslatorFacade();
         executor = new ExecutorFacade();
         fileManager = FileManager.getInstance();
         this.resetError();
