@@ -32,17 +32,17 @@ public class TranslatorFacade implements TranslatorInterface {
     @Override
     public boolean isTranslatable() {
 
-        return translator.getTranslatedCode() != null
-                && translator.getTranslatedCode().size() != 0;
+        return this.translator.getTranslatedCode() != null
+                && this.translator.getTranslatedCode().size() != 0;
     }
 
     @Override
     public ArrayList<Hex4digit> translateToMachine() {
-        return translator.getTranslatedCode();
+        return this.translator.getTranslatedCode();
     }
 
     @Override
     public String getLastExceptionMessage() {
-        return "Translator, Default Error";
+        return this.translator.getExceptionMessage();
     }
 }
