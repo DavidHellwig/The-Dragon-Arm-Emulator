@@ -16,6 +16,7 @@ import CS4488.Capstone.Library.Tools.HexadecimalConverter;
 import CS4488.Capstone.Library.Tools.ProgramState;
 import CS4488.Capstone.Translator.TranslatorFacade;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 
 /**
@@ -64,20 +65,20 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     public boolean next() {
         resetError();
         boolean result = executor.hasState();
-        if (!result){
+        if (result == false){
             error = executor.getLastExceptionMessage();
+            return result;
         }
-        else {
-            result = executor.hasNext();
-            if (!result){
-                error = executor.getLastExceptionMessage();
-            }
+
+        result = executor.hasNext();
+        if (result == false){
+            error = executor.getLastExceptionMessage();
+            return result;
         }
-        if (result){
-            result = executor.next();
-            if (!result){
-                error = executor.getLastExceptionMessage();
-            }
+
+        result = executor.next();
+        if (result == false){
+            error = executor.getLastExceptionMessage();
         }
         return result;
     }
@@ -103,21 +104,29 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     }
 
     @Override
-    public boolean translateAndLoad(String path) throws Exception {
+    public boolean translateAndLoad(String path) {
         resetError();
-        boolean result = translator.loadFile(path);
-        if (result) {
-
-            result = translator.isTranslatable();
-            if (result){
-                state.clearProgramState();
-                state.initializeState(translator.translateToMachine());
-                executor.setProgramState(state);
-                translator.clearFile();
-            }
-            else {
+        boolean result;
+        try{
+            result = translator.loadFile(path);
+            if (result == false) {
                 error = translator.getLastExceptionMessage();
+                return result;
             }
+        }catch (Exception e){
+            error = translator.getLastExceptionMessage();
+            return false;
+        }
+
+        result = translator.isTranslatable();
+        if (result){
+            state.clearProgramState();
+            state.initializeState(translator.translateToMachine());
+            executor.setProgramState(state);
+            translator.clearFile();
+        }
+        else {
+            error = translator.getLastExceptionMessage();
         }
         else {
             error = translator.getLastExceptionMessage();
