@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CS4488.Capstone.UserInterface.EmulatorGUIController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffa500;" VBox.vgrow="ALWAYS">
+      <children>
+            <Button fx:id="loadButton" layoutX="8.0" layoutY="8.0" mnemonicParsing="false" onAction="#loadFile" text="Load" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Button fx:id="exitButton" layoutX="591.0" layoutY="8.0" mnemonicParsing="false" onAction="#exit" text="Exit" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Text layoutX="279.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input">
+               <font>
+                  <Font size="18.0" />
+               </font></Text>
+            <Text layoutX="1016.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Output">
+               <font>
+                  <Font size="18.0" />
+               </font></Text>
+            <Text layoutX="637.0" layoutY="414.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Memory">
+               <font>
+                  <Font size="18.0" />
+               </font></Text>
+            <ButtonBar layoutX="515.0" layoutY="14.0" prefHeight="40.0" prefWidth="200.0">
+              <buttons>
+                <Button fx:id="assembleButton" mnemonicParsing="false" onAction="#initializeMemoryTable" text="Build" />
+                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" text="Next" />
+                  <Button fx:id="runButton" mnemonicParsing="false" onAction="#run" text="Run" />
+                  <Button fx:id="abortButton" mnemonicParsing="false" onAction="#abortProgram" text="Abort" />
+              </buttons>
+            </ButtonBar>
+            <TextField fx:id="pc" editable="false" layoutX="505.0" layoutY="114.0" prefHeight="17.0" prefWidth="44.0" AnchorPane.bottomAnchor="581.0" AnchorPane.rightAnchor="731.0" AnchorPane.topAnchor="114.0" />
+            <TextField fx:id="AC" editable="false" layoutX="505.0" layoutY="164.0" prefHeight="17.0" prefWidth="44.0" />
+            <TextField fx:id="IN" editable="false" layoutX="505.0" layoutY="219.0" prefHeight="17.0" prefWidth="44.0" />
+            <TextField fx:id="OUT" editable="false" layoutX="506.0" layoutY="272.0" prefHeight="17.0" prefWidth="44.0" />
+            <Text layoutX="662.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PC" AnchorPane.leftAnchor="521.0" AnchorPane.rightAnchor="736.0" />
+            <Text layoutX="663.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IN" AnchorPane.leftAnchor="521.0" AnchorPane.rightAnchor="736.0" />
+            <Text layoutX="660.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AC" wrappingWidth="22.169921875" AnchorPane.leftAnchor="521.0" AnchorPane.rightAnchor="736.0" />
+            <TextField fx:id="conversionTextField" layoutX="615.0" layoutY="122.0" prefHeight="25.0" prefWidth="130.0" promptText="Enter decimal or hex " />
+            <Text layoutX="647.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hex Converter" wrappingWidth="116.103515625" />
+            <Button fx:id="hexConverterDecimalToHexButton" layoutX="632.0" layoutY="152.0" mnemonicParsing="false" onAction="#decimalToHex" text="Decimal to Hex" />
+            <Button fx:id="hexConverterHexToDecimalButton" layoutX="632.0" layoutY="187.0" mnemonicParsing="false" onAction="#hexToDecimal" text="Hex to Decimal" />
+            <Text layoutX="515.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OUT" AnchorPane.leftAnchor="515.0" AnchorPane.rightAnchor="741.421875" />
+            <TextArea fx:id="inputBox" layoutX="94.0" layoutY="71.0" prefHeight="305.0" prefWidth="412.0" promptText="Enter code here" AnchorPane.bottomAnchor="344.0" AnchorPane.leftAnchor="94.0" AnchorPane.rightAnchor="774.0" AnchorPane.topAnchor="71.0" />
+            <TextArea editable="false" layoutX="838.0" layoutY="79.0" prefHeight="305.0" prefWidth="412.0" />
+            <Text layoutX="1122.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <TextArea fx:id="memoryTable" editable="false" layoutX="268.0" layoutY="434.0" prefHeight="250.0" prefWidth="805.0" />
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>
