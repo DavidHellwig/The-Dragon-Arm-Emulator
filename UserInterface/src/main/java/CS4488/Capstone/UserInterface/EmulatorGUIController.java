@@ -44,8 +44,7 @@ public class EmulatorGUIController {
     @FXML
     private TextField pc;
 
-    @FXML
-    private TextField AC;
+
 
     @FXML
     private TextField IN;
@@ -54,7 +53,10 @@ public class EmulatorGUIController {
     private TextField OUT;
 
     @FXML
-    private TextField conversionTextField;
+    private TextField decToHexConversionTextField;
+
+    @FXML
+    private TextField hexToDecConversionTextField;
 
     @FXML
     private Button debug;
@@ -62,8 +64,6 @@ public class EmulatorGUIController {
     @FXML
     private TextArea inputBox;
 
-    @FXML
-    private TextArea outputBox;
 
     @FXML
     private TextArea memoryTable;
@@ -85,13 +85,13 @@ public class EmulatorGUIController {
     @FXML
     void decimalToHex(ActionEvent actionEvent){
 
-        String stringDecimal = conversionTextField.getText();
+        String stringDecimal = decToHexConversionTextField.getText();
 
 
         try{
 
             short decimal = Short.parseShort(stringDecimal);
-            conversionTextField.setText(String.copyValueOf(orc.convertToHexChars(decimal)));
+            decToHexConversionTextField.setText(String.copyValueOf(orc.convertToHexChars(decimal)));
         }
         catch(Exception ignored){
         }
@@ -110,10 +110,10 @@ public class EmulatorGUIController {
      */
     @FXML
     void hexToDecimal(ActionEvent actionEvent){
-        String stringHex = conversionTextField.getText();
+        String stringHex = hexToDecConversionTextField.getText();
         try{
         char[] charHex = stringHex.toCharArray();
-            conversionTextField.setText(String.valueOf(orc.convertToInt(charHex)));
+            hexToDecConversionTextField.setText(String.valueOf(orc.convertToInt(charHex)));
         }
         catch (Exception ignored){
         }
