@@ -9,6 +9,12 @@ public class InstructionParser {
             = new HashMap<>();
 
 
+    /**
+     * > If the singleton is null, create a new instance of the class and return it. Otherwise, return the existing
+     * instance
+     *
+     * @return The singleton instance of the InstructionParser class.
+     */
     public static InstructionParser getInstance(){
         if(singleton == null){
             singleton = new InstructionParser();
@@ -16,17 +22,33 @@ public class InstructionParser {
        return singleton;
     }
 
+    /**
+     * Loading the instructions, registers, and memory into the parser map.
+     */
     private InstructionParser(){
         loadInstructions();
+//        System.out.println(getParser().size());
         loadRegisters();
+//        System.out.println(getParser().size());
         loadMemory();
+
     }
 
+    /**
+     * This function returns a map of strings to strings.
+     *
+     * @return A map of strings to strings.
+     */
     public Map<String, String> getParser() {
         return this.parser;
     }
 
+    /**
+     * It loads the instructions into the parser
+     */
     private void loadInstructions(){
+        // 16 instructions
+
         this.parser.put("hlt", "0");
         this.parser.put("ld", "1");
         this.parser.put("st", "2");
@@ -46,6 +68,9 @@ public class InstructionParser {
     }
 
 
+    /**
+     * It loads the registers into the parser
+     */
     private void loadRegisters(){
         for(int i = 0; i < 16; i++){
 
@@ -67,6 +92,9 @@ public class InstructionParser {
     }
 
 
+    /**
+     * It loads the memory addresses into the parser map
+     */
     private void loadMemory(){
         for(int i = 0; i < 16; i++){
 
@@ -84,6 +112,8 @@ public class InstructionParser {
             }
         }
     }
+
+
 
 
 }
