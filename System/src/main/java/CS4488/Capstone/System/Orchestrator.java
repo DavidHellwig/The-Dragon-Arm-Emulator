@@ -15,8 +15,6 @@ import CS4488.Capstone.Library.Tools.Hex4digit;
 import CS4488.Capstone.Library.Tools.HexadecimalConverter;
 import CS4488.Capstone.Library.Tools.ProgramState;
 import CS4488.Capstone.Translator.TranslatorFacade;
-
-import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 
 /**
@@ -37,8 +35,8 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     private String error;
 
 
-    //Changed to public by David on 9/19, if broken look here
-    public Orchestrator(){
+
+    private Orchestrator(){
         state = ProgramState.getInstance();
         translator = new TranslatorFacade();
         executor = new ExecutorFacade();
@@ -119,14 +117,15 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         }
 
         result = translator.isTranslatable();
-        if (result){
-            state.clearProgramState();
-            state.initializeState(translator.translateToMachine());
-            executor.setProgramState(state);
-            translator.clearFile();
+
+        if (result == false){
+            error = translator.getLastExceptionMessage();
         }
-        else {
-            error = translator.getLastExceptionMessage();}
+
+        state.clearProgramState();
+        state.initializeState(translator.translateToMachine());
+        executor.setProgramState(state);
+        translator.clearFile();
         return result;
     }
 
@@ -160,13 +159,6 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         return this.state.memoryStateHistory;
     }
 
-    /**
-     * Stop the Orchestrator from running
-     */
-    /*public void endProgram(){
-        this.state.clearProgramState();
-
-    }*/
 
 
 }
