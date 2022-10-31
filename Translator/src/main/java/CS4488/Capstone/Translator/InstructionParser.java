@@ -27,8 +27,11 @@ public class InstructionParser {
      */
     private InstructionParser(){
         loadInstructions();
+//        System.out.println(getParser().size());
         loadRegisters();
+//        System.out.println(getParser().size());
         loadMemory();
+
     }
 
     /**
@@ -44,6 +47,8 @@ public class InstructionParser {
      * It loads the instructions into the parser
      */
     private void loadInstructions(){
+        // 16 instructions
+
         this.parser.put("hlt", "0");
         this.parser.put("ld", "1");
         this.parser.put("st", "2");
@@ -107,6 +112,8 @@ public class InstructionParser {
             }
         }
     }
+
+
 
 
 }
