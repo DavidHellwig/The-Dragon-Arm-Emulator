@@ -126,12 +126,7 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
             translator.clearFile();
         }
         else {
-            error = translator.getLastExceptionMessage();
-        }
-        else {
-            error = translator.getLastExceptionMessage();
-        }
-
+            error = translator.getLastExceptionMessage();}
         return result;
     }
 
