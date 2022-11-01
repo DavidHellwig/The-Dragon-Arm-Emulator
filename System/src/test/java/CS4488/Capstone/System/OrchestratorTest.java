@@ -10,25 +10,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrchestratorTest {
     Orchestrator orchestrator = Orchestrator.getInstance();
 
+    @Test
+    void executionAndPrint(){
+        String realFile = "./Example Code/Program1, Hello Branch and Math.txt";
+        orchestrator.translateAndLoad(realFile);
+        orchestrator.getProgramState().printProgramState();
 
+        while (orchestrator.next()){
+            orchestrator.getProgramState().printProgramState();
+        }
+
+        orchestrator.clearProgram();
+
+    }
 
     @Test
     void next() {
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
-        System.out.println("YOOOOOOOOOOOOOOO\n");
 
     }
 

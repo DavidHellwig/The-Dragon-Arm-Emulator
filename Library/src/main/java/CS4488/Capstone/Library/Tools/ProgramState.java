@@ -82,14 +82,14 @@ public class ProgramState implements ProgramStateInterface {
 
     public String printProgramState(){
         StringBuilder stateSummary = new StringBuilder();
-        stateSummary.append("Input: " + input + "\n");
-        stateSummary.append("Output: " + output + "\n");
+        stateSummary.append("Input: " + input.getValue() + "\n");
+        stateSummary.append("Output: " + output.getValue() + "\n");
 
         stateSummary.append("Registers: ");
         int size = registers.length;
 
         for (int i=0; i<size; i++){
-            stateSummary.append(registers[i] + ", ");
+            stateSummary.append(registers[i].getValue() + ", ");
         }
         stateSummary.append("\n");
 
@@ -98,7 +98,7 @@ public class ProgramState implements ProgramStateInterface {
         for (int i=0; i<x; i++) {
             y = memoryStateHistory.get(i).size();
             for (int j=0; j<y; j++){
-                stateSummary.append(memoryStateHistory.get(i).get(j) + " ");
+                stateSummary.append(memoryStateHistory.get(i).get(j).getHexChars() + " ");
             }
             stateSummary.append("\n");
         }

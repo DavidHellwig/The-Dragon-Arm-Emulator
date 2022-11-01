@@ -88,7 +88,7 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
 
     @Override
     public ProgramState getProgramState() {
-            return ProgramState.getInstance();
+            return state;
     }
 
     @Override
@@ -151,13 +151,6 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         return fileManager.fileToString(path);
     }
 
-    /**
-     * Returns the memory history of the program state, will need to refactor this later
-     * @return the memory history of program state
-     */
-    public ArrayList<ArrayList<Hex4digit>> getProgramStateMemoryHistory(){
-        return this.state.memoryStateHistory;
-    }
 
 
 

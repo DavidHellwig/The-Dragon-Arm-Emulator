@@ -1,38 +1,32 @@
 package CS4488.Capstone.Translator;
 
 import CS4488.Capstone.Library.Tools.Hex4digit;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TranslatorFacadeTest {
-    TranslatorFacade translatorFacade = null;
-    String realFile = "C:\\Users\\Daniel\\Desktop\\The-Drgaon-Arm-Emulator\\Example Code\\Program 1, Hello Branch and Math.txt";
-    String fakeFile = "./ExampleCode/fhw4fhq2fhq4thq.txt";
-    String badFile = "C:\\Users\\Daniel\\Desktop\\The-Drgaon-Arm-Emulator\\Example Code\\Program X, Bad Program.txt";
 
+    private static final String resources = "./ResourceDirectories";
+    String realFile = resources + "/Example Code/Program 1, Hello Branch and Math.txt";
+    String fakeFile = resources + "/Example Code/fhw4fhq2fhq4thq.txt";
+    String badFile = resources + "/Example Code/Program X, Bad Program.txt";
 
-    @BeforeEach
-    void init(){
-        if (translatorFacade == null){
-            translatorFacade = new TranslatorFacade();
-        }
-    }
+    TranslatorFacade translatorFacade = new TranslatorFacade();
 
     @Test
     void loadFile() {
-//        init();
-
-
         try{
             boolean loaded = translatorFacade.loadFile(realFile);
             System.out.println(loaded);
-//            System.out.println(translatorFacade.);
+            System.out.println(translatorFacade.getLastExceptionMessage());
             assertTrue(loaded);
 
             loaded = translatorFacade.loadFile(fakeFile);
@@ -45,24 +39,20 @@ class TranslatorFacadeTest {
 
     @Test
     void isTranslatable() {
-//        init();
         boolean result = false;
         try{
             translatorFacade.loadFile(realFile);
             result = translatorFacade.isTranslatable();
-            assertTrue(result);
-            result = translatorFacade.loadFile(badFile);
-            assertFalse(result);
+
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-
+        assertTrue(result);
 
     }
 
     @Test
     void translateToMachine() {
-//        init();
         try{
             translatorFacade.loadFile(realFile);
             ArrayList<Hex4digit> expectation = new ArrayList<>();
