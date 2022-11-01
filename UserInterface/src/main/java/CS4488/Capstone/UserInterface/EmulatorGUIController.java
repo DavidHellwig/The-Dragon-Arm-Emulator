@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 
 import CS4488.Capstone.System.Orchestrator;
 
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 
 
@@ -67,7 +68,11 @@ public class EmulatorGUIController {
 
     @FXML
     private TextArea memoryTable;
-    
+
+    @FXML
+    private TextFlow memoryTable2;
+
+
 
     @FXML
     private Button hexConverterHexToDecimalButton;
@@ -177,8 +182,15 @@ public class EmulatorGUIController {
                 memArray += RAM[i][j] + "  ";
             }
             memArray += "\n";
+
         }
         memoryTable.setText(memArray);
+
+        memoryTable2.getChildren().add(memoryTable);
+
+
+
+
     }
     //Update RAM values, incomplete
     @FXML
@@ -194,6 +206,7 @@ public class EmulatorGUIController {
      */
     @FXML
     void next(ActionEvent actionEvent){
+        step();
         updateRAMValues();
     }
 
@@ -239,12 +252,14 @@ public class EmulatorGUIController {
     @FXML
     void step(){
 
+        if(orc.getError() != "Orchestrator: No Error."){
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText(orc.getError());
+            error.showAndWait();
+            abortProgram();
+        }
+
     }
-
-
-
-
-
 
 
 
@@ -254,6 +269,13 @@ public class EmulatorGUIController {
     @FXML
     void exit(){
         System.exit(0);
+    }
+
+    @FXML
+    void alertError(){
+
+
+
     }
 
 
