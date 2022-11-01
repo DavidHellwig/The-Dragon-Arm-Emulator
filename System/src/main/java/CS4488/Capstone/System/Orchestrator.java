@@ -105,15 +105,11 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     public boolean translateAndLoad(String path) {
         resetError();
         boolean result;
-        try{
-            result = translator.loadFile(path);
-            if (result == false) {
-                error = translator.getLastExceptionMessage();
-                return result;
-            }
-        }catch (Exception e){
+
+        result = translator.loadFile(path);
+        if (result == false) {
             error = translator.getLastExceptionMessage();
-            return false;
+            return result;
         }
 
         result = translator.isTranslatable();

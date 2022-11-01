@@ -152,7 +152,7 @@ public class Translator  {
         setArmFile("");
         setLoaded(false);
         setTranslatedCode(null);
-        System.out.println("Cleared all files.");
+        System.out.println("Translator: Cleared all files.");
     }
 
 
@@ -383,7 +383,7 @@ public class Translator  {
 
             lineIndex++;
         }
-        System.out.println("File successfully converted to hex code.");
+        System.out.println("Translator: File successfully converted to hex code.");
 
         return translatedFile;
     }

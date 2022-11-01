@@ -18,8 +18,11 @@ class TranslatorFacadeTest {
     String realFile = resources + "/Example Code/Program 1, Hello Branch and Math.txt";
     String fakeFile = resources + "/Example Code/fhw4fhq2fhq4thq.txt";
     String badFile = resources + "/Example Code/Program X, Bad Program.txt";
+    String translationTest = resources + "/translationTester.txt";
 
     TranslatorFacade translatorFacade = new TranslatorFacade();
+
+
 
     @Test
     void loadFile() {
@@ -52,32 +55,60 @@ class TranslatorFacadeTest {
     }
 
     @Test
+    @DisplayName("Translate to Machine Test")
     void translateToMachine() {
-        try{
-            translatorFacade.loadFile(realFile);
-            ArrayList<Hex4digit> expectation = new ArrayList<>();
-            //Adding the individual hand translated lines of the file listed in the realFile string;
-            expectation.add(new Hex4digit("9020"));
-            expectation.add(new Hex4digit("0002"));
-            expectation.add(new Hex4digit("1010"));
-            expectation.add(new Hex4digit("1011"));
-            expectation.add(new Hex4digit("3012"));
-            expectation.add(new Hex4digit("0000"));
+        boolean result = false;
 
-            ArrayList<Hex4digit> result = translatorFacade.translateToMachine();
+        ArrayList<Hex4digit> expectation = new ArrayList<>();
+        //Adding the individual hand translated lines of the file listed in the realFile string;
+        expectation.add(new Hex4digit("9020"));
+        expectation.add(new Hex4digit("0002"));
+        expectation.add(new Hex4digit("1010"));
+        expectation.add(new Hex4digit("1011"));
+        expectation.add(new Hex4digit("3012"));
+        expectation.add(new Hex4digit("0000"));
 
-            int size = expectation.size();
-            boolean isSame = false;
+        result = translateAndCompare(expectation, realFile);
+        //assertTrue(result);
 
-            for (int i = 0; i < size; i++){
-                isSame = (expectation.get(i).getValue() == result.get(i).getValue());
-            }
+        expectation.clear();
+        expectation.add(new Hex4digit("0000"));
+        expectation.add(new Hex4digit("1ff1"));
+        expectation.add(new Hex4digit("2ff1"));
+        expectation.add(new Hex4digit("3123"));
+        expectation.add(new Hex4digit("4123"));
+        expectation.add(new Hex4digit("5123"));
+        expectation.add(new Hex4digit("6123"));
+        expectation.add(new Hex4digit("7ff1"));
+        expectation.add(new Hex4digit("8ff1"));
+        expectation.add(new Hex4digit("9ff0"));
+        expectation.add(new Hex4digit("a1ff"));
+        expectation.add(new Hex4digit("b1ff"));
+        expectation.add(new Hex4digit("c1ff"));
+        expectation.add(new Hex4digit("d100"));
+        expectation.add(new Hex4digit("e500"));
 
-            assertTrue(isSame);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+
+        result = translateAndCompare(expectation, translationTest);
+        assertTrue(result);
+    }
+
+    private boolean translateAndCompare(ArrayList<Hex4digit> expectation, String testingFile){
+        translatorFacade.loadFile(testingFile);
+        ArrayList<Hex4digit> results = translatorFacade.translateToMachine();
+        int size = expectation.size();
+        boolean isSame = true;
+        System.out.println("Expectation --- Result");
+        String expect, result;
+        for (int i = 0; i < size; i++){
+            expect = expectation.get(i).getString();
+            result = results.get(i).getString();
+            System.out.println(expect + " --- " + result);
+
+            if(isSame) {isSame = (expect.equals(result));}
+
         }
-
+        return isSame;
     }
 
 
