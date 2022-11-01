@@ -60,12 +60,20 @@ public class ProgramState implements ProgramStateInterface {
     // Program State Interface
     @Override
     public boolean initializeState(ArrayList<Hex4digit> code) {
-        MemoryHistorySpace pc = new MemoryHistorySpace();
-        pc.memoryLocation = 0;
-        pc.value.setValue(code.get(0).getHexChars());
-        pcHistory.add(pc);
-        memoryStateHistory.add(code);
-        return true;
+        boolean result = false;
+
+        if ((code != null) && (code.size() > 0)){
+
+            MemoryHistorySpace pc = new MemoryHistorySpace();
+            pc.memoryLocation = 0;
+            pc.value.setValue(code.get(0).getHexChars());
+            pcHistory.add(pc);
+
+            memoryStateHistory.add(code);
+
+            result = true;
+        }
+        return result;
     }
 
     @Override
@@ -80,16 +88,16 @@ public class ProgramState implements ProgramStateInterface {
         pcHistory.clear();
     }
 
-    public String printProgramState(){
+    public String printableProgramState(){
         StringBuilder stateSummary = new StringBuilder();
-        stateSummary.append("Input: " + input.getValue() + "\n");
-        stateSummary.append("Output: " + output.getValue() + "\n");
+        stateSummary.append("Input: " + input.getString() + "\n");
+        stateSummary.append("Output: " + output.getString() + "\n");
 
         stateSummary.append("Registers: ");
         int size = registers.length;
 
         for (int i=0; i<size; i++){
-            stateSummary.append(registers[i].getValue() + ", ");
+            stateSummary.append(registers[i].getString() + ", ");
         }
         stateSummary.append("\n");
 
@@ -98,12 +106,11 @@ public class ProgramState implements ProgramStateInterface {
         for (int i=0; i<x; i++) {
             y = memoryStateHistory.get(i).size();
             for (int j=0; j<y; j++){
-                stateSummary.append(memoryStateHistory.get(i).get(j).getHexChars() + " ");
+                stateSummary.append(memoryStateHistory.get(i).get(j).getString() + " ");
             }
             stateSummary.append("\n");
         }
 
-        System.out.println(stateSummary.toString());
         return stateSummary.toString();
     }
 
