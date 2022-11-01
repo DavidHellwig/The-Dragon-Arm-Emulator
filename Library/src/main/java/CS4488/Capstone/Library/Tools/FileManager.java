@@ -6,8 +6,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
+
 
 
 /**
@@ -85,29 +86,29 @@ public class FileManager {
         return text.toString().toLowerCase();
     }
 
-    /**
-     * Saves a string to the specified file Path
-     * @param FileContents
-     * @param FilePath
-     */
-    public boolean saveStringToFile(String FileContents, String FilePath) {
-       boolean result;
-        result = Files.isWritable(Paths.get(FilePath));
-        if (result){
-            try {
-                Files.writeString(Paths.get(FilePath), FileContents);
-                lastErrorMessage = defaultMessage;
-            }
-            catch (Exception e){
-                result = false;
-                lastErrorMessage = ("FileManager.saveStringToFile() Failure:\n" +
-                        e.toString() + "\n" + e.getMessage());
-            }
-        }
-        return result;
-    }
-
     public String getLastErrorMessage() {
         return lastErrorMessage;
     }
+
+//    /**
+//     * Saves a string to the specified file Path
+//     * @param FileContents
+//     * @param FilePath
+//     */
+//    public boolean saveStringToFile(String FileContents, String FilePath) {
+//       boolean result;
+//       System.out.println("IS WRITABLE?????");
+//        result = true;//Files.isWritable(Paths.get(FilePath));
+//        System.out.println(result);
+//            try {
+//                Files.writeString(Paths.get(FilePath), FileContents);
+//                lastErrorMessage = defaultMessage;
+//            }
+//            catch (Exception e){
+//                result = false;
+//                lastErrorMessage = ("FileManager.saveStringToFile() Failure:\n" +
+//                        e.toString() + "\n" + e.getMessage());
+//            }
+//        return result;
+//    }
 }

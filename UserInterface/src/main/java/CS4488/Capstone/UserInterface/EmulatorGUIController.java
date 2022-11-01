@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class EmulatorGUIController {
-    private final Orchestrator orc = new Orchestrator();
+    private final Orchestrator orc = Orchestrator.getInstance();
 
     private String[][] RAM;
 
@@ -184,7 +184,7 @@ public class EmulatorGUIController {
     @FXML
     void updateRAMValues(){
         //String newMemArray = orc.getProgramState();
-        ArrayList<ArrayList<Hex4digit>> newHex4DigitMemarray = orc.getProgramStateMemoryHistory();
+        ArrayList<ArrayList<Hex4digit>> newHex4DigitMemarray = orc.getProgramState().memoryStateHistory;
         int x = 0;
     }
 

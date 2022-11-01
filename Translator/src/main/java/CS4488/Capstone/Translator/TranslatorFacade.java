@@ -25,7 +25,7 @@ public class TranslatorFacade implements TranslatorInterface {
      * @return A boolean value.
      */
     @Override
-    public boolean loadFile(String armFile) throws Exception {
+    public boolean loadFile(String armFile) {
         this.translator = Translator.getInstance(armFile);
         return this.translator.isLoaded();
     }
