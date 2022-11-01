@@ -144,7 +144,10 @@ public class EmulatorGUIController {
 
 
             inputBox.setText(orc.loadFile(file.getAbsolutePath()));
+            orc.translateAndLoad(file.getAbsolutePath());
         }
+
+
 
 
 
@@ -206,7 +209,12 @@ public class EmulatorGUIController {
      */
     @FXML
     void next(ActionEvent actionEvent){
-        step();
+        if(orc.getError() != "Orchestrator: No Error."){
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText(orc.getError());
+            error.showAndWait();
+            abortProgram();
+        }
         updateRAMValues();
     }
 
@@ -252,12 +260,7 @@ public class EmulatorGUIController {
     @FXML
     void step(){
 
-        if(orc.getError() != "Orchestrator: No Error."){
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setContentText(orc.getError());
-            error.showAndWait();
-            abortProgram();
-        }
+
 
     }
 
