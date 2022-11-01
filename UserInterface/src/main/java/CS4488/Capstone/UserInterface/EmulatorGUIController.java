@@ -16,7 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class EmulatorGUIController {
-    private final Orchestrator orc = new Orchestrator();
+    private final Orchestrator orc = Orchestrator.getInstance();
 
     private String[][] RAM;
 

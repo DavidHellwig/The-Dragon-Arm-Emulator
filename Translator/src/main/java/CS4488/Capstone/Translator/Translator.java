@@ -14,17 +14,28 @@ public class Translator  {
     private FileManager fileMan = FileManager.getInstance();
     private static Translator singleton;
     private String exceptionMessage = "No Error";
+    private boolean isTranslatable = false;
 
 
 
     private Translator(String armFile) throws Exception {
+      setTranslatable(this.translate(armFile));
+    }
 
-        //  Read and Set Arm-file
+
+
+    /**
+     * It reads the file, parses it, converts it to hexadecimal, and sets the translated code to the hexadecimal code
+     *
+     * @param armFile The file to be translated.
+     * @return A boolean value.
+     */
+    private boolean translate(String armFile){
         this.setArmFile(this.readFile(armFile));
         // Check and set if file is read successfully
         this.setLoaded(!(this.getArmFile().isEmpty()));
 
-       // Translate if loaded
+        // Translate if loaded
         if(this.isLoaded()){
             // Parse Arm-file for hex conversion
             String [] parsedFile = this.parseFile(this.getArmFile());
@@ -39,7 +50,26 @@ public class Translator  {
                 System.out.println(this.getExceptionMessage());
             }
 
+            return true;
         }
+
+        return false;
+    }
+
+    /**
+     * This function returns a boolean value that indicates whether the current object is translatable or not
+     */
+    public boolean isTranslatable() {
+        return  this.isTranslatable;
+    }
+
+    /**
+     * This function sets the translatable property of the current object to the value of the parameter.
+     *
+     * @param translatable If true, the text will be translated.
+     */
+    public void setTranslatable(boolean translatable) {
+        this.isTranslatable = translatable;
     }
 
     /**
@@ -51,7 +81,9 @@ public class Translator  {
      */
     public static Translator getInstance(String armFile) throws Exception {
         if(singleton == null){
-            singleton = new Translator(armFile);
+            singleton = new Translator(armFile); // initialize translator
+        }else{
+            singleton.translate(armFile); // if translate new arm file
         }
         return singleton;
     }
@@ -120,7 +152,7 @@ public class Translator  {
         setArmFile("");
         setLoaded(false);
         setTranslatedCode(null);
-        System.out.println("Clearing all files.");
+        System.out.println("Cleared all files.");
     }
 
 
@@ -171,7 +203,7 @@ public class Translator  {
      * @return The exception message.
      */
     public String getExceptionMessage() {
-        return exceptionMessage;
+        return this.exceptionMessage;
     }
 
     /**
@@ -326,7 +358,7 @@ public class Translator  {
 
 
             if (builder.length() > 4 && builder.charAt(0) != '-') {
-                String exception = String.format("Instruction memory is overflow occurred at Line %d.", lineIndex);
+                String exception = String.format("Instruction memory overflow occurred at Line %d.", lineIndex);
                 this.setExceptionMessage(exception);
                 this.clearFile();
                 System.out.println(this.getExceptionMessage());
@@ -356,21 +388,21 @@ public class Translator  {
         return translatedFile;
     }
 
-    public static void main(String[] args) throws Exception {
-        //"Translator/src/main/java/CS4488/Capstone/Translator/Program 8 - Random Instructions.txt"
-        //"Example Code/Program 1, Hello Branch and Math.txt"
-        //"Example Code/Program 2, 4 Input 4 Operations.txt"
-        //"Example Code/Program 3, Hello Memory.txt"
-        //"Example Code/Program 4, Hello In Out.txt"
-        //Example Code/Program 6, Dangerous Input.txt
-
-
-         Translator translator = new Translator("Example Code/Program 2, 4 Input 4 Operations.txt");
-         ArrayList<Hex4digit> translatedCode = translator.getTranslatedCode();
-
-        for(Hex4digit code : translatedCode){
-            System.out.println(code.getHexChars());
-        }
-
-    }
+//    public static void main(String[] args) throws Exception {
+//        //"Translator/src/main/java/CS4488/Capstone/Translator/Program 8 - Random Instructions.txt"
+//        //"Example Code/Program 1, Hello Branch and Math.txt"
+//        //"Example Code/Program 2, 4 Input 4 Operations.txt"
+//        //"Example Code/Program 3, Hello Memory.txt"
+//        //"Example Code/Program 4, Hello In Out.txt"
+//        //Example Code/Program 6, Dangerous Input.txt
+//
+//
+//         Translator translator = new Translator("Example Code/Program 2, 4 Input 4 Operations.txt");
+//         ArrayList<Hex4digit> translatedCode = translator.getTranslatedCode();
+//
+//        for(Hex4digit code : translatedCode){
+//            System.out.println(code.getHexChars());
+//        }
+//
+//    }
 }

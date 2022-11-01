@@ -1,13 +1,35 @@
 package CS4488.Capstone.System;
 
+import CS4488.Capstone.Library.Tools.Hex4digit;
 import org.junit.jupiter.api.Test;
+
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrchestratorTest {
+    Orchestrator orchestrator = Orchestrator.getInstance();
+
+
 
     @Test
     void next() {
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+        System.out.println("YOOOOOOOOOOOOOOO\n");
+
     }
 
     @Test
@@ -24,6 +46,9 @@ class OrchestratorTest {
 
     @Test
     void translateAndLoad() {
+        String realFile = "./ExampleCode/Program1, Hello Branch and Math.txt";
+        orchestrator.translateAndLoad(realFile);
+
     }
 
     @Test

@@ -80,6 +80,33 @@ public class ProgramState implements ProgramStateInterface {
         pcHistory.clear();
     }
 
+    public String printProgramState(){
+        StringBuilder stateSummary = new StringBuilder();
+        stateSummary.append("Input: " + input + "\n");
+        stateSummary.append("Output: " + output + "\n");
+
+        stateSummary.append("Registers: ");
+        int size = registers.length;
+
+        for (int i=0; i<size; i++){
+            stateSummary.append(registers[i] + ", ");
+        }
+        stateSummary.append("\n");
+
+        int x = memoryStateHistory.size();
+        int y=0;
+        for (int i=0; i<x; i++) {
+            y = memoryStateHistory.get(i).size();
+            for (int j=0; j<y; j++){
+                stateSummary.append(memoryStateHistory.get(i).get(j) + " ");
+            }
+            stateSummary.append("\n");
+        }
+
+        System.out.println(stateSummary.toString());
+        return stateSummary.toString();
+    }
+
 }
 
 

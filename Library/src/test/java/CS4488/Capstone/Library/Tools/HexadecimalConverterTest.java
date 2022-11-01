@@ -79,7 +79,7 @@ class HexadecimalConverterTest {
     @Test
     void integratedTest(){
         init();
-        int trails = 100;
+        int trails = 10;
 
         for (int i=0; i<trails; i++){
             testNumbers.add(MockDataGenerator.getRandomHexValue4());
