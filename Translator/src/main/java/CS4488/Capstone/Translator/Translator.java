@@ -1,3 +1,4 @@
+
 package CS4488.Capstone.Translator;
 
 
@@ -6,12 +7,19 @@ import CS4488.Capstone.Library.Tools.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
+
+/**
+ * It reads a file, parses it, converts it to hexadecimal, and sets the translated code to the hexadecimal code.
+ *
+ *  * @version 0.0.9
+ *  * @author Daniel Igbokwe
+ */
 public class Translator  {
     // Instance variables
     private String armFile;
     private boolean loaded;
     private ArrayList<Hex4digit> translatedCode = null;
-    private FileManager fileMan = FileManager.getInstance();
+    private final FileManager fileMan = FileManager.getInstance();
     private static Translator singleton;
     private String exceptionMessage = "No Error";
     private boolean isTranslatable = false;
@@ -45,12 +53,11 @@ public class Translator  {
             // if lines don't exceed memory space
             if(hex4dCode.size() <= 256){
                 this.setTranslatedCode(hex4dCode);
+                return true;
             }else{
                 this.setExceptionMessage("System Memory overflow, Lines exceed 256.");
                 System.out.println(this.getExceptionMessage());
             }
-
-            return true;
         }
 
         return false;
