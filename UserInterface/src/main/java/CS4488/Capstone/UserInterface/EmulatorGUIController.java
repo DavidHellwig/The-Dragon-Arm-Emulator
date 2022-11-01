@@ -184,7 +184,7 @@ public class EmulatorGUIController {
     @FXML
     void updateRAMValues(){
         //String newMemArray = orc.getProgramState();
-        ArrayList<ArrayList<Hex4digit>> newHex4DigitMemarray = orc.getProgramStateMemoryHistory();
+        ArrayList<ArrayList<Hex4digit>> newHex4DigitMemarray = orc.getProgramState().memoryStateHistory;
         int x = 0;
     }
 

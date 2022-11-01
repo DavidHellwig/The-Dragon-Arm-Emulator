@@ -1,0 +1,16 @@
+@This is a comment@
+hlt;
+ld mff r1;
+st mff r1;
+add r1 r2 r3;
+sub r1 r2 r3;
+mul r1 r2 r3;
+div r1 r2 r3;
+ldi mff r1;
+sti mff r1;
+br mff;
+brz r1 mff;
+brn r1 mff;
+brp r1 mff;
+rd r1;
+wr r5;

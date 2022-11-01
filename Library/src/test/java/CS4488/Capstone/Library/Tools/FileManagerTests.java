@@ -2,33 +2,42 @@ package CS4488.Capstone.Library.Tools;
 
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileManagerTests {
+    private static final String resources = "./ResourceDirectories";
+    String realFile = resources + "/Example Code/Program 1, Hello Branch and Math.txt";
+    String fakeFile = resources + "/Example Code/fhw4fhq2fhq4thq.txt";
+    String badFile = resources + "/Example Code/Program X, Bad Program.txt";
+
     FileManager file = FileManager.getInstance();
-    String realFile = "./Example Code/Program1, Hello Branch and Math.txt";
-    String fakeFile = "./Example Code/fhw4fhq2fhq4thq.txt";
-    //String badFile = "./Example Code/Program X, Bad Program.txt";
-    String badFile = "D:\\Code\\The-Drgaon-Arm-Emulator\\Example Code\\Program X, Bad Program.txt";
-    void printMessageifFalse(boolean b){
+
+    void printMessageifFalse(boolean b, String Label){
         if (!b){
-            System.out.println(file.getLastErrorMessage());
+            System.out.println(Label + ": \n" +file.getLastErrorMessage());
         }
     }
 
+
+
     @Test
     void checkFile() {
-        boolean result = file.checkFile(realFile);
-        printMessageifFalse(result);
-        //assertTrue(result);
+        boolean result;
+
+        result = file.checkFile(realFile);
+        printMessageifFalse(result, "Real File");
+        assertTrue(result);
 
         result = file.checkFile(badFile);
-        printMessageifFalse(result);
-        //assertTrue(result);
+        printMessageifFalse(result, "Bad File");
+        assertTrue(result);
 
         result = file.checkFile(fakeFile);
-        printMessageifFalse(!result);
-        //assertFalse(result);
+        printMessageifFalse(result, "Fake File");
+        assertFalse(result);
     }
 
     @Test
@@ -39,14 +48,13 @@ class FileManagerTests {
         assertNotNull(in);
     }
 
-    @Test
-    void saveStringToFile() {
-        String testfile = "./Example Code/SavedTestFile.txt";
-
-        boolean result = file.saveStringToFile("Yo, this is a test file", testfile);
-
-        //file.checkFile(testfile);
-        printMessageifFalse(result);
-        //assertTrue(result);
-    }
+//    @Test
+//    void saveStringToFile() {
+//        String testfile = "./Example Code/SavedTestFile.txt";
+//
+//        boolean result = file.saveStringToFile("Yo, this is a test file", testfile);
+//
+//        printMessageifFalse(result, "Test File is save String");
+//        assertTrue(result);
+//    }
 }

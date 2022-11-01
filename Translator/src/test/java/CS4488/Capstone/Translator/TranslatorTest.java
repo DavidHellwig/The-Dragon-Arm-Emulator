@@ -24,6 +24,7 @@ class TranslatorTest {
 
     @Test
     void getTranslatedCode() {
+
     }
 
     @Test
@@ -38,11 +39,5 @@ class TranslatorTest {
     void isTranslatable() {
     }
 
-    @Test
-    void convertToHex() {
-    }
 
-    @Test
-    void main() {
-    }
 }
