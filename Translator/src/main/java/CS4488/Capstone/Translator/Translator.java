@@ -354,7 +354,6 @@ public class Translator  {
 
 //            System.out.println("Line: "+line);
 //
-//            System.out.println("Translated instruct:"+builder);
 
 
             if (builder.length() > 4 && builder.charAt(0) != '-') {
@@ -363,7 +362,22 @@ public class Translator  {
                 this.clearFile();
                 System.out.println(this.getExceptionMessage());
                 break;
+            }else{
+                int stop = 5;
+                // not negative instruction
+                if(builder.charAt(0) != '-'){
+                    stop = 4;
+                }
+
+                // stop at 4 if non-negative
+
+                while(builder.length() < stop){
+                    builder.append("0");
+                }
+
             }
+
+//            System.out.println("After checking Translated instruct:"+builder);
 
 
             String lineOfCode = builder.toString();
