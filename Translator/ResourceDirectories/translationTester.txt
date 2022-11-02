@@ -14,3 +14,4 @@ brn r1 mff;
 brp r1 mff;
 rd r1;
 wr r5;
+hlt;

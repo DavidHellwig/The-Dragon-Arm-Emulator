@@ -69,7 +69,7 @@ class TranslatorFacadeTest {
         expectation.add(new Hex4digit("0000"));
 
         result = translateAndCompare(expectation, realFile);
-        //assertTrue(result);
+        assertTrue(result);
 
         expectation.clear();
         expectation.add(new Hex4digit("0000"));
@@ -87,6 +87,8 @@ class TranslatorFacadeTest {
         expectation.add(new Hex4digit("c1ff"));
         expectation.add(new Hex4digit("d100"));
         expectation.add(new Hex4digit("e500"));
+        expectation.add(new Hex4digit("0000"));
+
 
 
         result = translateAndCompare(expectation, translationTest);
