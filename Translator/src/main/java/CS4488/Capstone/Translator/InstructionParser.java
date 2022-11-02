@@ -2,6 +2,11 @@ package CS4488.Capstone.Translator;
 
 import java.util.*;
 
+/**
+ * It's a singleton class that loads the instructions, registers, and memory addresses into a map
+ *  *  * @version 0.0.9
+ *  *  * @author Daniel Igbokwe
+ */
 public class InstructionParser {
 
     private static InstructionParser singleton = null;

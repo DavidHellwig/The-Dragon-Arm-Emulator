@@ -10,6 +10,12 @@ import CS4488.Capstone.Library.Tools.Hex4digit;
 
 import java.util.ArrayList;
 
+/**
+ * The `TranslatorFacade` class is a facade for the `Translator` class
+ *
+ *  *  * @version 0.0.9
+ *  *  * @author Daniel Igbokwe
+ */
 public class TranslatorFacade implements TranslatorInterface {
 
     private Translator translator;

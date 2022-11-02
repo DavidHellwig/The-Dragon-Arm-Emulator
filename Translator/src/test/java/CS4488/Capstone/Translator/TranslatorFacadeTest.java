@@ -12,6 +12,12 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This is a test class for the facade translator.
+ *  *  * @version 0.0.9
+ *  *  * @author Trae, Daniel Igbokwe
+ *
+ */
 class TranslatorFacadeTest {
 
     private static final String resources = "./ResourceDirectories";
@@ -25,6 +31,7 @@ class TranslatorFacadeTest {
 
 
     @Test
+    @DisplayName("Test for loading files")
     void loadFile() {
         try{
             boolean loaded = translatorFacade.loadFile(realFile);
@@ -55,7 +62,7 @@ class TranslatorFacadeTest {
     }
 
     @Test
-    @DisplayName("Translate to Machine Test")
+    @DisplayName("Test for Translation to Machine code")
     void translateToMachine() {
         boolean result = false;
 
@@ -95,6 +102,10 @@ class TranslatorFacadeTest {
         assertTrue(result);
     }
 
+
+    @Test
+    @DisplayName("Test Translation. Expected vs Output")
+
     private boolean translateAndCompare(ArrayList<Hex4digit> expectation, String testingFile){
         translatorFacade.loadFile(testingFile);
         ArrayList<Hex4digit> results = translatorFacade.translateToMachine();
@@ -115,7 +126,7 @@ class TranslatorFacadeTest {
 
 
     @Test
-    @DisplayName("Test clear file")
+    @DisplayName("Testing clearing file")
     void clearFile(){
        try{
            translatorFacade.loadFile(realFile);
