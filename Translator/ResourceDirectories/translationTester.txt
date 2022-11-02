@@ -1,17 +1,28 @@
 @This is a comment@
-hlt;
-ld mff r1;
-st mff r1;
-add r1 r2 r3;
-sub r1 r2 r3;
-mul r1 r2 r3;
-div r1 r2 r3;
-ldi mff r1;
-sti mff r1;
-br mff;
-brz r1 mff;
-brn r1 mff;
-brp r1 mff;
-rd r1;
-wr r5;
-hlt;
+@This file is not a functional program@
+
+@ Here is a list of basic instructions@
+@ Line Number / Memory Space to the Left @  @ Expectation to the Right @
+@ 00 @ hlt;                                 @ 0000 @
+@ 01 @ ld mff r1;                           @ 1ff1 @
+@ 02 @ st mff r1;                           @ 2ff1 @
+@ 03 @ add r1 r2 r3;                        @ 3123 @
+@ 04 @ sub r1 r2 r3;                        @ 4123 @
+@ 05 @ mul r1 r2 r3;                        @ 5123 @
+@ 06 @ div r1 r2 r3;                        @ 6123 @
+@ 07 @ ldi mff r1;                          @ 7ff1 @
+@ 08 @ sti mff r1;                          @ 8ff1 @
+@ 09 @ br mff;                              @ 9ff0 @
+@ 0a @ brz r1 mff;                          @ a1ff @
+@ 0b @ brn r1 mff;                          @ b1ff @
+@ 0c @ brp r1 mff;                          @ c1ff @
+@ 0d @ rd r1;                               @ d100 @
+@ 0e @ wr r5;                               @ e100 @
+@ 0f @ hlt;                                 @ 0000 @
+@ 10 @ label: hlt;                          @ 0000 @
+@ 11 @ br label;                            @ 9100 @ @ 9 = br, 10 = label, 0 = extra @
+@ 12 @ label2: 0x1234;                      @ 1234 @
+@ 13 @ ld label2 r2;                        @ 1122 @ @ 1 = ld, 12 = label2, 2 = r2 @
+@ 14 @ Label3:                              @ abcd @
+            #abcd
+@ 15 @ sti Label3 r3;                       @ 8143 @ @ 8 = sti, Label3 = 14, 3 = r3 @

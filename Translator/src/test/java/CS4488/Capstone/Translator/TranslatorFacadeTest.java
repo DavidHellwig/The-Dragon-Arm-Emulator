@@ -95,8 +95,12 @@ class TranslatorFacadeTest {
         expectation.add(new Hex4digit("d100"));
         expectation.add(new Hex4digit("e500"));
         expectation.add(new Hex4digit("0000"));
-
-
+        expectation.add(new Hex4digit("0000"));
+        expectation.add(new Hex4digit("9100"));
+        expectation.add(new Hex4digit("1234"));
+        expectation.add(new Hex4digit("1122"));
+        expectation.add(new Hex4digit("abcd"));
+        expectation.add(new Hex4digit("8143"));
 
         result = translateAndCompare(expectation, translationTest);
         assertTrue(result);
@@ -105,7 +109,6 @@ class TranslatorFacadeTest {
 
     @Test
     @DisplayName("Test Translation. Expected vs Output")
-
     private boolean translateAndCompare(ArrayList<Hex4digit> expectation, String testingFile){
         translatorFacade.loadFile(testingFile);
         ArrayList<Hex4digit> results = translatorFacade.translateToMachine();

@@ -64,19 +64,19 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         resetError();
         boolean result = executor.hasState();
         if (result == false){
-            error = executor.getLastExceptionMessage();
+            error = "Executor" + executor.getLastExceptionMessage();
             return result;
         }
 
         result = executor.hasNext();
         if (result == false){
-            error = executor.getLastExceptionMessage();
+            error = "Executor" + executor.getLastExceptionMessage();
             return result;
         }
 
         result = executor.next();
         if (result == false){
-            error = executor.getLastExceptionMessage();
+            error = "Executor" + executor.getLastExceptionMessage();
         }
         return result;
     }
@@ -108,14 +108,14 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
 
         result = translator.loadFile(path);
         if (result == false) {
-            error = translator.getLastExceptionMessage();
+            error = "Translator" + translator.getLastExceptionMessage();
             return result;
         }
 
         result = translator.isTranslatable();
 
         if (result == false){
-            error = translator.getLastExceptionMessage();
+            error = "Translator" + translator.getLastExceptionMessage();
         }
 
         state.clearProgramState();

@@ -13,8 +13,8 @@ import java.util.ArrayList;
 /**
  * The `TranslatorFacade` class is a facade for the `Translator` class
  *
- *  *  * @version 0.0.9
- *  *  * @author Daniel Igbokwe
+ * @version 0.0.9
+ * @author Daniel Igbokwe
  */
 public class TranslatorFacade implements TranslatorInterface {
 

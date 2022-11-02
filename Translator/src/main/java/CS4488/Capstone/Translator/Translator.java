@@ -364,7 +364,8 @@ public class Translator  {
 
 
             if (builder.length() > 4 && builder.charAt(0) != '-') {
-                String exception = String.format("Instruction memory overflow occurred at Line %d.", lineIndex);
+                String exception = String.format("Instruction memory overflow occurred at Line %d. \n" +
+                        "Line: %s", lineIndex, builder.toString());
                 this.setExceptionMessage(exception);
                 this.clearFile();
                 System.out.println(this.getExceptionMessage());
@@ -404,7 +405,7 @@ public class Translator  {
 
             lineIndex++;
         }
-        System.out.println("Translator: File successfully converted to hex code.");
+        System.out.println("File successfully converted to hex code.");
 
         return translatedFile;
     }

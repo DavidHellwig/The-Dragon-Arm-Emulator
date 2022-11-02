@@ -94,7 +94,7 @@ public class ProgramState implements ProgramStateInterface {
         stateSummary.append("Output: " + output.getString() + "\n");
 
         stateSummary.append("PC: " + registers[registers.length-1].getString());
-        stateSummary.append("Registers: ");
+        stateSummary.append("\nRegisters: ");
         int size = registers.length-1;
 
         for (int i=0; i<size; i++){
@@ -105,7 +105,6 @@ public class ProgramState implements ProgramStateInterface {
         int x = memoryStateHistory.size();
         int y=0;
         for (int i=0; i<x; i++) {
-            stateSummary.append("State #" + x);
             y = memoryStateHistory.get(i).size();
             for (int j=0; j<y; j++){
                 stateSummary.append(memoryStateHistory.get(i).get(j).getString() + " ");

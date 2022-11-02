@@ -36,7 +36,7 @@ class FileManagerTests {
         assertTrue(result);
 
         result = file.checkFile(fakeFile);
-        printMessageifFalse(result, "Fake File");
+        //printMessageifFalse(result, "Fake File");
         assertFalse(result);
     }
 
@@ -44,7 +44,7 @@ class FileManagerTests {
     void fileToString() {
         String in = null;
         in = file.fileToString(realFile);
-        System.out.println(in);
+        //System.out.println(in);
         assertNotNull(in);
     }
 
