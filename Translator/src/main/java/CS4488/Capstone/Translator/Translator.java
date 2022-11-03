@@ -418,7 +418,7 @@ public class Translator {
 //        //"Example Code/Program 2, 4 Input 4 Operations.txt"
 //        //"Example Code/Program 3, Hello Memory.txt"
 //        //"Example Code/Program 4, Hello In Out.txt"
-//        //Example Code/Program 6, Dangerous Input.txt
+//        //Example Code/Program 6, Dangerous Input.tx
 //
 //
 //        Translator translator = new Translator("ResourceDirectories/translationTester.txt");
