@@ -24,5 +24,5 @@
 @ 12 @ label2: 0x1234;                      @ 1234 @
 @ 13 @ ld label2 r2;                        @ 1122 @ @ 1 = ld, 12 = label2, 2 = r2 @
 @ 14 @ Label3:                              @ abcd @
-            #abcd
+            #abcd;
 @ 15 @ sti Label3 r3;                       @ 8143 @ @ 8 = sti, Label3 = 14, 3 = r3 @

@@ -2,19 +2,19 @@
 package CS4488.Capstone.Translator;
 
 
-
 import CS4488.Capstone.Library.Tools.*;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 
 /**
  * It reads a file, parses it, converts it to hexadecimal, and sets the translated code to the hexadecimal code.
- *
- *  * @version 0.0.9
- *  * @author Daniel Igbokwe
+ * <p>
+ * * @version 0.0.9
+ * * @author Daniel Igbokwe
  */
-public class Translator  {
+public class Translator {
     // Instance variables
     private String armFile;
     private boolean loaded;
@@ -25,11 +25,9 @@ public class Translator  {
     private boolean isTranslatable = false;
 
 
-
-    private Translator(String armFile){
-      setTranslatable(this.translate(armFile));
+    private Translator(String armFile) {
+        setTranslatable(this.translate(armFile));
     }
-
 
 
     /**
@@ -38,26 +36,30 @@ public class Translator  {
      * @param armFile The file to be translated.
      * @return A boolean value.
      */
-    private boolean translate(String armFile){
+    private boolean translate(String armFile) {
         this.setArmFile(this.readFile(armFile));
         // Check and set if file is read successfully
         this.setLoaded(!(this.getArmFile().isEmpty()));
 
         // Translate if loaded
-        if(this.isLoaded()){
+        if (this.isLoaded()) {
             // Parse Arm-file for hex conversion
-            String [] parsedFile = this.parseFile(this.getArmFile());
+            String[] parsedFile = this.parseFile(this.getArmFile());
             // convert to hex code
             ArrayList<Hex4digit> hex4dCode = this.convertToHex(parsedFile);
 
             // if lines don't exceed memory space
-            if(hex4dCode.size() <= 256){
+            if (hex4dCode.size() <= 256) {
                 this.setTranslatedCode(hex4dCode);
                 return true;
-            }else{
+
+            } else {
                 this.setExceptionMessage("System Memory overflow, Lines exceed 256.");
                 System.out.println(this.getExceptionMessage());
+                return false;
             }
+
+
         }
 
         return false;
@@ -67,7 +69,7 @@ public class Translator  {
      * This function returns a boolean value that indicates whether the current object is translatable or not
      */
     public boolean isTranslatable() {
-        return  this.isTranslatable;
+        return this.isTranslatable;
     }
 
     /**
@@ -86,10 +88,10 @@ public class Translator  {
      * @param armFile The name of the ARM file to be translated.
      * @return The singleton instance of the Translator class.
      */
-    public static Translator getInstance(String armFile){
-        if(singleton == null){
+    public static Translator getInstance(String armFile) {
+        if (singleton == null) {
             singleton = new Translator(armFile); // initialize translator
-        }else{
+        } else {
             singleton.translate(armFile); // if translate new arm file
         }
         return singleton;
@@ -151,7 +153,6 @@ public class Translator  {
     }
 
 
-
     /**
      * This function clears the file name, sets the loaded flag to false, and clears the translated code
      */
@@ -167,11 +168,11 @@ public class Translator  {
      * It creates a new array of size one less than the original array, copies all the elements except the element at the
      * index to the new array, and returns the new array
      *
-     * @param arr The array from which you want to remove an element.
+     * @param arr   The array from which you want to remove an element.
      * @param index The index of the element to be removed.
      * @return The array with the element removed.
      */
-    private  String[] removeTheElement(String[] arr, int index) {
+    private String[] removeTheElement(String[] arr, int index) {
 
         // If the array is empty
         // or the index is not in array range
@@ -224,19 +225,20 @@ public class Translator  {
 
     /**
      * This function takes a string and removes all comments from it
+     *
      * @param line The line of code that is being read in.
      * @return The line without the comments.
      */
-    public String removeComments(String line){
+    public String removeComments(String line) {
 
         String lineCopy = line;
 
-        while(lineCopy.contains("@")){
+        while (lineCopy.contains("@")) {
 
             int firstIndex = lineCopy.indexOf('@');
-            if(firstIndex + 1 < lineCopy.length()){
+            if (firstIndex + 1 < lineCopy.length()) {
                 int endIndex = lineCopy.indexOf('@', firstIndex + 1);
-                if(endIndex + 1 <= lineCopy.length()){
+                if (endIndex + 1 <= lineCopy.length()) {
                     lineCopy = lineCopy.replace(lineCopy.substring(firstIndex, endIndex + 1), "");
                 }
 
@@ -266,7 +268,7 @@ public class Translator  {
      * @param armFile The file that contains the ARM assembly code.
      * @return An array of strings, each string is a line of the file.
      */
-    private String [] parseFile(String armFile){
+    private String[] parseFile(String armFile) {
         String noComments = removeComments(armFile)
                 .replaceAll("#", "")
                 .replaceAll("0x", "");
@@ -283,15 +285,15 @@ public class Translator  {
      *
      * @param lineOfCode The line of code that is being parsed.
      * @param parsedFile The array of strings that contains the parsed file.
-     * @param lineIndex The index of the line of code in the parsedFile array.
+     * @param lineIndex  The index of the line of code in the parsedFile array.
      */
-    private void setLabels(String lineOfCode, String [] parsedFile, int lineIndex){
+    private void setLabels(String lineOfCode, String[] parsedFile, int lineIndex) {
         String[] lineArray = lineOfCode.split(":");
 
-        if(lineOfCode.endsWith(":")) {
+        if (lineOfCode.endsWith(":")) {
             parsedFile = removeTheElement(parsedFile, lineIndex);
-        }else{
-            parsedFile[lineIndex] =  parsedFile[lineIndex].replaceAll(lineArray[0]+":", "");
+        } else {
+            parsedFile[lineIndex] = parsedFile[lineIndex].replaceAll(lineArray[0] + ":", "");
         }
 
         String labelAddress = Integer.toHexString(lineIndex);
@@ -303,12 +305,12 @@ public class Translator  {
     /**
      * This function replaces all instances of a label with a value
      *
-     * @param replaced The label that is being replaced.
-     * @param value The value that will be replaced in the file.
+     * @param replaced   The label that is being replaced.
+     * @param value      The value that will be replaced in the file.
      * @param parsedFile The file that has been parsed into an array of strings.
      */
-    private void replaceLabels(String replaced, String value, String [] parsedFile){
-        for(int i = 0; i< parsedFile.length; i++){
+    private void replaceLabels(String replaced, String value, String[] parsedFile) {
+        for (int i = 0; i < parsedFile.length; i++) {
             parsedFile[i] = parsedFile[i].replaceAll(replaced, value);
         }
     }
@@ -320,19 +322,19 @@ public class Translator  {
      * @param parsedFile This is the file that has been parsed by the Parser class.
      * @return An arraylist of hex4digit objects
      */
-    public ArrayList<Hex4digit> convertToHex(String [] parsedFile)  {
-        InstructionParser instructionParser =  InstructionParser.getInstance();
+    public ArrayList<Hex4digit> convertToHex(String[] parsedFile) {
+        InstructionParser instructionParser = InstructionParser.getInstance();
 
         ArrayList<Hex4digit> translatedFile = new ArrayList<>();
         int lineIndex = 0;
         for (String line : parsedFile) {
             // label declaration
-            if(line.contains(":")){
+            if (line.contains(":")) {
                 // replace all label occurrence
-                 this.setLabels(line.replaceAll("\\s", "")
-                       , parsedFile, lineIndex);
+                this.setLabels(line.replaceAll("\\s", "")
+                        , parsedFile, lineIndex);
 
-                 line = parsedFile[lineIndex];
+                line = parsedFile[lineIndex];
 
             }
             //NOTE: Try iterating through split(" ") string not dictionary
@@ -342,7 +344,7 @@ public class Translator  {
             // remove trailing space
             line = line.trim();
 
-            if (line.isEmpty()){
+            if (line.isEmpty()) {
                 continue;
             }
 
@@ -350,8 +352,8 @@ public class Translator  {
             // split on each instruction
             for (String elem : line.split(" ")) {
                 String instruction = "";
-                if(!elem.isEmpty()){
-                     instruction = instructionParser.getParser().get(elem);
+                if (!elem.isEmpty()) {
+                    instruction = instructionParser.getParser().get(elem);
                 }
 
                 // adds instruction code to string if it is valid
@@ -370,16 +372,16 @@ public class Translator  {
                 this.clearFile();
                 System.out.println(this.getExceptionMessage());
                 break;
-            }else{
+            } else {
                 int stop = 5;
                 // not negative instruction
-                if(builder.charAt(0) != '-'){
+                if (builder.charAt(0) != '-') {
                     stop = 4;
                 }
 
                 // stop at 4 if non-negative
 
-                while(builder.length() < stop){
+                while (builder.length() < stop) {
                     builder.append("0");
                 }
 
@@ -419,8 +421,14 @@ public class Translator  {
 //        //Example Code/Program 6, Dangerous Input.txt
 //
 //
-//         Translator translator = new Translator("Example Code/Program 2, 4 Input 4 Operations.txt");
-//         ArrayList<Hex4digit> translatedCode = translator.getTranslatedCode();
+//        Translator translator = new Translator("ResourceDirectories/translationTester.txt");
+//        String file = translator.readFile("Translator/ResourceDirectories/translationTester.txt");
+//        String[] parsedFile = translator.parseFile(file);
+//        for (String code : parsedFile) {
+//            System.out.println(code.trim());
+//        }
+//
+//        ArrayList<Hex4digit> translatedCode = translator.convertToHex(parsedFile);
 //
 //        for(Hex4digit code : translatedCode){
 //            System.out.println(code.getHexChars());

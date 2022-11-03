@@ -5,8 +5,9 @@ package CS4488.Capstone.Translator;
 
 
 
-import CS4488.Capstone.Library.BackEndSystemInterfaces.TranslatorInterface;
+
 import CS4488.Capstone.Library.Tools.Hex4digit;
+import CS4488.Capstone.Library.BackEndSystemInterfaces.TranslatorInterface;
 
 import java.util.ArrayList;
 
