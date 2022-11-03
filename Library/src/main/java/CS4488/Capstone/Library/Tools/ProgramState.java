@@ -106,6 +106,7 @@ public class ProgramState implements ProgramStateInterface {
         int y=0;
         for (int i=0; i<x; i++) {
             y = memoryStateHistory.get(i).size();
+            stateSummary.append("\nNext:");
             for (int j=0; j<y; j++){
                 stateSummary.append(memoryStateHistory.get(i).get(j).getString() + " ");
             }

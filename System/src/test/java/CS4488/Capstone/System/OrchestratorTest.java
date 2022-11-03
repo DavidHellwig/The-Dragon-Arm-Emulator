@@ -10,36 +10,32 @@ class OrchestratorTest {
     private static final String resources = "./ResourceDirectories";
     String Program1 = resources + "/Example Code/Program 1, Hello Branch and Math.txt";
     String ProgramXYZ = resources + "/Example Code/Program XYZ, TestingCoverage.txt";
+    String ProgramSafexyz = resources + "/Example Code/Program xyz-Safe Labels, TestingCoverage.txt";
     String fakeFile = resources + "/Example Code/fhw4fhq2fhq4thq.txt";
     String badFile = resources + "/Example Code/Program X, Bad Program.txt";
 
     @Test
     @DisplayName("Execution and Print")
     void executionAndPrint() {
+        //doIt(Program1);
+        //doIt(ProgramXYZ);
+        doIt(ProgramSafexyz);
+
+    }
+
+    private void doIt(String file){
         int i = 0;
-        orchestrator.translateAndLoad(Program1);
-        System.out.println("Initial State, State " + i + ": \n");
-        System.out.println(orchestrator.getProgramState().printableProgramState());
-
-        while (orchestrator.next()) {
-            i++;
-            System.out.println("\nState " + i + ": \n");
-            System.out.println(orchestrator.getProgramState().printableProgramState());
-        }
-        orchestrator.clearProgram();
-
-        i = 0;
-        System.out.println("Initial State, State " + i + ": \n");
-        orchestrator.translateAndLoad(ProgramXYZ);
+        orchestrator.translateAndLoad(file);
         orchestrator.getProgramState().input = new Hex4digit("002b");
+        System.out.println("Initial State, State " + i + ": \n");
         System.out.println(orchestrator.getProgramState().printableProgramState());
+
         while (orchestrator.next()) {
             i++;
             System.out.println("\nState " + i + ": \n");
             System.out.println(orchestrator.getProgramState().printableProgramState());
         }
         orchestrator.clearProgram();
-
     }
 
     @Test

@@ -8,6 +8,7 @@ class ProgramStateTest {
 
     @Test
     void initializeState() {
+        int count, Count;
     }
 
     @Test
