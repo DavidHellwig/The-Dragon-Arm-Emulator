@@ -21,6 +21,8 @@ public class EmulatorGUIController {
     private String[][] RAM;
 
 
+
+
     @FXML
     private Button exitButton;
 
@@ -189,7 +191,7 @@ public class EmulatorGUIController {
         }
         memoryTable.setText(memArray);
 
-        memoryTable2.getChildren().add(memoryTable);
+        //memoryTable2.getChildren().add(memoryTable);
 
 
 
@@ -209,13 +211,7 @@ public class EmulatorGUIController {
      */
     @FXML
     void next(ActionEvent actionEvent){
-        if(orc.getError() != "Orchestrator: No Error."){
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setContentText(orc.getError());
-            error.showAndWait();
-            abortProgram();
-        }
-        updateRAMValues();
+        executeStep();
     }
 
     /**
@@ -224,23 +220,21 @@ public class EmulatorGUIController {
      */
     @FXML
     void run(ActionEvent actionEvent){
+        while(orc.next()){
+            executeStep();
+        }
 
     }
 
     /**
      * get the current program counter
-     * @param actionEvent
+
      */
     @FXML
     void getCurrentPC(ActionEvent actionEvent){
+        int temp = orc.getProgramState().pcHistory.size();
 
-    }
-
-    /**
-     * Update the ac
-     */
-    @FXML
-    void updateAC(){
+        int pc = orc.getProgramState().pcHistory.get(temp).memoryLocation;
 
     }
 
@@ -249,20 +243,28 @@ public class EmulatorGUIController {
      */
     @FXML
     void abortProgram(){
-        //ToDo use this to insert a halt statement into the program state so orc stops
+        orc.clearProgram();
 
 
     }
 
-    /**
-     * Steps through the given code by 1 line
-     */
     @FXML
-    void step(){
+    void executeStep(){
+        System.out.println(orc.getProgramState().printableProgramState());
+        if(orc.getError() != "Orchestrator: No Error."){
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText(orc.getError());
+            error.showAndWait();
+            abortProgram();
+            System.out.println(orc.getProgramState().printableProgramState());
+        }
+        else{
 
+        }
 
-
+        updateRAMValues();
     }
+
 
 
 
@@ -274,12 +276,7 @@ public class EmulatorGUIController {
         System.exit(0);
     }
 
-    @FXML
-    void alertError(){
 
-
-
-    }
 
 
 
