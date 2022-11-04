@@ -64,19 +64,19 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         resetError();
         boolean result = executor.hasState();
         if (result == false){
-            error = executor.getLastExceptionMessage();
+            error = "Executor" + executor.getLastExceptionMessage();
             return result;
         }
 
         result = executor.hasNext();
         if (result == false){
-            error = executor.getLastExceptionMessage();
+            error = "Executor" + executor.getLastExceptionMessage();
             return result;
         }
 
         result = executor.next();
         if (result == false){
-            error = executor.getLastExceptionMessage();
+            error = "Executor" + executor.getLastExceptionMessage();
         }
         return result;
     }
@@ -88,7 +88,7 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
 
     @Override
     public ProgramState getProgramState() {
-            return ProgramState.getInstance();
+            return state;
     }
 
     @Override
@@ -105,21 +105,17 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     public boolean translateAndLoad(String path) {
         resetError();
         boolean result;
-        try{
-            result = translator.loadFile(path);
-            if (result == false) {
-                error = translator.getLastExceptionMessage();
-                return result;
-            }
-        }catch (Exception e){
-            error = translator.getLastExceptionMessage();
-            return false;
+
+        result = translator.loadFile(path);
+        if (result == false) {
+            error = "Translator" + translator.getLastExceptionMessage();
+            return result;
         }
 
         result = translator.isTranslatable();
 
         if (result == false){
-            error = translator.getLastExceptionMessage();
+            error = "Translator" + translator.getLastExceptionMessage();
         }
 
         state.clearProgramState();
@@ -151,13 +147,6 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         return fileManager.fileToString(path);
     }
 
-    /**
-     * Returns the memory history of the program state, will need to refactor this later
-     * @return the memory history of program state
-     */
-    public ArrayList<ArrayList<Hex4digit>> getProgramStateMemoryHistory(){
-        return this.state.memoryStateHistory;
-    }
 
 
 

@@ -6,6 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This is a test class used to test the InstructorParser class
+ *  *  * @version 0.0.9
+ *  *  * @author Daniel Igbokwe
+ */
 class InstructionParserTest {
 
     InstructionParser hashParser;

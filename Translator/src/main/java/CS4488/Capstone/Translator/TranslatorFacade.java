@@ -5,11 +5,18 @@ package CS4488.Capstone.Translator;
 
 
 
-import CS4488.Capstone.Library.BackEndSystemInterfaces.TranslatorInterface;
+
 import CS4488.Capstone.Library.Tools.Hex4digit;
+import CS4488.Capstone.Library.BackEndSystemInterfaces.TranslatorInterface;
 
 import java.util.ArrayList;
 
+/**
+ * The `TranslatorFacade` class is a facade for the `Translator` class
+ *
+ * @version 0.0.9
+ * @author Daniel Igbokwe
+ */
 public class TranslatorFacade implements TranslatorInterface {
 
     private Translator translator;
@@ -25,7 +32,7 @@ public class TranslatorFacade implements TranslatorInterface {
      * @return A boolean value.
      */
     @Override
-    public boolean loadFile(String armFile) throws Exception {
+    public boolean loadFile(String armFile) {
         this.translator = Translator.getInstance(armFile);
         return this.translator.isLoaded();
     }
