@@ -26,7 +26,7 @@ public class Translator {
 
 
     private Translator(String armFile) {
-//        setTranslatable(this.translate(armFile));
+       setTranslatable(this.translate(armFile));
     }
 
 
