@@ -48,7 +48,7 @@ public class TranslatorFacade implements TranslatorInterface {
     /**
      * > If the translator has translated code, then the translator is translatable
      *
-     * @return The return value is a boolean.
+     * @return A boolean value.
      */
     @Override
     public boolean isTranslatable() {

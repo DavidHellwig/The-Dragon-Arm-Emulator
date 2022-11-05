@@ -26,7 +26,7 @@ public class Translator {
 
 
     private Translator(String armFile) {
-        setTranslatable(this.translate(armFile));
+//        setTranslatable(this.translate(armFile));
     }
 
 
@@ -229,7 +229,9 @@ public class Translator {
      * @param line The line of code that is being read in.
      * @return The line without the comments.
      */
-    public String removeComments(String line) {
+    private String removeComments(String line) {
+
+        System.out.println("Parsing out Comments (@ comment @).");
 
         String lineCopy = line;
 
@@ -244,9 +246,8 @@ public class Translator {
 
             }
         }
-
+        System.out.println("Comments parsed out.");
         return lineCopy;
-
     }
 
     /**
@@ -257,6 +258,7 @@ public class Translator {
      */
 
     private String readFile(String file) {
+        System.out.println("Reading File from provided path. ");
         return fileMan.readFile(file);
     }
 
@@ -269,12 +271,31 @@ public class Translator {
      * @return An array of strings, each string is a line of the file.
      */
     private String[] parseFile(String armFile) {
+        System.out.println("Successfully read file. Parsing out Comments, #, 0x.");
         String noComments = removeComments(armFile)
                 .replaceAll("#", "")
                 .replaceAll("0x", "");
 
+        System.out.println("");
+
         return noComments.split(";");
 
+    }
+
+    private void parseOutLabels(String [] file){
+
+        System.out.println("Parsing out Labels. ");
+        for(int i = 0; i < file.length; i++){
+            String line = file[i];
+            if (line.contains(":")) {
+                // replace all label occurrence
+                this.setLabels(line.replaceAll("\\s", "")
+                        , file, i);
+            }
+
+        }
+
+        System.out.println("Labels parsed out. ");
     }
 
 
@@ -323,22 +344,13 @@ public class Translator {
      * @return An arraylist of hex4digit objects
      */
     public ArrayList<Hex4digit> convertToHex(String[] parsedFile) {
+
+        this.parseOutLabels(parsedFile);
         InstructionParser instructionParser = InstructionParser.getInstance();
 
         ArrayList<Hex4digit> translatedFile = new ArrayList<>();
         int lineIndex = 0;
         for (String line : parsedFile) {
-            // label declaration
-            if (line.contains(":")) {
-                // replace all label occurrence
-                this.setLabels(line.replaceAll("\\s", "")
-                        , parsedFile, lineIndex);
-
-                line = parsedFile[lineIndex];
-
-            }
-            //NOTE: Try iterating through split(" ") string not dictionary
-            //System.out.println(parsedFile[i].trim());
             StringBuilder builder = new StringBuilder();
 
             // remove trailing space
@@ -367,7 +379,7 @@ public class Translator {
 
             if (builder.length() > 4 && builder.charAt(0) != '-') {
                 String exception = String.format("Instruction memory overflow occurred at Line %d. \n" +
-                        "Line: %s", lineIndex, builder.toString());
+                        "Line: %s", lineIndex, builder);
                 this.setExceptionMessage(exception);
                 this.clearFile();
                 System.out.println(this.getExceptionMessage());
@@ -380,7 +392,6 @@ public class Translator {
                 }
 
                 // stop at 4 if non-negative
-
                 while (builder.length() < stop) {
                     builder.append("0");
                 }
@@ -418,15 +429,26 @@ public class Translator {
 //        //"Example Code/Program 2, 4 Input 4 Operations.txt"
 //        //"Example Code/Program 3, Hello Memory.txt"
 //        //"Example Code/Program 4, Hello In Out.txt"
-//        //Example Code/Program 6, Dangerous Input.tx
+//        //Example Code/Program 6, Dangerous Input.txt
+//        //Example Code/Program XYZ, TestingCoverage.txt
 //
 //
-//        Translator translator = new Translator("ResourceDirectories/translationTester.txt");
-//        String file = translator.readFile("Translator/ResourceDirectories/translationTester.txt");
+//        Translator translator = new Translator("");
+//        String file = translator.readFile("Translator/ResourceDirectories/Example Code/Program XYZ, TestingCoverage.txt");
 //        String[] parsedFile = translator.parseFile(file);
-//        for (String code : parsedFile) {
-//            System.out.println(code.trim());
+//
+//        for(int i  = 0; i< parsedFile.length; i++){
+//            System.out.println(i + ") " + parsedFile[i].trim());
 //        }
+//
+//        translator.parseOutLabels(parsedFile);
+//        System.out.println("\n");
+//
+//        for(int i  = 0; i< parsedFile.length; i++){
+//            System.out.println(i + ") " + parsedFile[i].trim());
+//        }
+//
+//        System.out.println("Translation: \n");
 //
 //        ArrayList<Hex4digit> translatedCode = translator.convertToHex(parsedFile);
 //
@@ -435,4 +457,5 @@ public class Translator {
 //        }
 //
 //    }
+
 }
