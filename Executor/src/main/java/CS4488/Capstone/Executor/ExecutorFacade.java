@@ -11,7 +11,6 @@ public class ExecutorFacade implements ExecutorInterface {
 
     // Holds the index of what place the memory is at in the arraylist
     private int MEMORYSTATEINDEX = 0;
-
     private String exceptionMessage = "No Error";
 
     public int getMEMORYSTATEINDEX() {
@@ -41,22 +40,24 @@ public class ExecutorFacade implements ExecutorInterface {
     // values they need, so that there isn't a bunch of variable assignments in
     // all the instructionSet functions
     private void determineInstruction(Hex4digit inst) {
+        // ProgramState instance for passing into InstructionSet
+        ProgramState state = ProgramState.getInstance();
         switch (inst.getHexChars()[1]) {
-            case '0' -> InstructionSet.halt();
-            case '1' -> InstructionSet.load(inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
-            case '2' -> InstructionSet.store(inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
-            case '3' -> InstructionSet.add(inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
-            case '4' -> InstructionSet.subt(inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
-            case '5' -> InstructionSet.mult(inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
-            case '6' -> InstructionSet.intDivide(inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
-            case '7' -> InstructionSet.loadIndirect(inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
-            case '8' -> InstructionSet.storeIndirect(inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
-            case '9' -> InstructionSet.branch(inst.getMiddle2Value());
-            case 'a' -> InstructionSet.branchZero(inst.getHexChars()[2], inst.getLast2Value());
-            case 'b' -> InstructionSet.branchNeg(inst.getHexChars()[2], inst.getLast2Value());
-            case 'c' -> InstructionSet.branchPos(inst.getHexChars()[2], inst.getLast2Value());
-            case 'd' -> InstructionSet.readInt(inst.getHexChars()[2]);
-            case 'e' -> InstructionSet.writeInt(inst.getHexChars()[2]);
+            case '0' -> InstructionSet.halt(state);
+            case '1' -> InstructionSet.load(state, inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
+            case '2' -> InstructionSet.store(state, inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
+            case '3' -> InstructionSet.add(state, inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
+            case '4' -> InstructionSet.subt(state, inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
+            case '5' -> InstructionSet.mult(state, inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
+            case '6' -> InstructionSet.intDivide(state, inst.getHexChars()[2], inst.getHexChars()[3], inst.getHexChars()[4]);
+            case '7' -> InstructionSet.loadIndirect(state, inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
+            case '8' -> InstructionSet.storeIndirect(state, inst.getMiddle2Value(), inst.getHexChars()[4], MEMORYSTATEINDEX);
+            case '9' -> InstructionSet.branch(state, inst.getMiddle2Value());
+            case 'a' -> InstructionSet.branchZero(state, inst.getHexChars()[2], inst.getLast2Value());
+            case 'b' -> InstructionSet.branchNeg(state, inst.getHexChars()[2], inst.getLast2Value());
+            case 'c' -> InstructionSet.branchPos(state, inst.getHexChars()[2], inst.getLast2Value());
+            case 'd' -> InstructionSet.readInt(state, inst.getHexChars()[2]);
+            case 'e' -> InstructionSet.writeInt(state, inst.getHexChars()[2]);
             case 'f' -> System.out.println("Nothing");
             default -> System.out.println("Throw an error and halt");
         }
