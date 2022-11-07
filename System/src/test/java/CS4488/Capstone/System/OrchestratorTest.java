@@ -17,20 +17,21 @@ class OrchestratorTest {
     @Test
     @DisplayName("Execution and Print")
     void executionAndPrint() {
-        //doIt(Program1);
-        //doIt(ProgramXYZ);
-        doIt(ProgramSafexyz);
+        doIt(Program1,10);
+        doIt(ProgramXYZ,30);
+        doIt(ProgramSafexyz,30);
 
     }
 
-    private void doIt(String file){
+    private void doIt(String file, int expectedSteps){
         int i = 0;
         orchestrator.translateAndLoad(file);
         orchestrator.getProgramState().input = new Hex4digit("002b");
         System.out.println("Initial State, State " + i + ": \n");
         System.out.println(orchestrator.getProgramState().printableProgramState());
 
-        while (orchestrator.next()) {
+        while ((orchestrator.next()) && (expectedSteps > -1)){
+            expectedSteps--;
             i++;
             System.out.println("\nState " + i + ": \n");
             System.out.println(orchestrator.getProgramState().printableProgramState());

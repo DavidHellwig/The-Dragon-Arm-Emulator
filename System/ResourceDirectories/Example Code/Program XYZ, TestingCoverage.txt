@@ -4,7 +4,7 @@
 @ FIRST Stanza: is a branch and number (without label) @
 @ 00 @ br m03;          @ Jump down to the first real instruction @
 @ 01 @ readIn: #000f;   @ the number f @
-@ 02 @ #0100;           @ This is going to be used to point to the line above. @
+@ 02 @ #0001;           @ This is going to be used to point to the line above. @
 
 @ SECOND Stanza: loads direct and indirect from m01, sub = 0, brz to skip a stanza@
 @ 03 @ ld m01 r0;
