@@ -89,7 +89,7 @@
             <Text layoutX="705.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R3" />
             <Text layoutX="758.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R4" />
             <TextArea fx:id="memoryTable" layoutX="319.0" layoutY="425.0" prefHeight="200.0" prefWidth="710.0" />
-            <Button fx:id="debug" onAction="#getCurrentPC" layoutX="648.0" layoutY="284.0" mnemonicParsing="false" text="Debug" />
+            <Button fx:id="debug" layoutX="648.0" layoutY="284.0" mnemonicParsing="false" onAction="#getCurrentPC" text="Debug" />
       </children>
          <opaqueInsets>
             <Insets />

@@ -12,13 +12,18 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 public class EmulatorGUIController {
     private final Orchestrator orc = Orchestrator.getInstance();
 
     private String[][] RAM;
+
+    private File loadedProgram;
 
 
 
@@ -144,7 +149,7 @@ public class EmulatorGUIController {
         if (file != null){
 
 
-
+            loadedProgram = file;
             inputBox.setText(orc.loadFile(file.getAbsolutePath()));
             orc.translateAndLoad(file.getAbsolutePath());
         }
@@ -191,7 +196,7 @@ public class EmulatorGUIController {
         }
         memoryTable.setText(memArray);
 
-        //memoryTable2.getChildren().add(memoryTable);
+
 
 
 
@@ -203,6 +208,8 @@ public class EmulatorGUIController {
         //String newMemArray = orc.getProgramState();
         ArrayList<ArrayList<Hex4digit>> newHex4DigitMemarray = orc.getProgramState().memoryStateHistory;
         int x = 0;
+
+
     }
 
     /**
@@ -220,8 +227,14 @@ public class EmulatorGUIController {
      */
     @FXML
     void run(ActionEvent actionEvent){
-        while(orc.next()){
-            executeStep();
+        while(true) {
+            if (orc.getError() == "Orchestrator: No Error.") {
+                executeStep();
+
+            }
+            else{
+                abortProgram();
+            }
         }
 
     }
@@ -256,9 +269,10 @@ public class EmulatorGUIController {
             error.setContentText(orc.getError());
             error.showAndWait();
             abortProgram();
-            System.out.println(orc.getProgramState().printableProgramState());
+            orc.translateAndLoad(loadedProgram.getAbsolutePath());
         }
         else{
+            orc.next();
 
         }
 
