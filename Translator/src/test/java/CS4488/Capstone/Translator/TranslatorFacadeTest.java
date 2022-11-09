@@ -80,8 +80,8 @@ class TranslatorFacadeTest {
 
         expectation.clear();
         expectation.add(new Hex4digit("0000"));
-        expectation.add(new Hex4digit("1ff1"));
-        expectation.add(new Hex4digit("2ff1"));
+        expectation.add(new Hex4digit("1031"));
+        expectation.add(new Hex4digit("2031"));
         expectation.add(new Hex4digit("3123"));
         expectation.add(new Hex4digit("4123"));
         expectation.add(new Hex4digit("5123"));
@@ -101,6 +101,15 @@ class TranslatorFacadeTest {
         expectation.add(new Hex4digit("1122"));
         expectation.add(new Hex4digit("abcd"));
         expectation.add(new Hex4digit("8143"));
+        expectation.add(new Hex4digit("11bf"));
+        expectation.add(new Hex4digit("21ce"));
+        expectation.add(new Hex4digit("71cd"));
+        expectation.add(new Hex4digit("81cc"));
+        expectation.add(new Hex4digit("3bae"));
+        expectation.add(new Hex4digit("fedc"));
+        expectation.add(new Hex4digit("ba98"));
+
+
 
         result = translateAndCompare(expectation, translationTest);
         assertTrue(result);
