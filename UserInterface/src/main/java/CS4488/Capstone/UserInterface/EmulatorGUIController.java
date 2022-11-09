@@ -8,16 +8,24 @@ import javafx.scene.control.*;
 
 import CS4488.Capstone.System.Orchestrator;
 
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 public class EmulatorGUIController {
     private final Orchestrator orc = Orchestrator.getInstance();
 
     private String[][] RAM;
+
+    private File loadedProgram;
+
+
 
 
     @FXML
@@ -44,8 +52,7 @@ public class EmulatorGUIController {
     @FXML
     private TextField pc;
 
-    @FXML
-    private TextField AC;
+
 
     @FXML
     private TextField IN;
@@ -54,7 +61,10 @@ public class EmulatorGUIController {
     private TextField OUT;
 
     @FXML
-    private TextField conversionTextField;
+    private TextField decToHexConversionTextField;
+
+    @FXML
+    private TextField hexToDecConversionTextField;
 
     @FXML
     private Button debug;
@@ -62,12 +72,14 @@ public class EmulatorGUIController {
     @FXML
     private TextArea inputBox;
 
-    @FXML
-    private TextArea outputBox;
 
     @FXML
     private TextArea memoryTable;
-    
+
+    @FXML
+    private TextFlow memoryTable2;
+
+
 
     @FXML
     private Button hexConverterHexToDecimalButton;
@@ -85,13 +97,13 @@ public class EmulatorGUIController {
     @FXML
     void decimalToHex(ActionEvent actionEvent){
 
-        String stringDecimal = conversionTextField.getText();
+        String stringDecimal = decToHexConversionTextField.getText();
 
 
         try{
 
             short decimal = Short.parseShort(stringDecimal);
-            conversionTextField.setText(String.copyValueOf(orc.convertToHexChars(decimal)));
+            decToHexConversionTextField.setText(String.copyValueOf(orc.convertToHexChars(decimal)));
         }
         catch(Exception ignored){
         }
@@ -110,10 +122,10 @@ public class EmulatorGUIController {
      */
     @FXML
     void hexToDecimal(ActionEvent actionEvent){
-        String stringHex = conversionTextField.getText();
+        String stringHex = hexToDecConversionTextField.getText();
         try{
         char[] charHex = stringHex.toCharArray();
-            conversionTextField.setText(String.valueOf(orc.convertToInt(charHex)));
+            hexToDecConversionTextField.setText(String.valueOf(orc.convertToInt(charHex)));
         }
         catch (Exception ignored){
         }
@@ -137,9 +149,12 @@ public class EmulatorGUIController {
         if (file != null){
 
 
-
+            loadedProgram = file;
             inputBox.setText(orc.loadFile(file.getAbsolutePath()));
+            orc.translateAndLoad(file.getAbsolutePath());
         }
+
+
 
 
 
@@ -177,8 +192,15 @@ public class EmulatorGUIController {
                 memArray += RAM[i][j] + "  ";
             }
             memArray += "\n";
+
         }
         memoryTable.setText(memArray);
+
+
+
+
+
+
     }
     //Update RAM values, incomplete
     @FXML
@@ -186,6 +208,8 @@ public class EmulatorGUIController {
         //String newMemArray = orc.getProgramState();
         ArrayList<ArrayList<Hex4digit>> newHex4DigitMemarray = orc.getProgramState().memoryStateHistory;
         int x = 0;
+
+
     }
 
     /**
@@ -194,7 +218,7 @@ public class EmulatorGUIController {
      */
     @FXML
     void next(ActionEvent actionEvent){
-        updateRAMValues();
+        executeStep();
     }
 
     /**
@@ -203,23 +227,27 @@ public class EmulatorGUIController {
      */
     @FXML
     void run(ActionEvent actionEvent){
+        while(true) {
+            if (orc.getError() == "Orchestrator: No Error.") {
+                executeStep();
+
+            }
+            else{
+                abortProgram();
+            }
+        }
 
     }
 
     /**
      * get the current program counter
-     * @param actionEvent
+
      */
     @FXML
     void getCurrentPC(ActionEvent actionEvent){
+        int temp = orc.getProgramState().pcHistory.size();
 
-    }
-
-    /**
-     * Update the ac
-     */
-    @FXML
-    void updateAC(){
+        int pc = orc.getProgramState().pcHistory.get(temp).memoryLocation;
 
     }
 
@@ -228,22 +256,28 @@ public class EmulatorGUIController {
      */
     @FXML
     void abortProgram(){
-        //ToDo use this to insert a halt statement into the program state so orc stops
+        orc.clearProgram();
 
 
     }
 
-    /**
-     * Steps through the given code by 1 line
-     */
     @FXML
-    void step(){
+    void executeStep(){
+        System.out.println(orc.getProgramState().printableProgramState());
+        if(orc.getError() != "Orchestrator: No Error."){
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText(orc.getError());
+            error.showAndWait();
+            abortProgram();
+            orc.translateAndLoad(loadedProgram.getAbsolutePath());
+        }
+        else{
+            orc.next();
 
+        }
+
+        updateRAMValues();
     }
-
-
-
-
 
 
 
@@ -255,6 +289,8 @@ public class EmulatorGUIController {
     void exit(){
         System.exit(0);
     }
+
+
 
 
 
