@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * @author Traae
  */
 public class ProgramState implements ProgramStateInterface {
+    public static final int TOTAL_MEMORY_SPACES = 256; // 0 - 255
 
     // Constants and Class instances
     private static final int REGISTER_COUNT = 16;
@@ -69,11 +70,18 @@ public class ProgramState implements ProgramStateInterface {
             pc.value.setValue(code.get(0).getHexChars());
             pcHistory.add(pc);
 
+            fillOutMemory(code);
             memoryStateHistory.add(code);
 
             result = true;
         }
         return result;
+    }
+
+    private void fillOutMemory(ArrayList<Hex4digit> toFillOut){
+        while (toFillOut.size() < TOTAL_MEMORY_SPACES){
+            toFillOut.add(new Hex4digit(0));
+        }
     }
 
     @Override
@@ -102,16 +110,20 @@ public class ProgramState implements ProgramStateInterface {
         }
         stateSummary.append("\n");
 
-        int x = memoryStateHistory.size();
-        int y=0;
-        for (int i=0; i<x; i++) {
-            y = memoryStateHistory.get(i).size();
-            stateSummary.append("\nNext:");
-            for (int j=0; j<y; j++){
-                stateSummary.append(memoryStateHistory.get(i).get(j).getString() + " ");
-            }
-            stateSummary.append("\n");
+        int lastState = memoryStateHistory.size() - 1;
+        int blankCounter = 0;
+        stateSummary.append("\nNext:");
+
+        for (int i=0; i<memoryStateHistory.get(lastState).size(); i++){
+            Hex4digit toAdd = memoryStateHistory.get(lastState).get(i);
+
+            if (toAdd.getValue() == 0) { blankCounter++;}
+            if (blankCounter > 10) { break; }
+
+            stateSummary.append(toAdd.getString() + " ");
+
         }
+        stateSummary.append("\n");
 
         return stateSummary.toString();
     }

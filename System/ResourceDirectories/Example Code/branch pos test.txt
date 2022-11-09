@@ -1,0 +1,35 @@
+@ Branch Positive Test @
+@ Must test both true and false;
+
+@ 00 @ ld one r5;
+@ 01 @ brp r5 m04;
+@ 02 @ one: #0001;
+@ 03 @ notPos: -#0001;
+@ 04 @ ld notPos r5;
+@ 05 @ brp r5 m07;
+@ 06 @ hlt;
+@ 07 @ wr r5;
+@ 08 @ hlt;
+@ 09 @
+@ 0a @
+@ 0b @
+@ 0c @
+@ 0d @
+@ 0e @
+@ 0f @
+@ 10 @
+@ 11 @
+@ 12 @
+@ 13 @
+@ 14 @
+@ 15 @
+@ 16 @
+@ 17 @
+@ 18 @
+@ 19 @
+@ 1a @
+@ 1b @
+@ 1c @
+@ 1d @
+@ 1e @
+@ 1f @
