@@ -125,7 +125,7 @@ public class Hex4digit implements HexDataClass {
     @Override
     public int getMiddle2Value() {
         char[] hexChars = HexadecimalConverter.decimalToHex(hex) ;
-        int result = HexadecimalConverter.hexValue(hexChars[2])
+        int result = (HexadecimalConverter.hexValue(hexChars[2]) * 16)
                 + HexadecimalConverter.hexValue(hexChars[3]);
         return result;
     }
@@ -138,7 +138,7 @@ public class Hex4digit implements HexDataClass {
     @Override
     public int getLast2Value() {
         char[] hexChars = HexadecimalConverter.decimalToHex(hex) ;
-        int result = HexadecimalConverter.hexValue(hexChars[3])
+        int result = (HexadecimalConverter.hexValue(hexChars[3]) * 16)
                 + HexadecimalConverter.hexValue(hexChars[4]);
         return result;
     }

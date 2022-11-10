@@ -4,9 +4,9 @@
 @ Here is a list of basic instructions@
 @ Line Number / Memory Space to the Left @  @ Expectation to the Right @
 @ 00 @ hlt;                                 @ 0000 @
-@ 01 @ ld mff r1;                           @ 1ff1 @
-@ 02 @ st mff r1;                           @ 2ff1 @
-@ 03 @ add r1 r2 r3;                        @ 3123 @
+@ 01 @ ld line3 r1;                         @ 1031 @
+@ 02 @ st line3 r1;                         @ 2031 @
+@ 03 @ line3: add r1 r2 r3;                 @ 3123 @
 @ 04 @ sub r1 r2 r3;                        @ 4123 @
 @ 05 @ mul r1 r2 r3;                        @ 5123 @
 @ 06 @ div r1 r2 r3;                        @ 6123 @
@@ -26,3 +26,11 @@
 @ 14 @ Label3:                              @ abcd @
             #abcd;
 @ 15 @ sti Label3 r3;                       @ 8143 @ @ 8 = sti, Label3 = 14, 3 = r3 @
+
+@ 16 @ ld futureLabel pc;                   @ 11bf @
+@ 17 @ st repeat lr;                        @ 21ce @
+@ 18 @ ldi repeat sp;                       @ 71cd @
+@ 19 @ sti repeat ip;                       @ 81cc @
+@ 1a @ add fp ra re;                        @ 3bae @
+@ 1b @ futureLabel: #fedc;                  @ fedc @
+@ 1c @ repeat: 0xba98;                      @ ba98 @

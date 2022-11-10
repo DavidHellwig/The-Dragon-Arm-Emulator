@@ -1,0 +1,34 @@
+@ Branch Zero Test @
+@ Must test both true and false;
+@ 00 @ ld zero r5;
+@ 01 @ brz r5 m04;
+@ 02 @ zero: #0000;
+@ 03 @ notZero: #abcd;
+@ 04 @ ld notZero r5;
+@ 05 @ brz r5 m07;
+@ 06 @ hlt;
+@ 07 @ wr r5;
+@ 08 @ hlt;
+@ 09 @
+@ 0a @
+@ 0b @
+@ 0c @
+@ 0d @
+@ 0e @
+@ 0f @
+@ 10 @
+@ 11 @
+@ 12 @
+@ 13 @
+@ 14 @
+@ 15 @
+@ 16 @
+@ 17 @
+@ 18 @
+@ 19 @
+@ 1a @
+@ 1b @
+@ 1c @
+@ 1d @
+@ 1e @
+@ 1f @
