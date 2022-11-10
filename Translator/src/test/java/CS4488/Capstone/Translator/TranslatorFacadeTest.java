@@ -108,6 +108,7 @@ class TranslatorFacadeTest {
         expectation.add(new Hex4digit("3bae"));
         expectation.add(new Hex4digit("fedc"));
         expectation.add(new Hex4digit("ba98"));
+        expectation.add(new Hex4digit("f000"));
 
 
 

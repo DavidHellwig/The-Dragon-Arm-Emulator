@@ -312,14 +312,13 @@ public class Translator {
         } else {
             parsedFile[lineIndex] = parsedFile[lineIndex].replaceAll(lineArray[0] + ":", "");
         }
+
         String labelAddress = "";
         if (lineIndex < 10){
              labelAddress = "0"+Integer.toHexString(lineIndex);
         }else{
             labelAddress = Integer.toHexString(lineIndex);
         }
-
-
 
 
         this.replaceLabels(lineArray[0], labelAddress, parsedFile);
@@ -436,10 +435,13 @@ public class Translator {
 //        //"Example Code/Program 4, Hello In Out.txt"
 //        //Example Code/Program 6, Dangerous Input.txt
 //        //Example Code/Program XYZ, TestingCoverage.txt
+//        //ResourceDirectories/translationTester.txt
+//        //Translator/ResourceDirectories/Example Code/Program XYZ, TestingCoverage.txt
+//
 //
 //
 //        Translator translator = new Translator("");
-//        String file = translator.readFile("Translator/ResourceDirectories/Example Code/Program XYZ, TestingCoverage.txt");
+//        String file = translator.readFile("Translator/ResourceDirectories/translationTester.txt");
 //        String[] parsedFile = translator.parseFile(file);
 //
 //        for(int i  = 0; i< parsedFile.length; i++){
