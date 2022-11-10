@@ -49,7 +49,7 @@ public class Translator {
             ArrayList<Hex4digit> hex4dCode = this.convertToHex(parsedFile);
 
             // if lines don't exceed memory space
-            if (hex4dCode.size() <= 256) {
+            if (hex4dCode != null && hex4dCode.size() <= 256 ) {
                 this.setTranslatedCode(hex4dCode);
                 return true;
 
@@ -58,10 +58,7 @@ public class Translator {
                 System.out.println(this.getExceptionMessage());
                 return false;
             }
-
-
         }
-
         return false;
     }
 
@@ -283,8 +280,7 @@ public class Translator {
     }
 
     private void parseOutLabels(String [] file){
-
-        System.out.println("Parsing out Labels. ");
+        System.out.println("Removing Labels.");
         for(int i = 0; i < file.length; i++){
             String line = file[i];
             if (line.contains(":")) {
@@ -292,10 +288,8 @@ public class Translator {
                 this.setLabels(line.replaceAll("\\s", "")
                         , file, i);
             }
-
         }
-
-        System.out.println("Labels parsed out. ");
+        System.out.println("Labels Removed.");
     }
 
 
@@ -316,8 +310,14 @@ public class Translator {
         } else {
             parsedFile[lineIndex] = parsedFile[lineIndex].replaceAll(lineArray[0] + ":", "");
         }
+        String labelAddress = "";
+        if (lineIndex < 10){
+             labelAddress = "0"+Integer.toHexString(lineIndex);
+        }else{
+            labelAddress = Integer.toHexString(lineIndex);
+        }
 
-        String labelAddress = Integer.toHexString(lineIndex);
+
 
 
         this.replaceLabels(lineArray[0], labelAddress, parsedFile);
@@ -382,6 +382,7 @@ public class Translator {
                         "Line: %s", lineIndex, builder);
                 this.setExceptionMessage(exception);
                 this.clearFile();
+                translatedFile = null;
                 System.out.println(this.getExceptionMessage());
                 break;
             } else {
@@ -412,6 +413,8 @@ public class Translator {
                 String exception = String.format("Line %d contains unknown instructions.", lineIndex);
                 this.setExceptionMessage(exception);
                 this.clearFile();
+                //new ArrayList<>();
+                translatedFile = null;
                 System.out.println(this.getExceptionMessage());
                 break;
             }
