@@ -305,6 +305,8 @@ public class Translator {
     private void setLabels(String lineOfCode, String[] parsedFile, int lineIndex) {
         String[] lineArray = lineOfCode.split(":");
 
+
+        // checks if label is defined on one line
         if (lineOfCode.endsWith(":")) {
             parsedFile = removeTheElement(parsedFile, lineIndex);
         } else {
