@@ -5,7 +5,10 @@ package CS4488.Capstone.Translator;
 import CS4488.Capstone.Library.Tools.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -202,6 +205,7 @@ public class Translator {
         return anotherArray;
     }
 
+
     /**
      * This function returns the exception message
      *
@@ -247,6 +251,43 @@ public class Translator {
         return lineCopy;
     }
 
+
+    private String [] parseInLineHexNumbers(String [] file){
+       int end = file.length;
+       int start = 256; // max memory space
+
+       if(end < 256){
+           String [] memory = initializeMemory();
+           Pattern pattern = Pattern.compile("[0-9]{4}");
+
+           for(int i = 0; i< file.length; i++){
+               String newLine = file[i].trim();
+               Matcher matcher = pattern.matcher(newLine);
+               if(matcher.find() &&  newLine.length() > 5){
+
+                   String labelAddress = Integer.toHexString(start);
+                   String number = matcher.group();
+
+                   memory[start - 1] = number;
+
+                   // replace number with memory location
+                   newLine = "m"+ newLine.replaceAll(number, labelAddress);
+
+                   start--;
+               }
+
+               // set line instruction
+               memory[i] = newLine;
+
+           }
+           return memory;
+       }
+
+       return file;
+    }
+
+
+
     /**
      * It reads a file and returns the contents as a string
      *
@@ -270,8 +311,8 @@ public class Translator {
     private String[] parseFile(String armFile) {
         System.out.println("Successfully read file. Parsing out Comments, #, 0x.");
         String noComments = removeComments(armFile)
-                .replaceAll("#", "")
-                .replaceAll("0x", "");
+                .replaceAll("0x", "")
+                .replaceAll("#", "");
 
         System.out.println("");
 
@@ -290,6 +331,18 @@ public class Translator {
             }
         }
         System.out.println("Labels Removed.");
+    }
+
+
+    /**
+     * This function initializes the memory array by creating a new array of 256 elements and filling it with empty strings
+     *
+     * @return An array of 256 Strings, each initialized to the empty String.
+     */
+    private String[] initializeMemory(){
+        String [] memory = new String[256];
+        Arrays.fill(memory, "");
+        return memory;
     }
 
 
@@ -313,29 +366,33 @@ public class Translator {
             parsedFile[lineIndex] = parsedFile[lineIndex].replaceAll(lineArray[0] + ":", "");
         }
 
-        String labelAddress = "";
+        String labelAddress;
         if (lineIndex < 10){
              labelAddress = "0"+Integer.toHexString(lineIndex);
         }else{
             labelAddress = Integer.toHexString(lineIndex);
         }
 
-
-        this.replaceLabels(lineArray[0], labelAddress, parsedFile);
-    }
-
-    /**
-     * This function replaces all instances of a label with a value
-     *
-     * @param replaced   The label that is being replaced.
-     * @param value      The value that will be replaced in the file.
-     * @param parsedFile The file that has been parsed into an array of strings.
-     */
-    private void replaceLabels(String replaced, String value, String[] parsedFile) {
         for (int i = 0; i < parsedFile.length; i++) {
-            parsedFile[i] = parsedFile[i].replaceAll(replaced, value);
+            parsedFile[i] = parsedFile[i].replaceAll(lineArray[0], labelAddress);
         }
+
+
+//        this.replaceLabels(lineArray[0], labelAddress, parsedFile);
     }
+
+//    /**
+//     * This function replaces all instances of a label with a value
+//     *
+//     * @param replaced   The label that is being replaced.
+//     * @param value      The value that will be replaced in the file.
+//     * @param parsedFile The file that has been parsed into an array of strings.
+//     */
+//    private void replaceLabels(String replaced, String value, String[] parsedFile) {
+//        for (int i = 0; i < parsedFile.length; i++) {
+//            parsedFile[i] = parsedFile[i].replaceAll(replaced, value);
+//        }
+//    }
 
 
     /**
@@ -441,11 +498,12 @@ public class Translator {
 //
 //
 //        Translator translator = new Translator("");
+//
 //        String file = translator.readFile("Translator/ResourceDirectories/translationTester.txt");
 //        String[] parsedFile = translator.parseFile(file);
 //
 //        for(int i  = 0; i< parsedFile.length; i++){
-//            System.out.println(i + ") " + parsedFile[i].trim());
+//            System.out.println(i + ") " + parsedFile[i]);
 //        }
 //
 //        translator.parseOutLabels(parsedFile);
@@ -455,14 +513,20 @@ public class Translator {
 //            System.out.println(i + ") " + parsedFile[i].trim());
 //        }
 //
-//        System.out.println("Translation: \n");
+//        String [] ttfile = translator.parseInLineHexNumbers(parsedFile);
 //
-//        ArrayList<Hex4digit> translatedCode = translator.convertToHex(parsedFile);
-//
-//        for(Hex4digit code : translatedCode){
-//            System.out.println(code.getHexChars());
+//        for(int i  = 0; i< ttfile.length; i++){
+//            System.out.println(i + ") " + ttfile[i]);
 //        }
 //
+////        System.out.println("Translation: \n");
+//
+////        ArrayList<Hex4digit> translatedCode = translator.convertToHex(parsedFile);
+////
+////        for(Hex4digit code : translatedCode){
+////            System.out.println(code.getHexChars());
+////        }
 //    }
+
 
 }

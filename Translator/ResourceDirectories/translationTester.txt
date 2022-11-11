@@ -36,3 +36,5 @@
 @ 1b @ futureLabel: #fedc;                  @ fedc @
 @ 1c @ repeat: 0xba98;                      @ ba98 @
 @ 1d @ s;
+@1e@ ld #7865 r1;
+@1f@ ld #9899 m01;
