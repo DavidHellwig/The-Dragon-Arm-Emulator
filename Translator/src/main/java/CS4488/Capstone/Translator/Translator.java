@@ -77,6 +77,7 @@ public class Translator {
      *
      * @param translatable If true, the text will be translated.
      */
+
     public void setTranslatable(boolean translatable) {
         this.isTranslatable = translatable;
     }
@@ -88,6 +89,7 @@ public class Translator {
      * @param armFile The name of the ARM file to be translated.
      * @return The singleton instance of the Translator class.
      */
+
     public static Translator getInstance(String armFile) {
         if (singleton == null) {
             singleton = new Translator(armFile); // initialize translator
@@ -103,6 +105,7 @@ public class Translator {
      *
      * @param loaded This is a boolean value that tells us whether the data has been loaded or not.
      */
+
     private void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
@@ -121,7 +124,8 @@ public class Translator {
      *
      * @param translatedCode This is the arraylist that will hold the translated code.
      */
-    public void setTranslatedCode(ArrayList<Hex4digit> translatedCode) {
+
+     public void setTranslatedCode(ArrayList<Hex4digit> translatedCode) {
         this.translatedCode = translatedCode;
     }
 
@@ -130,7 +134,8 @@ public class Translator {
      *
      * @return The armFile variable is being returned.
      */
-    public String getArmFile() {
+
+     public String getArmFile() {
         return this.armFile;
     }
 
@@ -139,7 +144,8 @@ public class Translator {
      *
      * @return The boolean value of the loaded variable.
      */
-    public boolean isLoaded() {
+
+     public boolean isLoaded() {
         return this.loaded;
     }
 
@@ -148,7 +154,8 @@ public class Translator {
      *
      * @return The translated code.
      */
-    public ArrayList<Hex4digit> getTranslatedCode() {
+
+     public ArrayList<Hex4digit> getTranslatedCode() {
         return this.translatedCode;
     }
 
@@ -172,7 +179,7 @@ public class Translator {
      * @param index The index of the element to be removed.
      * @return The array with the element removed.
      */
-    private String[] removeTheElement(String[] arr, int index) {
+     private String[] removeTheElement(String[] arr, int index) {
 
         // If the array is empty
         // or the index is not in array range
@@ -252,12 +259,21 @@ public class Translator {
     }
 
 
+
+
+    /**
+     * This function takes in a file of instructions and parses it to find any inline hex numbers and replaces them with a
+     * memory location
+     *
+     * @param file the file that is being read in
+     * @return The memory array is being returned.
+     */
     private String [] parseInLineHexNumbers(String [] file){
        int end = file.length;
        int start = 256; // max memory space
 
        if(end < 256){
-           String [] memory = initializeMemory();
+           String [] memory = initializeArray();
            Pattern pattern = Pattern.compile("[0-9]{4}");
 
            for(int i = 0; i< file.length; i++){
@@ -265,13 +281,13 @@ public class Translator {
                Matcher matcher = pattern.matcher(newLine);
                if(matcher.find() &&  newLine.length() > 5){
 
-                   String labelAddress = Integer.toHexString(start);
+                   String labelAddress = "m"+Integer.toHexString(start -1);
                    String number = matcher.group();
 
                    memory[start - 1] = number;
 
                    // replace number with memory location
-                   newLine = "m"+ newLine.replaceAll(number, labelAddress);
+                   newLine = newLine.replaceAll(number, labelAddress);
 
                    start--;
                }
@@ -285,7 +301,6 @@ public class Translator {
 
        return file;
     }
-
 
 
     /**
@@ -339,7 +354,7 @@ public class Translator {
      *
      * @return An array of 256 Strings, each initialized to the empty String.
      */
-    private String[] initializeMemory(){
+    private String[] initializeArray(){
         String [] memory = new String[256];
         Arrays.fill(memory, "");
         return memory;
@@ -381,18 +396,6 @@ public class Translator {
 //        this.replaceLabels(lineArray[0], labelAddress, parsedFile);
     }
 
-//    /**
-//     * This function replaces all instances of a label with a value
-//     *
-//     * @param replaced   The label that is being replaced.
-//     * @param value      The value that will be replaced in the file.
-//     * @param parsedFile The file that has been parsed into an array of strings.
-//     */
-//    private void replaceLabels(String replaced, String value, String[] parsedFile) {
-//        for (int i = 0; i < parsedFile.length; i++) {
-//            parsedFile[i] = parsedFile[i].replaceAll(replaced, value);
-//        }
-//    }
 
 
     /**
@@ -406,9 +409,12 @@ public class Translator {
         this.parseOutLabels(parsedFile);
         InstructionParser instructionParser = InstructionParser.getInstance();
 
-        ArrayList<Hex4digit> translatedFile = new ArrayList<>();
-        int lineIndex = 0;
-        for (String line : parsedFile) {
+        ArrayList<Hex4digit> translatedFile = initializeHexMemory();
+
+        // for (int lineIndex = 0, lineIndex < parsedFile.length, lineIndex++ )
+                //String line = parsedFile[i]
+        for (int lineIndex = 0; lineIndex < parsedFile.length; lineIndex++) {
+            String line = parsedFile[lineIndex];
             StringBuilder builder = new StringBuilder();
 
             // remove trailing space
@@ -440,9 +446,8 @@ public class Translator {
                         "Line: %s", lineIndex, builder);
                 this.setExceptionMessage(exception);
                 this.clearFile();
-                translatedFile = null;
                 System.out.println(this.getExceptionMessage());
-                break;
+                return null;
             } else {
                 int stop = 5;
                 // not negative instruction
@@ -466,67 +471,87 @@ public class Translator {
                 // create hex digit
                 Hex4digit hex = new Hex4digit();
                 hex.setValue(lineOfCode);
-                translatedFile.add(hex); // adds hex code to list
+                translatedFile.set(lineIndex, hex); // adds hex code to list
             } else {
                 String exception = String.format("Line %d contains unknown instructions.", lineIndex);
                 this.setExceptionMessage(exception);
                 this.clearFile();
-                //new ArrayList<>();
-                translatedFile = null;
                 System.out.println(this.getExceptionMessage());
-                break;
+                return null;
             }
 
-            lineIndex++;
+
         }
         System.out.println("File successfully converted to hex code.");
 
         return translatedFile;
     }
 
-//    public static void main(String[] args) throws Exception {
-//        //"Translator/src/main/java/CS4488/Capstone/Translator/Program 8 - Random Instructions.txt"
-//        //"Example Code/Program 1, Hello Branch and Math.txt"
-//        //"Example Code/Program 2, 4 Input 4 Operations.txt"
-//        //"Example Code/Program 3, Hello Memory.txt"
-//        //"Example Code/Program 4, Hello In Out.txt"
-//        //Example Code/Program 6, Dangerous Input.txt
-//        //Example Code/Program XYZ, TestingCoverage.txt
-//        //ResourceDirectories/translationTester.txt
-//        //Translator/ResourceDirectories/Example Code/Program XYZ, TestingCoverage.txt
-//
-//
-//
-//        Translator translator = new Translator("");
-//
-//        String file = translator.readFile("Translator/ResourceDirectories/translationTester.txt");
-//        String[] parsedFile = translator.parseFile(file);
-//
-//        for(int i  = 0; i< parsedFile.length; i++){
-//            System.out.println(i + ") " + parsedFile[i]);
-//        }
-//
-//        translator.parseOutLabels(parsedFile);
-//        System.out.println("\n");
-//
-//        for(int i  = 0; i< parsedFile.length; i++){
-//            System.out.println(i + ") " + parsedFile[i].trim());
-//        }
-//
-//        String [] ttfile = translator.parseInLineHexNumbers(parsedFile);
-//
-//        for(int i  = 0; i< ttfile.length; i++){
-//            System.out.println(i + ") " + ttfile[i]);
-//        }
-//
-////        System.out.println("Translation: \n");
-//
-////        ArrayList<Hex4digit> translatedCode = translator.convertToHex(parsedFile);
-////
-////        for(Hex4digit code : translatedCode){
-////            System.out.println(code.getHexChars());
-////        }
-//    }
+
+    /**
+     * This function initializes the memory array with 256 Hex4digit objects
+     *
+     * @return An ArrayList of 256 Hex4digit objects.
+     */
+
+    private ArrayList<Hex4digit> initializeHexMemory(){
+        ArrayList<Hex4digit> memory = new ArrayList<Hex4digit>(256);
+
+        for(int i = 0; i< 256; i++){
+            memory.add(new Hex4digit());
+        }
+        return memory;
+    }
+
+
+
+
+    public static void main(String[] args) throws Exception {
+        //"Translator/src/main/java/CS4488/Capstone/Translator/Program 8 - Random Instructions.txt"
+        //"Example Code/Program 1, Hello Branch and Math.txt"
+        //"Example Code/Program 2, 4 Input 4 Operations.txt"
+        //"Example Code/Program 3, Hello Memory.txt"
+        //"Example Code/Program 4, Hello In Out.txt"
+        //Example Code/Program 6, Dangerous Input.txt
+        //Example Code/Program XYZ, TestingCoverage.txt
+        //ResourceDirectories/translationTester.txt
+        //Translator/ResourceDirectories/Example Code/Program XYZ, TestingCoverage.txt
+
+        Translator translator = new Translator("");
+
+        String file = translator.readFile("Translator/ResourceDirectories/inLineNumber.txt");
+        String[] parsedFile = translator.parseFile(file);
+
+        for(int i  = 0; i< parsedFile.length; i++){
+            System.out.println(i + ") " + parsedFile[i]);
+        }
+
+        translator.parseOutLabels(parsedFile);
+        System.out.println("\n");
+
+        for(int i  = 0; i< parsedFile.length; i++){
+            System.out.println(i + ") " + parsedFile[i].trim());
+        }
+        System.out.println();
+
+        String [] newFile = translator.parseInLineHexNumbers(parsedFile);
+
+        for(int i  = 0; i< newFile.length; i++){
+            System.out.println(i + ") " + newFile[i]);
+        }
+
+
+        System.out.println("Translation: \n");
+
+        ArrayList<Hex4digit> translatedCode = translator.convertToHex(newFile);
+        System.out.println(translatedCode.size());
+
+        for(Hex4digit code : translatedCode){
+            System.out.println(code.getHexChars());
+        }
+
+
+    }
 
 
 }
