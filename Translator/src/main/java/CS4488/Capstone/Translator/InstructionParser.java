@@ -40,9 +40,9 @@ public class InstructionParser {
     }
 
     /**
-     * This function returns a map of strings to strings.
+     * This function returns a map of string to string.
      *
-     * @return A map of strings to strings.
+     * @return A map of string to string.
      */
     public Map<String, String> getParser() {
         return this.parser;
@@ -70,6 +70,7 @@ public class InstructionParser {
         this.parser.put("rd", "d");
         this.parser.put("wr", "e");
         this.parser.put("ldc", "f");
+        this.parser.put("s", "f000");
     }
 
 
@@ -86,13 +87,13 @@ public class InstructionParser {
             // loads hex address notation to map
 //            this.parser.put("r0x"+hexI, hexI);
         }
-
         // load special register address
         this.parser.put("fp", Integer.toHexString(11));
         this.parser.put("ip", Integer.toHexString(12));
         this.parser.put("sp", Integer.toHexString(13));
         this.parser.put("lr", Integer.toHexString(14));
         this.parser.put("pc", Integer.toHexString(15));
+
 
     }
 
