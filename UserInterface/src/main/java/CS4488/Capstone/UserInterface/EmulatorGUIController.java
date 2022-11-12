@@ -22,11 +22,6 @@ public class EmulatorGUIController {
 
     private File loadedProgram;
 
-    private boolean isOldFile;
-
-
-
-
     @FXML
     private Button exitButton;
 
@@ -81,14 +76,11 @@ public class EmulatorGUIController {
     @FXML
     private TextArea inputBox;
 
-
     @FXML
     private TextArea memoryTable;
 
     @FXML
     private TextFlow memoryTable2;
-
-
 
     @FXML
     private Button hexConverterHexToDecimalButton;
@@ -159,19 +151,23 @@ public class EmulatorGUIController {
         File file = txtChooser.showOpenDialog(null);
         if (file != null){
 
-            isOldFile = true;
             loadedProgram = file;
             inputBox.setText(orc.loadFile(file.getAbsolutePath()));
             orc.translateAndLoad(file.getAbsolutePath());
         }
 
+        initializeMemoryTable();
+
     }
 
     //Memory table Methods and Buttons
 
+    /**
+     * initialize the memory table, need to refactor
 
+     */
     @FXML
-    void initializeMemoryTable(ActionEvent actionEvent){
+    void initializeMemoryTable(){
         short annoying = 0;
         RAM = new String[256][17];
         for (int i = 1;i<256;i++){
@@ -192,6 +188,9 @@ public class EmulatorGUIController {
 
     }
 
+    /**
+     * Print the intial ram values
+     */
     @FXML
     void printInitialRAMValues(){
 
@@ -216,7 +215,7 @@ public class EmulatorGUIController {
     void updateRAMValues(){
         //String newMemArray = orc.getProgramState();
         ArrayList<ArrayList<Hex4digit>> newHex4DigitMemarray = orc.getProgramState().memoryStateHistory;
-        int x = 0;
+        int x = 0; // A relic
 
 
     }
@@ -231,26 +230,41 @@ public class EmulatorGUIController {
     }
 
     /**
-     * Runs the program without stopping
+     * Runs the program without stopping, unless the program has ended or an error is reached
      * @param actionEvent
      */
     @FXML
-    void run(ActionEvent actionEvent){
+    void run(ActionEvent actionEvent) throws InterruptedException {
+
         while(true) {
+            if (orc.getProgramState().registers[15].getValue() == -1){
+                Alert end = new Alert(Alert.AlertType.WARNING);
+                end.setContentText("End of file reached");
+                end.showAndWait();
+
+                break;
+            }
+
             if (orc.getError() == "Orchestrator: No Error.") {
                 executeStep();
 
             }
-            else{
-                abortProgram();
+            else if (orc.getError() != "Orchestrator: No Error."){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText(orc.getError());
+                alert.showAndWait();
+                break;
             }
+
+
         }
+
+
 
     }
 
     /**
      * Sets the value of the registers
-     * @param actionEvent
      */
     @FXML
     void getRegisters(){
@@ -287,6 +301,9 @@ public class EmulatorGUIController {
 
     }
 
+    /**
+     * executes one step through the code, unless the end of the program is reached or an error is reached
+     */
     @FXML
     void executeStep(){
 
@@ -303,8 +320,11 @@ public class EmulatorGUIController {
 
         }
         else if (orc.getProgramState().registers[15].getValue() == -1){
+            Alert end = new Alert(Alert.AlertType.WARNING);
+            end.setContentText("End of file reached");
+            end.showAndWait();
 
-            abortProgram();
+
 
         }
 

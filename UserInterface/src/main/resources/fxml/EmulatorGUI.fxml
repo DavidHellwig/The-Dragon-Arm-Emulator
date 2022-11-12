@@ -58,7 +58,7 @@
                </font></Text>
             <ButtonBar layoutX="515.0" layoutY="14.0" prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                <Button fx:id="assembleButton" mnemonicParsing="false" onAction="#initializeMemoryTable" text="Build" />
+                <Button fx:id="assembleButton" mnemonicParsing="false" text="Build" />
                   <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" text="Next" />
                   <Button fx:id="runButton" mnemonicParsing="false" onAction="#run" text="Run" />
                   <Button fx:id="abortButton" mnemonicParsing="false" onAction="#abortProgram" text="Abort" />
