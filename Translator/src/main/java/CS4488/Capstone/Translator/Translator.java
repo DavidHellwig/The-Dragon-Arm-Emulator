@@ -457,7 +457,7 @@ public class Translator {
 
             if (builder.length() > 4 && builder.charAt(0) != '-') {
                 String exception = String.format("Instruction memory overflow occurred at Line %d. \n" +
-                        "Line: %s", lineIndex, builder);
+                        "Line: %s" , lineIndex, builder);
                 this.setExceptionMessage(exception);
                 this.clearFile();
                 System.out.println(this.getExceptionMessage());
@@ -530,6 +530,7 @@ public class Translator {
         //Example Code/Program XYZ, TestingCoverage.txt
         //ResourceDirectories/translationTester.txt
         //Translator/ResourceDirectories/Example Code/Program XYZ, TestingCoverage.txt
+        //"Translator/ResourceDirectories/bad comment.txt"
 
         Translator translator = new Translator("");
         //@@--[\s\S]*--@@
@@ -538,7 +539,7 @@ public class Translator {
 
 
 
-        String file = translator.readFile("Translator/ResourceDirectories/bad comment.txt");
+        String file = translator.readFile("Translator/ResourceDirectories/translationTester.txt");
 
 
         String[] parsedFile = translator.parseFile(file);

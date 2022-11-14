@@ -41,4 +41,4 @@ testing if label works for multiple lines, KILLER BEE, NARUTO, BLEACH, LUFFY, IC
 @ 1c @ repeat: 0xba98;                      @ ba98 @
 @ 1d @ s;
 @1e@ ld #7865 r1;
-@1f@ ld #9899 m01;
+@1f@ ld #9899 R2;
