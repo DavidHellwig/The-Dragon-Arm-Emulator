@@ -43,6 +43,7 @@ class OrchestratorTest {
         System.out.println("\nStore Test\n");
         //runProgram(store, 25, 10);
 
+        // TODO Uncomment and run this
 //        System.out.println("\nAdd Test\n");
 //        runProgram(add, 25, 10);
 //
