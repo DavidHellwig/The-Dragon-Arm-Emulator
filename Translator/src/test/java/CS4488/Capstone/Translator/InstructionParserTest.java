@@ -25,7 +25,7 @@ class InstructionParserTest {
     @DisplayName("Test Hash Map size")
     void getInstance() {
         // size of all instructions {registers, memory address, special register code}
-        assertEquals(hashParser.getParser().size(), 292);
+        assertEquals(hashParser.getParser().size(), 293);
     }
 
     @Test

@@ -25,6 +25,7 @@
 @ 13 @ ld label2 r2;                        @ 1122 @ @ 1 = ld, 12 = label2, 2 = r2 @
 @ 14 @ Label3:                              @ abcd @
             #abcd;
+
 @ 15 @ sti Label3 r3;                       @ 8143 @ @ 8 = sti, Label3 = 14, 3 = r3 @
 
 @ 16 @ ld futureLabel pc;                   @ 11bf @
@@ -34,3 +35,4 @@
 @ 1a @ add fp ra re;                        @ 3bae @
 @ 1b @ futureLabel: #fedc;                  @ fedc @
 @ 1c @ repeat: 0xba98;                      @ ba98 @
+@ 1d @ s;
