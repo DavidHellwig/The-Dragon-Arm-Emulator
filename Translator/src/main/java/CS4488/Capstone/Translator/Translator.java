@@ -58,7 +58,7 @@ public class Translator {
             // if lines don't exceed memory space
             if (hex4dCode != null && hex4dCode.size() <= 256 ) {
                 this.setTranslatedCode(hex4dCode);
-                return true;
+                return this.getTranslatedCode() != null;
 
             } else {
                 this.setExceptionMessage("System Memory overflow, Lines exceed 256.");
