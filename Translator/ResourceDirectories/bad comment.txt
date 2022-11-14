@@ -1,6 +1,7 @@
 @ Bad comment Bug @
 @ This line cause a loop of some sort;
 
+
 @ 00 @ ld zero r5;
 @ 01 @ brz r5 m04;
 @ 02 @ zero: #0000;

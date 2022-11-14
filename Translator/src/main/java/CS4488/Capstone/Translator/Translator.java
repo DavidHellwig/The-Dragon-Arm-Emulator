@@ -49,7 +49,11 @@ public class Translator {
             // Parse Arm-file for hex conversion
             String[] parsedFile = this.parseFile(this.getArmFile());
             // convert to hex code
-            ArrayList<Hex4digit> hex4dCode = this.convertToHex(parsedFile);
+            ArrayList<Hex4digit> hex4dCode = null;
+            if(parsedFile != null){
+                hex4dCode = this.convertToHex(parsedFile);
+            }
+
 
             // if lines don't exceed memory space
             if (hex4dCode != null && hex4dCode.size() <= 256 ) {
@@ -238,16 +242,24 @@ public class Translator {
      * @return The line without the comments.
      */
     private String removeComments(String line) {
+        //(?<=@).*?(?=@)
 
         System.out.println("Parsing out Comments (@ comment @).");
 
         String lineCopy = line;
-
         while (lineCopy.contains("@")) {
 
             int firstIndex = lineCopy.indexOf('@');
+
+
+            if(firstIndex == lineCopy.lastIndexOf('@')){
+                this.setExceptionMessage("Error occurred parsing comments. Please check your comments.");
+                System.out.println(this.getExceptionMessage());
+                return "";
+            }
             if (firstIndex + 1 < lineCopy.length()) {
                 int endIndex = lineCopy.indexOf('@', firstIndex + 1);
+
                 if (endIndex + 1 <= lineCopy.length()) {
                     lineCopy = lineCopy.replace(lineCopy.substring(firstIndex, endIndex + 1), "");
                 }
@@ -331,8 +343,11 @@ public class Translator {
 
         System.out.println("");
 
-        return noComments.split(";");
+        if(noComments.isEmpty()){
+            return  null;
+        }
 
+        return noComments.split(";");
     }
 
     private void parseOutLabels(String [] file){
@@ -408,11 +423,10 @@ public class Translator {
 
         this.parseOutLabels(parsedFile);
         InstructionParser instructionParser = InstructionParser.getInstance();
+        parsedFile = this.parseInLineHexNumbers(parsedFile);
 
         ArrayList<Hex4digit> translatedFile = initializeHexMemory();
 
-        // for (int lineIndex = 0, lineIndex < parsedFile.length, lineIndex++ )
-                //String line = parsedFile[i]
         for (int lineIndex = 0; lineIndex < parsedFile.length; lineIndex++) {
             String line = parsedFile[lineIndex];
             StringBuilder builder = new StringBuilder();
@@ -518,37 +532,53 @@ public class Translator {
         //Translator/ResourceDirectories/Example Code/Program XYZ, TestingCoverage.txt
 
         Translator translator = new Translator("");
+        //@@--[\s\S]*--@@
+        //(?<=@).*?(?=@)
 
-        String file = translator.readFile("Translator/ResourceDirectories/inLineNumber.txt");
+
+
+
+        String file = translator.readFile("Translator/ResourceDirectories/bad comment.txt");
+
+
         String[] parsedFile = translator.parseFile(file);
 
-        for(int i  = 0; i< parsedFile.length; i++){
-            System.out.println(i + ") " + parsedFile[i]);
+        if(parsedFile != null){
+            for(int i  = 0; i< parsedFile.length; i++){
+                System.out.println(i + ") " + parsedFile[i]);
+            }
+
+            translator.parseOutLabels(parsedFile);
+            System.out.println("\n");
+
+            for(int i  = 0; i< parsedFile.length; i++){
+                System.out.println(i + ") " + parsedFile[i].trim());
+            }
+            System.out.println();
+
+            String [] newFile = translator.parseInLineHexNumbers(parsedFile);
+
+            for(int i  = 0; i< newFile.length; i++){
+                System.out.println(i + ") " + newFile[i]);
+            }
+
+
+            System.out.println("Translation: \n");
+
+            ArrayList<Hex4digit> translatedCode = translator.convertToHex(parsedFile);
+            System.out.println(translatedCode.size() + "\n");
+
+            for(int i  = 0; i< translatedCode.size(); i++){
+
+                System.out.println(i + ") " + translatedCode.get(i).getString());
+
+            }
+
+        }else{
+            System.out.println("Error parsing file");
         }
 
-        translator.parseOutLabels(parsedFile);
-        System.out.println("\n");
 
-        for(int i  = 0; i< parsedFile.length; i++){
-            System.out.println(i + ") " + parsedFile[i].trim());
-        }
-        System.out.println();
-
-        String [] newFile = translator.parseInLineHexNumbers(parsedFile);
-
-        for(int i  = 0; i< newFile.length; i++){
-            System.out.println(i + ") " + newFile[i]);
-        }
-
-
-        System.out.println("Translation: \n");
-
-        ArrayList<Hex4digit> translatedCode = translator.convertToHex(newFile);
-        System.out.println(translatedCode.size());
-
-        for(Hex4digit code : translatedCode){
-            System.out.println(code.getHexChars());
-        }
 
 
     }

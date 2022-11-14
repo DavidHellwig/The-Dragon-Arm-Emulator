@@ -1,5 +1,9 @@
 @This is a comment@
 @This file is not a functional program@
+@ This lines are testing if multiline comments work;
+yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy, this a series of nonsense one could say you know.
+testing if label works for multiple lines, KILLER BEE, NARUTO, BLEACH, LUFFY, ICHIGO, BANKAI, RASENGAN@
+
 
 @ Here is a list of basic instructions@
 @ Line Number / Memory Space to the Left @  @ Expectation to the Right @
