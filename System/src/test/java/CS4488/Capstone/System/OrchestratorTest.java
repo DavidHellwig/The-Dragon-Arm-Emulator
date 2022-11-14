@@ -37,48 +37,54 @@ class OrchestratorTest {
 
         //runProgram(Program1, 1, 10);
 
-        System.out.println("\nLoad Test\n");
+        //System.out.println("\nLoad Test\n");
         //runProgram(load, 25, 10);
 
-        System.out.println("\nStore Test\n");
+        //System.out.println("\nStore Test\n");
         //runProgram(store, 25, 10);
 
-        // TODO Uncomment and run this
-//        System.out.println("\nAdd Test\n");
-//        runProgram(add, 25, 10);
-//
-//        System.out.println("\nSubtract Test\n");
-//        runProgram(subtract, 25, 10);
-//
-//        System.out.println("\nMultiply Test\n");
-//        runProgram(multiple, 25, 10);
-//
-//        System.out.println("\nDivide Test\n");
-//        runProgram(divide, 25, 10);
-//
-//        System.out.println("\nLoad Indirect Test\n");
-//        runProgram(loadIndirect, 25, 10);
-//
-//        System.out.println("\nStore Indirect Test\n");
-//        runProgram(storeIndirect, 25, 10);
-//
-//        System.out.println("\nBranch Test\n");
-//        runProgram(branch, 25, 10);
-//
-//        System.out.println("\nBranch Zero Test\n");
-//        runProgram(branchZero, 25, 10);
-//
-//        System.out.println("\nBranch Negative Test\n");
-//        runProgram(branchNegative, 25, 10);
-//
-//        System.out.println("\nBranch Positive Test\n");
-//        runProgram(branchPositive, 25, 10);
-//
-//        System.out.println("\nRead Test\n");
-//        runProgram(read, 25, 10);
-//
-//        System.out.println("\nWrite Test\n");
-//        runProgram(write, 25, 10);
+
+        //System.out.println("\nAdd Test\n");
+        //runProgram(add, 25, 10);
+
+        //System.out.println("\nSubtract Test\n");
+        //runProgram(subtract, 25, 10);
+
+        //System.out.println("\nMultiply Test\n");
+        //runProgram(multiple, 25, 10);
+
+        //System.out.println("\nDivide Test\n");
+        //runProgram(divide, 25, 10);
+
+        //System.out.println("\nLoad Indirect Test\n");
+        //runProgram(loadIndirect, 25, 10);
+
+        // TODO needs fixed
+        //System.out.println("\nStore Indirect Test\n");
+        //runProgram(storeIndirect, 25, 10);
+
+        System.out.println("\nBranch Test\n");
+        runProgram(branch, 25, 10);
+
+
+        System.out.println("\nBranch Zero Test\n");
+        runProgram(branchZero, 25, 10);
+
+
+        System.out.println("\nBranch Negative Test\n");
+        runProgram(branchNegative, 25, 10);
+
+        // TODO Isn't Translating
+        System.out.println("\nBranch Positive Test\n");
+        runProgram(branchPositive, 25, 10);
+
+        //TODO Bugged
+        System.out.println("\nRead Test\n");
+        runProgram(read, 25, 10);
+
+        // TODO BUGGED
+        System.out.println("\nWrite Test\n");
+        runProgram(write, 25, 10);
 
 
     }
@@ -86,6 +92,7 @@ class OrchestratorTest {
     private void runProgram(String file, int input, int stepLimit){
         int i = 0;
         orchestrator.translateAndLoad(file);
+        //System.out.println("\n T R A N S L A T O R  -  D O N E \n");
         orchestrator.getProgramState().input = new Hex4digit(input);
         System.out.println("Initial State, State " + i + ": \n");
         System.out.println(orchestrator.getProgramState().printableProgramState());

@@ -25,6 +25,7 @@ class TranslatorFacadeTest {
     String fakeFile = resources + "/Example Code/fhw4fhq2fhq4thq.txt";
     String badFile = resources + "/Example Code/Program X, Bad Program.txt";
     String translationTest = resources + "/translationTester.txt";
+    String badComment = resources + "/bad comment.txt";
 
     TranslatorFacade translatorFacade = new TranslatorFacade();
 
@@ -161,6 +162,16 @@ class TranslatorFacadeTest {
             System.out.println(e.getMessage());
         }
     }
+
+//    @Test
+//    @DisplayName("Bad Comment Error Test")
+//    void badComment(){
+//       translatorFacade.loadFile(badComment);
+//
+//       assertFalse(translatorFacade.isTranslatable());
+//
+//       //ArrayList<Hex4digit> code = translatorFacade.translateToMachine();
+//    }
 
 
 
