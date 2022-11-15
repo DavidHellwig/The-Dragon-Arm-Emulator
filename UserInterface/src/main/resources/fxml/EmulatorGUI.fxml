@@ -58,7 +58,7 @@
                </font></Text>
             <ButtonBar layoutX="515.0" layoutY="14.0" prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                <Button fx:id="assembleButton" mnemonicParsing="false" onAction="#initializeMemoryTable" text="Build" />
+                <Button fx:id="assembleButton" mnemonicParsing="false" text="Build" />
                   <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" text="Next" />
                   <Button fx:id="runButton" mnemonicParsing="false" onAction="#run" text="Run" />
                   <Button fx:id="abortButton" mnemonicParsing="false" onAction="#abortProgram" text="Abort" />
@@ -80,16 +80,16 @@
             <TextArea fx:id="inputBox" layoutX="94.0" layoutY="71.0" prefHeight="305.0" prefWidth="412.0" promptText="Enter code here" AnchorPane.bottomAnchor="344.0" AnchorPane.leftAnchor="94.0" AnchorPane.rightAnchor="774.0" AnchorPane.topAnchor="71.0" />
             <Text layoutX="1122.0" layoutY="584.0" strokeType="OUTSIDE" strokeWidth="0.0" />
             <TextField fx:id="hexToDecConversionTextField" layoutX="998.0" layoutY="219.0" prefHeight="25.0" prefWidth="130.0" promptText="Enter hex value  " />
-            <TextField editable="false" layoutX="582.0" layoutY="165.0" prefHeight="17.0" prefWidth="44.0" />
-            <TextField editable="false" layoutX="637.0" layoutY="165.0" prefHeight="17.0" prefWidth="44.0" />
-            <TextField editable="false" layoutX="690.0" layoutY="165.0" prefHeight="17.0" prefWidth="44.0" />
-            <TextField editable="false" layoutX="743.0" layoutY="165.0" prefHeight="17.0" prefWidth="44.0" />
-            <Text layoutX="597.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R1" />
-            <Text layoutX="652.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R2" />
-            <Text layoutX="705.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R3" />
-            <Text layoutX="758.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R4" />
+            <TextField fx:id="R0" editable="false" layoutX="582.0" layoutY="165.0" prefHeight="17.0" prefWidth="44.0" />
+            <TextField fx:id="R1" editable="false" layoutX="637.0" layoutY="165.0" prefHeight="17.0" prefWidth="44.0" />
+            <TextField fx:id="R2" editable="false" layoutX="690.0" layoutY="165.0" prefHeight="17.0" prefWidth="44.0" />
+            <TextField fx:id="R3" editable="false" layoutX="743.0" layoutY="165.0" prefHeight="17.0" prefWidth="44.0" />
+            <Text layoutX="597.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R0" />
+            <Text layoutX="652.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R1" />
+            <Text layoutX="705.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R2" />
+            <Text layoutX="758.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R3" />
             <TextArea fx:id="memoryTable" layoutX="319.0" layoutY="425.0" prefHeight="200.0" prefWidth="710.0" />
-            <Button fx:id="debug" layoutX="648.0" layoutY="284.0" mnemonicParsing="false" onAction="#getCurrentPC" text="Debug" />
+            <Button fx:id="debug" layoutX="648.0" layoutY="284.0" mnemonicParsing="false" text="Debug" />
       </children>
          <opaqueInsets>
             <Insets />

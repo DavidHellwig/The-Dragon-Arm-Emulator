@@ -12,10 +12,7 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 public class EmulatorGUIController {
@@ -24,9 +21,6 @@ public class EmulatorGUIController {
     private String[][] RAM;
 
     private File loadedProgram;
-
-
-
 
     @FXML
     private Button exitButton;
@@ -52,7 +46,17 @@ public class EmulatorGUIController {
     @FXML
     private TextField pc;
 
+    @FXML
+    private TextField R0;
 
+    @FXML
+    private TextField R1;
+
+    @FXML
+    private TextField R2;
+
+    @FXML
+    private TextField R3;
 
     @FXML
     private TextField IN;
@@ -72,14 +76,11 @@ public class EmulatorGUIController {
     @FXML
     private TextArea inputBox;
 
-
     @FXML
     private TextArea memoryTable;
 
     @FXML
     private TextFlow memoryTable2;
-
-
 
     @FXML
     private Button hexConverterHexToDecimalButton;
@@ -88,7 +89,7 @@ public class EmulatorGUIController {
 
 
     }
-
+    //Decimal Conversion Methods And Buttons
 
     /**
      * Convert a decimal to hex
@@ -136,6 +137,8 @@ public class EmulatorGUIController {
 
     }
 
+    //File Management Methods and Buttons
+
     /**
      * Load a file into the input box and load the program from the file
      * @param actionEvent
@@ -148,21 +151,23 @@ public class EmulatorGUIController {
         File file = txtChooser.showOpenDialog(null);
         if (file != null){
 
-
             loadedProgram = file;
             inputBox.setText(orc.loadFile(file.getAbsolutePath()));
             orc.translateAndLoad(file.getAbsolutePath());
         }
 
-
-
-
-
-
+        initializeMemoryTable();
 
     }
+
+    //Memory table Methods and Buttons
+
+    /**
+     * initialize the memory table, need to refactor
+
+     */
     @FXML
-    void initializeMemoryTable(ActionEvent actionEvent){
+    void initializeMemoryTable(){
         short annoying = 0;
         RAM = new String[256][17];
         for (int i = 1;i<256;i++){
@@ -183,6 +188,9 @@ public class EmulatorGUIController {
 
     }
 
+    /**
+     * Print the intial ram values
+     */
     @FXML
     void printInitialRAMValues(){
 
@@ -207,7 +215,7 @@ public class EmulatorGUIController {
     void updateRAMValues(){
         //String newMemArray = orc.getProgramState();
         ArrayList<ArrayList<Hex4digit>> newHex4DigitMemarray = orc.getProgramState().memoryStateHistory;
-        int x = 0;
+        int x = 0; // A relic
 
 
     }
@@ -222,34 +230,66 @@ public class EmulatorGUIController {
     }
 
     /**
-     * Runs the program without stopping
+     * Runs the program without stopping, unless the program has ended or an error is reached
      * @param actionEvent
      */
     @FXML
-    void run(ActionEvent actionEvent){
+    void run(ActionEvent actionEvent) throws InterruptedException {
+
         while(true) {
+            if (orc.getProgramState().registers[15].getValue() == -1){
+                Alert end = new Alert(Alert.AlertType.WARNING);
+                end.setContentText("End of file reached");
+                end.showAndWait();
+
+                break;
+            }
+
             if (orc.getError() == "Orchestrator: No Error.") {
                 executeStep();
 
             }
-            else{
-                abortProgram();
+            else if (orc.getError() != "Orchestrator: No Error."){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText(orc.getError());
+                alert.showAndWait();
+                break;
             }
+
+
         }
+
+
 
     }
 
     /**
-     * get the current program counter
-
+     * Sets the value of the registers
      */
     @FXML
-    void getCurrentPC(ActionEvent actionEvent){
-        int temp = orc.getProgramState().pcHistory.size();
+    void getRegisters(){
+        R0.setText(String.valueOf(orc.getProgramState().registers[0].getValue()));
 
-        int pc = orc.getProgramState().pcHistory.get(temp).memoryLocation;
+        R1.setText(String.valueOf(orc.getProgramState().registers[1].getValue()));
+
+        R2.setText(String.valueOf(orc.getProgramState().registers[2].getValue()));
+
+        R3.setText(String.valueOf(orc.getProgramState().registers[3].getValue()));
+
+        pc.setText(String.valueOf(orc.getProgramState().registers[15].getValue()));
 
     }
+
+    /**
+     * Writes input from orchestrator to output box
+     */
+    @FXML
+    void writeToOutput(){
+        //TODO figure this out
+
+    }
+
+
 
     /**
      * abort the currently running program. Can be used while program is running step by step or running in totality
@@ -261,9 +301,12 @@ public class EmulatorGUIController {
 
     }
 
+    /**
+     * executes one step through the code, unless the end of the program is reached or an error is reached
+     */
     @FXML
     void executeStep(){
-        System.out.println(orc.getProgramState().printableProgramState());
+
         if(orc.getError() != "Orchestrator: No Error."){
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setContentText(orc.getError());
@@ -271,8 +314,17 @@ public class EmulatorGUIController {
             abortProgram();
             orc.translateAndLoad(loadedProgram.getAbsolutePath());
         }
-        else{
+        else if (orc.getProgramState().registers[15].getValue() != -1){
+            getRegisters();
             orc.next();
+
+        }
+        else if (orc.getProgramState().registers[15].getValue() == -1){
+            Alert end = new Alert(Alert.AlertType.WARNING);
+            end.setContentText("End of file reached");
+            end.showAndWait();
+
+
 
         }
 
