@@ -26,6 +26,7 @@ class TranslatorFacadeTest {
     String badFile = resources + "/Example Code/Program X, Bad Program.txt";
     String translationTest = resources + "/translationTester.txt";
     String badComment = resources + "/bad comment.txt";
+    String inLineNumberTest = resources + "/inLineNumber.txt";
 
     TranslatorFacade translatorFacade = new TranslatorFacade();
 
@@ -69,6 +70,8 @@ class TranslatorFacadeTest {
 
         ArrayList<Hex4digit> expectation = new ArrayList<>();
         //Adding the individual hand translated lines of the file listed in the realFile string;
+
+        System.out.println("\nReal File\n");
         expectation.add(new Hex4digit("9020"));
         expectation.add(new Hex4digit("0002"));
         expectation.add(new Hex4digit("1010"));
@@ -79,6 +82,7 @@ class TranslatorFacadeTest {
         result = translateAndCompare(expectation, realFile);
         assertTrue(result);
 
+        System.out.println("\nTranslation Test\n");
         expectation.clear();
         expectation.add(new Hex4digit("0000"));
         expectation.add(new Hex4digit("1031"));
@@ -111,18 +115,34 @@ class TranslatorFacadeTest {
         expectation.add(new Hex4digit("ba98"));
         expectation.add(new Hex4digit("f000"));
 
-
-
         result = translateAndCompare(expectation, translationTest);
         assertTrue(result);
+
+        System.out.println("inline numbers");
+        expectation.clear();
+        expectation.add(new Hex4digit("0000"));
+        expectation.add(new Hex4digit("1ff1"));
+        expectation.add(new Hex4digit("2fe1"));
+        int fullList = 2;
+        while (fullList<253){
+            expectation.add(new Hex4digit("0000"));
+            fullList++;
+        }
+        expectation.add(new Hex4digit("8989"));
+        expectation.add(new Hex4digit("8889"));
+
+        result = translateAndCompare(expectation, inLineNumberTest);
+        assertTrue(result);
+
     }
 
 
-    @Test
-    @DisplayName("Test Translation. Expected vs Output")
+
+    // this isn't a test it's a method
     private boolean translateAndCompare(ArrayList<Hex4digit> expectation, String testingFile){
         translatorFacade.loadFile(testingFile);
         ArrayList<Hex4digit> results = translatorFacade.translateToMachine();
+
         int size = expectation.size();
         boolean isSame = true;
         System.out.println("Expectation --- Result");

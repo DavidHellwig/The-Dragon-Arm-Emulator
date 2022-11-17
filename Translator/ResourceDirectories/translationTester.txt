@@ -1,8 +1,5 @@
 @This is a comment@
 @This file is not a functional program@
-@ This lines are testing if multiline comments work;
-yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy, this a series of nonsense one could say you know.
-testing if label works for multiple lines, KILLER BEE, NARUTO, BLEACH, LUFFY, ICHIGO, BANKAI, RASENGAN@
 
 
 @ Here is a list of basic instructions@
@@ -15,7 +12,7 @@ testing if label works for multiple lines, KILLER BEE, NARUTO, BLEACH, LUFFY, IC
 @ 05 @ mul r1 r2 r3;                        @ 5123 @
 @ 06 @ div r1 r2 r3;                        @ 6123 @
 @ 07 @ ldi mff r1;                          @ 7ff1 @
-@ 08 @ sti mff r1;                          @ 8ff1 @
+@ 08 @ useless: sti #1234 r1;               @ 8ff1 @
 @ 09 @ br mff;                              @ 9ff0 @
 @ 0a @ brz r1 mff;                          @ a1ff @
 @ 0b @ brn r1 mff;                          @ b1ff @
@@ -40,5 +37,5 @@ testing if label works for multiple lines, KILLER BEE, NARUTO, BLEACH, LUFFY, IC
 @ 1b @ futureLabel: #fedc;                  @ fedc @
 @ 1c @ repeat: 0xba98;                      @ ba98 @
 @ 1d @ s;
-@1e@ ld #7865 r1;
-@1f@ ld #9899 R2;
+@ 1e @ ld #7865 r1;
+@ 1f @ ld #9899 R2;
