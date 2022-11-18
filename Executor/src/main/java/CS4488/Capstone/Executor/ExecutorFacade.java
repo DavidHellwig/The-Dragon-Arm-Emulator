@@ -58,8 +58,8 @@ public class ExecutorFacade implements ExecutorInterface {
             case 'c' -> InstructionSet.branchPos(state, inst.getHexChars()[2], inst.getLast2Value());
             case 'd' -> InstructionSet.readInt(state, inst.getHexChars()[2]);
             case 'e' -> InstructionSet.writeInt(state, inst.getHexChars()[2]);
-            case 'f' -> System.out.println("Nothing");
-            default -> System.out.println("Throw an error and halt");
+            case 'f' -> InstructionSet.skip(state);
+            default -> unrecognizedInstruction(state);
         }
     }
 
@@ -140,5 +140,10 @@ public class ExecutorFacade implements ExecutorInterface {
     @Override
     public String getLastExceptionMessage() {
         return exceptionMessage;
+    }
+
+    private void unrecognizedInstruction(ProgramState state) {
+        exceptionMessage = "The given instruction was not recognized!";
+        InstructionSet.halt(state);
     }
 }

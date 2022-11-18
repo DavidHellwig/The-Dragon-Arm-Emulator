@@ -106,13 +106,13 @@ public final class InstructionSet {
     public static void storeIndirect(ProgramState state, int mem, char reg, int index) {
         System.out.println("StoreIndirect");
         // grab the hex4digit object that is in the specified register
-        // This will hold the address for the indirect memory location
-        Hex4digit address = state.registers[Hex4digit.hexValue(reg)];
-        // Then, go to that memory location and take its hex4digit object
-        // this is the actual value we are storing in the specified memory
-        Hex4digit value = state.memoryStateHistory.get(index).get(address.getValue());
+        // This will hold the value to be placed in the indirect memory location
+        Hex4digit value = state.registers[Hex4digit.hexValue(reg)];
+        // Then, go to the specified memory location and take its hex4digit object
+        // this value will be pointing to the actual memory address to be used
+        Hex4digit address = state.memoryStateHistory.get(index).get(mem);
         // Now store the value into memory
-        state.memoryStateHistory.get(index).get(mem).setValue(value.getHexChars());
+        state.memoryStateHistory.get(index).get(address.getValue()).setValue(value.getHexChars());
         incrementProgramCounter(state);
     }
 
@@ -127,6 +127,8 @@ public final class InstructionSet {
     public static void branchZero(ProgramState state, char reg, int mem) {
         if (state.registers[Hex4digit.hexValue(reg)].getValue() == 0) {
             state.registers[15].setValue(mem);
+        } else {
+            incrementProgramCounter(state);
         }
     }
 
@@ -136,6 +138,8 @@ public final class InstructionSet {
         System.out.println("BranchNeg");
         if (state.registers[Hex4digit.hexValue(reg)].getValue() < 0) {
             state.registers[15].setValue(mem);
+        } else {
+            incrementProgramCounter(state);
         }
     }
 
@@ -145,22 +149,30 @@ public final class InstructionSet {
         System.out.println("BranchPos");
         if (state.registers[Hex4digit.hexValue(reg)].getValue() >= 0) {
             state.registers[15].setValue(mem);
+        } else {
+            incrementProgramCounter(state);
         }
     }
 
-    // Takes a hex4d from the output of the program state and assigns that
+    // Takes a hex4d from the input of the program state and assigns that
     // value into the specified register location
     public static void readInt(ProgramState state, char reg) {
         System.out.println("ReadInt");
-        state.registers[Hex4digit.hexValue(reg)].setValue(state.output.getHexChars());
+        state.registers[Hex4digit.hexValue(reg)].setValue(state.input.getValue());
         incrementProgramCounter(state);
     }
 
     // Takes a hex4d from a specified register and assigns that value
-    // to the program state's input
+    // to the program state's output
     public static void writeInt(ProgramState state, char reg) {
         System.out.println("WriteInt");
-        state.input.setValue(state.registers[Hex4digit.hexValue(reg)].getHexChars());
+        state.output.setValue(state.registers[Hex4digit.hexValue(reg)].getHexChars());
+        incrementProgramCounter(state);
+    }
+
+    // literally just skips to the next instruction
+    public static void skip(ProgramState state) {
+        System.out.println("skip");
         incrementProgramCounter(state);
     }
 
