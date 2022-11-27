@@ -1,12 +1,13 @@
-@ Branch Positive Test @
-@ Must test both true and false@
+@ Bad comment Bug @
+@ This line cause a loop of some sort;
 
-@ 00 @ ld one r5;
-@ 01 @ brp r5 m04;
-@ 02 @ one: #0001;
-@ 03 @ notPos: -#0001;
-@ 04 @ ld notPos r5;
-@ 05 @ brp r5 m07;
+
+@ 00 @ ld zero r5;
+@ 01 @ brz r5 m04;
+@ 02 @ zero: #0000;
+@ 03 @ notZero: #abcd;
+@ 04 @ ld notZero r5;
+@ 05 @ brz r5 m07;
 @ 06 @ hlt;
 @ 07 @ wr r5;
 @ 08 @ hlt;

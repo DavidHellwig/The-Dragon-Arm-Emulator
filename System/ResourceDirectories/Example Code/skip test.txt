@@ -1,11 +1,11 @@
-@ Division Test Program @
+@ Test Program Template @
 
-@ 00 @ ld sixteen r0;
-@ 01 @ ld four r1;
-@ 02 @ div r0 r1 r2;
-@ 03 @ hlt;
-@ 04 @ sixteen: #0010;
-@ 05 @ four: #0004;
+@ 00 @ s;
+@ 01 @ s;
+@ 02 @ rd r0;
+@ 03 @ s;
+@ 04 @ s;
+@ 05 @ hlt;
 @ 06 @
 @ 07 @
 @ 08 @
