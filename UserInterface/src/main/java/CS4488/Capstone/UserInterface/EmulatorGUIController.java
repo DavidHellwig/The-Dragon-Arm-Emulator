@@ -165,7 +165,8 @@ public class EmulatorGUIController {
             orc.translateAndLoad(file.getAbsolutePath());
         }
         totalStates = 0;
-        //initializeMemoryTable();
+        badBool = false;
+        initializeMemoryTable();
 
     }
 
@@ -264,7 +265,7 @@ public class EmulatorGUIController {
         }
         RAM[0][n]= String.valueOf(orc.convertToHexChars(Short.valueOf(String.valueOf(n))));
 
-        for (int i = 0;i<255;i++){
+        for (int i = 1;i<255;i++){
             RAM[i][n] = orc.getProgramState().getMemoryStateHistoryValue(i).getString();
 
         }
@@ -347,13 +348,13 @@ public class EmulatorGUIController {
      */
     @FXML
     void getRegisters(){
-        R0.setText(String.valueOf(orc.getProgramState().registers[0].getValue()));
+        R0.setText(String.valueOf(orc.getProgramState().registers[0].getHexChars()));
 
-        R1.setText(String.valueOf(orc.getProgramState().registers[1].getValue()));
+        R1.setText(String.valueOf(orc.getProgramState().registers[1].getHexChars()));
 
-        R2.setText(String.valueOf(orc.getProgramState().registers[2].getValue()));
+        R2.setText(String.valueOf(orc.getProgramState().registers[2].getHexChars()));
 
-        R3.setText(String.valueOf(orc.getProgramState().registers[3].getValue()));
+        R3.setText(String.valueOf(orc.getProgramState().registers[3].getHexChars()));
 
         pc.setText(String.valueOf(orc.getProgramState().registers[15].getValue()));
 
@@ -427,11 +428,25 @@ public class EmulatorGUIController {
 
         //I was right here getting updating of ram values working
 
-        //updateRAMValuesInDisplay();
+        updateRAMValuesInDisplay();
     }
     @FXML
     void incrimententTotalStates(){
         totalStates +=1;
+    }
+
+    @FXML
+    void assemble(ActionEvent actionEvent){
+        orc.clearProgram();
+        inputBox.setText(orc.loadFile(loadedProgram.getAbsolutePath()));
+        orc.translateAndLoad(loadedProgram.getAbsolutePath());
+        memoryTable.clear();
+
+        totalStates = 0;
+        badBool = false;
+        initializeMemoryTable();
+
+        getRegisters();
     }
 
 
