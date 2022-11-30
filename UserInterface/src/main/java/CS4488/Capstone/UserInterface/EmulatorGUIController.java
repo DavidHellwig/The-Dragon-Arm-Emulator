@@ -20,8 +20,6 @@ public class EmulatorGUIController {
 
     /*
     We are using this to limit the amount of states we will record in the UI
-    At some point, we have to consider that a user may not have enough memory to store every state in a program (as
-    the amount of possible states a program can have may be infinite). This limit seems reasonable for now.
     */
     private int totalStates = 0;
 
@@ -248,7 +246,7 @@ public class EmulatorGUIController {
         }
 
 
-        int x = 0;
+
 
 
     }
@@ -271,21 +269,7 @@ public class EmulatorGUIController {
         }
 
 
-        //Using this as a reference
-        /*for (int i = 1;i<256;i++){
-            for(int j = 1; j < 2; j++){
-                RAM[i][j] = String.valueOf(orc.convertToHexChars(annoying));
-            }
-        }
-        RAM[0][0] = "Loc     ";
-        for(int i = 1;i<2;i++){
-            short painful = (short)(i-1);
-            RAM[0][i] = String.valueOf(orc.convertToHexChars(painful));
-        }
-        for(int i = 1;i<256;i++){
-            short location = (short)(i-1);
-            RAM[i][0] = String.valueOf(orc.convertToHexChars(location));
-        }*/
+
 
     }
 
@@ -400,7 +384,7 @@ public class EmulatorGUIController {
             }
             else if (orc.getProgramState().registers[15].getValue() != -1){
 
-                //updateRAMValuesInDisplay();
+
 
                 if(IN.getText() != ""){
                     orc.sendInput(orc.convertToHexChars(Short.valueOf(IN.getText())));
