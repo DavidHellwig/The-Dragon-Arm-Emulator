@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * @author Traae
  */
 public class ProgramState implements ProgramStateInterface {
+    public static final int TOTAL_MEMORY_SPACES = 256; // 0 - 255
 
     // Constants and Class instances
     private static final int REGISTER_COUNT = 16;
@@ -60,12 +61,27 @@ public class ProgramState implements ProgramStateInterface {
     // Program State Interface
     @Override
     public boolean initializeState(ArrayList<Hex4digit> code) {
-        MemoryHistorySpace pc = new MemoryHistorySpace();
-        pc.memoryLocation = 0;
-        pc.value.setValue(code.get(0).getHexChars());
-        pcHistory.add(pc);
-        memoryStateHistory.add(code);
-        return true;
+        boolean result = false;
+
+        if ((code != null) && (code.size() > 0)){
+
+            MemoryHistorySpace pc = new MemoryHistorySpace();
+            pc.memoryLocation = 0;
+            pc.value.setValue(code.get(0).getHexChars());
+            pcHistory.add(pc);
+
+            fillOutMemory(code);
+            memoryStateHistory.add(code);
+
+            result = true;
+        }
+        return result;
+    }
+
+    private void fillOutMemory(ArrayList<Hex4digit> toFillOut){
+        while (toFillOut.size() < TOTAL_MEMORY_SPACES){
+            toFillOut.add(new Hex4digit(0));
+        }
     }
 
     @Override
@@ -78,6 +94,47 @@ public class ProgramState implements ProgramStateInterface {
         for (ArrayList<Hex4digit> h: memoryStateHistory) {h.clear();}
         memoryStateHistory.clear();
         pcHistory.clear();
+    }
+
+    public String printableProgramState(){
+        StringBuilder stateSummary = new StringBuilder();
+        stateSummary.append("Input: " + input.getString() + "\n");
+        stateSummary.append("Output: " + output.getString() + "\n");
+
+        stateSummary.append("PC: " + registers[registers.length-1].getString());
+        stateSummary.append("\nRegisters: ");
+        int size = registers.length-1;
+
+        for (int i=0; i<size; i++){
+            stateSummary.append(registers[i].getString() + ", ");
+        }
+        stateSummary.append("\n");
+
+        int lastState = memoryStateHistory.size() - 1;
+        int blankCounter = 0;
+        stateSummary.append("\nNext:");
+
+        for (int i=0; i<memoryStateHistory.get(lastState).size(); i++){
+            Hex4digit toAdd = memoryStateHistory.get(lastState).get(i);
+
+            if (toAdd.getValue() == 0) { blankCounter++;}
+            if (blankCounter > 10) { break; }
+
+            stateSummary.append(toAdd.getString() + " ");
+
+        }
+        stateSummary.append("\n");
+
+        return stateSummary.toString();
+    }
+
+    /**
+     * This is weird but neccessary. Returns a Hex4digit object from memoryStateHistory.
+     * @param n
+     * @return
+     */
+    public Hex4digit getMemoryStateHistoryValue(int n){
+        return memoryStateHistory.get(0).get(n);
     }
 
 }

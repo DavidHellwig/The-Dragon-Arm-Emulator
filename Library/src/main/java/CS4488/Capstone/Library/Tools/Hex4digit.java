@@ -112,6 +112,10 @@ public class Hex4digit implements HexDataClass {
         return HexadecimalConverter.decimalToHex(hex);
     }
 
+    public String getString(){
+        return new String(getSignedHexChars());
+    }
+
     /**
      * Return the integer sum of the middle digits.
      * For determining a memory space value from inside an instruction, when the memory space is first
@@ -121,7 +125,7 @@ public class Hex4digit implements HexDataClass {
     @Override
     public int getMiddle2Value() {
         char[] hexChars = HexadecimalConverter.decimalToHex(hex) ;
-        int result = HexadecimalConverter.hexValue(hexChars[2])
+        int result = (HexadecimalConverter.hexValue(hexChars[2]) * 16)
                 + HexadecimalConverter.hexValue(hexChars[3]);
         return result;
     }
@@ -134,7 +138,7 @@ public class Hex4digit implements HexDataClass {
     @Override
     public int getLast2Value() {
         char[] hexChars = HexadecimalConverter.decimalToHex(hex) ;
-        int result = HexadecimalConverter.hexValue(hexChars[3])
+        int result = (HexadecimalConverter.hexValue(hexChars[3]) * 16)
                 + HexadecimalConverter.hexValue(hexChars[4]);
         return result;
     }

@@ -2,6 +2,11 @@ package CS4488.Capstone.Translator;
 
 import java.util.*;
 
+/**
+ * It's a singleton class that loads the instructions, registers, and memory addresses into a map
+ *  *  * @version 0.0.9
+ *  *  * @author Daniel Igbokwe
+ */
 public class InstructionParser {
 
     private static InstructionParser singleton = null;
@@ -9,6 +14,12 @@ public class InstructionParser {
             = new HashMap<>();
 
 
+    /**
+     * > If the singleton is null, create a new instance of the class and return it. Otherwise, return the existing
+     * instance
+     *
+     * @return The singleton instance of the InstructionParser class.
+     */
     public static InstructionParser getInstance(){
         if(singleton == null){
             singleton = new InstructionParser();
@@ -16,17 +27,33 @@ public class InstructionParser {
        return singleton;
     }
 
+    /**
+     * Loading the instructions, registers, and memory into the parser map.
+     */
     private InstructionParser(){
         loadInstructions();
+//        System.out.println(getParser().size());
         loadRegisters();
+//        System.out.println(getParser().size());
         loadMemory();
+
     }
 
+    /**
+     * This function returns a map of string to string.
+     *
+     * @return A map of string to string.
+     */
     public Map<String, String> getParser() {
         return this.parser;
     }
 
+    /**
+     * It loads the instructions into the parser
+     */
     private void loadInstructions(){
+        // 16 instructions
+
         this.parser.put("hlt", "0");
         this.parser.put("ld", "1");
         this.parser.put("st", "2");
@@ -43,9 +70,13 @@ public class InstructionParser {
         this.parser.put("rd", "d");
         this.parser.put("wr", "e");
         this.parser.put("ldc", "f");
+        this.parser.put("s", "f000");
     }
 
 
+    /**
+     * It loads the registers into the parser
+     */
     private void loadRegisters(){
         for(int i = 0; i < 16; i++){
 
@@ -56,7 +87,6 @@ public class InstructionParser {
             // loads hex address notation to map
 //            this.parser.put("r0x"+hexI, hexI);
         }
-
         // load special register address
         this.parser.put("fp", Integer.toHexString(11));
         this.parser.put("ip", Integer.toHexString(12));
@@ -64,9 +94,13 @@ public class InstructionParser {
         this.parser.put("lr", Integer.toHexString(14));
         this.parser.put("pc", Integer.toHexString(15));
 
+
     }
 
 
+    /**
+     * It loads the memory addresses into the parser map
+     */
     private void loadMemory(){
         for(int i = 0; i < 16; i++){
 
@@ -84,6 +118,8 @@ public class InstructionParser {
             }
         }
     }
+
+
 
 
 }

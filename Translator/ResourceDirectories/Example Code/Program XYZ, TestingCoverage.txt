@@ -1,0 +1,44 @@
+@ This Program should utilize all facets of our Emulator as Coverage Tester for EXPECTED Behavior @
+@ This Program expects a read in, will need to be set in the test @
+
+@ FIRST Stanza: is a branch and number (without label) @
+@ 00 @ br m03;          @ Jump down to the first real instruction @
+@ 01 @ readIn: #000f;   @ the number f @
+@ 02 @ #0100;           @ This is going to be used to point to the line above. @
+
+@ SECOND Stanza: loads direct and indirect from m01, sub = 0, brz to skip a stanza@
+@ 03 @ ld m01 r0;
+@ 04 @ ldi m02 r1;
+@ 05 @ sub r0 r1 r0;
+@ 06 @ brz r0 m0a;      @ Branch to FORTH STANZA @
+
+@ THIRD STANZA: Add, write, and branch @
+@ 07 @ add r0 r1 r2;
+@ 08 @ wr r2;
+@ 09 @ brp r2 m10;
+
+@ FORTH STANZA: read in, store, multiply by -1, and branch @
+@ 0a @ rd r0;               @ EXPECTING A READ IN, Set During Test @
+@ 0b @ st readIn r0;
+@ 0c @ ld Negative1 r1;
+@ 0d @ mul r0 r1 r0;
+@ 0e @ brn r0 m07;      @ Branch to THIRD STANZA @
+
+@ FIFTH STANZA: load numbers, divide, store indirect, and branch @
+@ 0f @ ld Number1 r0;
+@ 10 @ ld Number2 r1;
+@ 11 @ div r1 r0 r2;
+@ 12 @ sti m02 r2;
+@ 13 @ br m18;          @ Branch to final @
+
+@ DATA STANZA: just variables. @
+@ 14 @ Number1: #1234;
+@ 15 @ Number2:
+            0x5432;
+@ 16 @ Negative1: #-0001;
+
+@ FINAL STANZA: write 0 (using hlt's value) as a return statement, then halt. @
+@ 17 @ End:
+        ld m1a r0;
+@ 18 @ wr r0;
+@ 19 @ hlt;

@@ -15,7 +15,6 @@ import CS4488.Capstone.Library.Tools.Hex4digit;
 import CS4488.Capstone.Library.Tools.HexadecimalConverter;
 import CS4488.Capstone.Library.Tools.ProgramState;
 import CS4488.Capstone.Translator.TranslatorFacade;
-
 import java.util.ArrayList;
 
 /**
@@ -34,14 +33,16 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     private ExecutorFacade executor;
     private FileManager fileManager;
     private String error;
+    //private String currentFile;
 
 
-    //Changed to public by David on 9/19, if broken look here
-    public Orchestrator(){
+
+    private Orchestrator(){
         state = ProgramState.getInstance();
-        // translator = new TranslatorFacade();
+        translator = new TranslatorFacade();
         executor = new ExecutorFacade();
         fileManager = FileManager.getInstance();
+        //currentFile = null;
         this.resetError();
     }
 
@@ -60,36 +61,41 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         return error;
     }
 
+//    public String getCurrentFile() {
+//        return currentFile;
+//    }
+
     @Override
     public boolean next() {
         resetError();
         boolean result = executor.hasState();
-        if (!result){
-            error = executor.getLastExceptionMessage();
+        if (result == false){
+            error = "Executor" + executor.getLastExceptionMessage();
+            return result;
         }
-        else {
-            result = executor.hasNext();
-            if (!result){
-                error = executor.getLastExceptionMessage();
-            }
+
+        result = executor.hasNext();
+        if (result == false){
+            error = "Executor" + executor.getLastExceptionMessage();
+            return result;
         }
-        if (result){
-            result = executor.next();
-            if (!result){
-                error = executor.getLastExceptionMessage();
-            }
+
+        result = executor.next();
+        if (result == false){
+            error = "Executor" + executor.getLastExceptionMessage();
         }
         return result;
     }
 
     public void clearProgram(){
         executor.clearState();
+        //currentFile = null;
     }
 
 
     @Override
     public ProgramState getProgramState() {
-            return ProgramState.getInstance();
+            return state;
     }
 
     @Override
@@ -103,25 +109,31 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
     }
 
     @Override
-    public boolean translateAndLoad(String path) throws Exception {
+    public boolean translateAndLoad(String path) {
         resetError();
-        boolean result = translator.loadFile(path);
-        if (result) {
+        boolean result;
 
-            result = translator.isTranslatable();
-            if (result){
-                state.clearProgramState();
-                state.initializeState(translator.translateToMachine());
-                executor.setProgramState(state);
-                translator.clearFile();
-            }
-            else {
-                error = translator.getLastExceptionMessage();
-            }
+        result = translator.loadFile(path);
+        if (result == false) {
+            error = "Translator" + translator.getLastExceptionMessage();
+            return result;
         }
-        else {
-            error = translator.getLastExceptionMessage();
+
+        result = translator.isTranslatable();
+
+        if (result == false){
+            error = "Translator" + translator.getLastExceptionMessage();
         }
+
+        state.clearProgramState();
+        ArrayList<Hex4digit> code = translator.translateToMachine();
+        // Set up the emulator
+        state.initializeState(code);
+        executor.setProgramState(state);
+        translator.clearFile();
+        // Save the output code for utility sake.
+        //currentFile = path;
+        //saveHex(code, currentFile);
 
         return result;
     }
@@ -148,21 +160,31 @@ public class Orchestrator implements ProgramStateAccess, TranslatorAccess, Execu
         return fileManager.fileToString(path);
     }
 
-    /**
-     * Returns the memory history of the program state, will need to refactor this later
-     * @return the memory history of program state
-     */
-    public ArrayList<ArrayList<Hex4digit>> getProgramStateMemoryHistory(){
-        return this.state.memoryStateHistory;
-    }
+//    public boolean saveHex(ArrayList<Hex4digit> code, String path){
+//        boolean result = false;
+//        StringBuilder build = new StringBuilder();
+//
+//        for (Hex4digit h : code){
+//            build.append(h.getString());
+//            build.append("\n");
+//        }
+//
+//
+//        String hexPath = path.replace(".", "HEX.");
+//        result = fileManager.saveFile(build.toString(), hexPath);
+//
+//        return result;
+//    }
+//
+//    public boolean saveFile(String content, String path){
+//        boolean result = false;
+//        System.out.println(content + "\n\n PATH:" + path);
+//        result = fileManager.saveFile(content, path);
+//        return result;
+//    }
 
-    /**
-     * Stop the Orchestrator from running
-     */
-    /*public void endProgram(){
-        this.state.clearProgramState();
 
-    }*/
+
 
 
 }

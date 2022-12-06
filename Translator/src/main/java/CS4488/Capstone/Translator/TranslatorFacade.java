@@ -5,11 +5,18 @@ package CS4488.Capstone.Translator;
 
 
 
-import CS4488.Capstone.Library.BackEndSystemInterfaces.TranslatorInterface;
+
 import CS4488.Capstone.Library.Tools.Hex4digit;
+import CS4488.Capstone.Library.BackEndSystemInterfaces.TranslatorInterface;
 
 import java.util.ArrayList;
 
+/**
+ * The `TranslatorFacade` class is a facade for the `Translator` class
+ *
+ * @version 0.0.9
+ * @author Daniel Igbokwe
+ */
 public class TranslatorFacade implements TranslatorInterface {
 
     private Translator translator;
@@ -18,31 +25,55 @@ public class TranslatorFacade implements TranslatorInterface {
 
     }
 
+    /**
+     * > This function loads the ARM file and returns true if the file is loaded successfully
+     *
+     * @param armFile The path to the ARM file to load.
+     * @return A boolean value.
+     */
     @Override
-    public boolean loadFile(String armFile) throws Exception {
+    public boolean loadFile(String armFile) {
         this.translator = Translator.getInstance(armFile);
         return this.translator.isLoaded();
     }
 
+    /**
+     * This function clears the file
+     */
     @Override
     public void clearFile() {
         translator.clearFile();
     }
 
+    /**
+     * > If the translator has translated code, then the translator is translatable
+     *
+     * @return A boolean value.
+     */
     @Override
     public boolean isTranslatable() {
 
-        return translator.getTranslatedCode() != null
-                && translator.getTranslatedCode().size() != 0;
+        return this.translator.isTranslatable();
     }
 
+    /**
+     * > The function `translateToMachine()` returns an `ArrayList<Hex4digit>` which is the translated code of the
+     * `Translator` object
+     *
+     * @return The translated code.
+     */
     @Override
     public ArrayList<Hex4digit> translateToMachine() {
-        return translator.getTranslatedCode();
+        return this.translator.getTranslatedCode();
     }
 
+    /**
+     * > This function returns the last exception message that was thrown by the translator
+     *
+     * @return The exception message.
+     */
     @Override
     public String getLastExceptionMessage() {
-        return "Translator, Default Error";
+        return this.translator.getExceptionMessage();
     }
 }
