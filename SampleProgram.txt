@@ -1,0 +1,7 @@
+@ 00 @ ld sixteen r0;
+@ 01 @ ld four r1;
+@ 02 @ add r0 r1 r2;
+@ 02 @ div r0 r1 r2;
+@ 03 @ hlt;
+@ 04 @ sixteen: #0010;
+@ 05 @ four: #0004;
