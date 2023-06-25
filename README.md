@@ -5,8 +5,11 @@ This repo is for our CS4488 Capstone Project, and Simplified ARM style assembly 
 
 ## Memebers
 Traae Bloxham - System Architecture Implementation
+
 Daniel Igbokwe - Instruction Translation
+
 David Hellwig - UI Design 
+
 Thomas Neyman - Instruction Set Implementation
 
 
