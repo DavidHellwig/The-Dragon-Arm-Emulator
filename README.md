@@ -1,7 +1,7 @@
 # ArmEmulator
-This repo is for our CS4488 Capstone Project, and Simplified ARM styled assembly Emulator Geared towards educational purposes.
+This repo is for our CS4488 Capstone Project, and Simplified ARM style assembly Emulator Geared towards educational purposes.
 
-In order to run this program, it is recommended that you clone this repo and use the "gradle run" command. 
+ 
 
 ## Memebers
 Traae Bloxham - System Architecture Implementation
