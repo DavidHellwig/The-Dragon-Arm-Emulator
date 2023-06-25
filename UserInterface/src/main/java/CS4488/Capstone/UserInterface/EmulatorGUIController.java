@@ -65,31 +65,7 @@ public class EmulatorGUIController {
     @FXML
     private TextField R2;
 
-    @FXML
-    private TextField R3;
 
-    @FXML
-    private TextField R4;
-    @FXML
-    private TextField R5;
-    @FXML
-    private TextField R6;
-    @FXML
-    private TextField R7;
-    @FXML
-    private TextField R8;
-    @FXML
-    private TextField R9;
-    @FXML
-    private TextField Ra;
-    @FXML
-    private TextField Rb;
-    @FXML
-    private TextField Rc;
-    @FXML
-    private TextField Rd;
-    @FXML
-    private TextField Re;
 
 
     @FXML
@@ -379,44 +355,11 @@ public class EmulatorGUIController {
 
         R2.setText(String.valueOf(orc.getProgramState().registers[2].getHexChars()));
 
-        R3.setText(String.valueOf(orc.getProgramState().registers[3].getHexChars()));
-
-        R4.setText(String.valueOf(orc.getProgramState().registers[4].getHexChars()));
-
-        R5.setText(String.valueOf(orc.getProgramState().registers[5].getHexChars()));
-
-        R6.setText(String.valueOf(orc.getProgramState().registers[6].getHexChars()));
-
-        R7.setText(String.valueOf(orc.getProgramState().registers[7].getHexChars()));
-
-        R8.setText(String.valueOf(orc.getProgramState().registers[8].getHexChars()));
-
-        R9.setText(String.valueOf(orc.getProgramState().registers[9].getHexChars()));
-
-        Ra.setText(String.valueOf(orc.getProgramState().registers[10].getHexChars()));
-
-        Rb.setText(String.valueOf(orc.getProgramState().registers[11].getHexChars()));
-
-        Rc.setText(String.valueOf(orc.getProgramState().registers[12].getHexChars()));
-
-        Rd.setText(String.valueOf(orc.getProgramState().registers[13].getHexChars()));
-
-        Re.setText(String.valueOf(orc.getProgramState().registers[14].getHexChars()));
-
-
         pc.setText(String.valueOf(orc.getProgramState().registers[15].getValue()));
-
-
-
-
 
         OUT.setText(orc.getProgramState().output.getString());
 
-
-
     }
-
-
 
     /**
      * abort the currently running program. Can be used while program is running step by step or running in totality
