@@ -1,11 +1,13 @@
 # ArmEmulator
 This repo is for our CS4488 Capstone Project, and Simplified ARM styled assembly Emulator Geared towards educational purposes.
 
+In order to run this program, it is recommended that you clone this repo and use the "gradle run" command. 
+
 ## Memebers
-Traae Bloxham
-Daniel Igbokwe
-David Hellwig
-Thomas Neyman
+Traae Bloxham - System Architecture Implementation
+Daniel Igbokwe - Instruction Translation
+David Hellwig - UI Design 
+Thomas Neyman - Instruction Set Implementation
 
 
 ## Our Assignment Prompt
@@ -14,7 +16,7 @@ Thomas Neyman
 
 Implement a VERY simple emulator for a minimalist subset of ARM assembly, similar to a 16bit version of the instruction set on an IBM 360 or 1130. The emulator will be similar to the Marie, which I suggest checking out.  This assembly emulator could be used in CS1337 to teach assembly and machine code.
 
-The user provides a .txt file containing the assembly code. (Eventually provide an editor to create the assembly code inside the emulator.) The emulator translates each assembly instruction into a 4Hex digit machine code instruction with the program being loaded starting at memory location 0, and the memory for the program beginning after the last assembly instruction. The display shows the assembly program, the translated machine code, in the first column of the memory, the 16 (or 4 if you think better) registers, and the program counter. The program counter is initially set to zero, which is the first assembly instruction to be executed.   When the “next” instruction button is pressed, the emulator executes the instruction indicated in the program counter and the resulting memory is displayed in the next column to the right with the instruction that was executed and the next instruction to be executed highlighted. 
+The user provides a .txt file containing the assembly code. The emulator translates each assembly instruction into a 4Hex digit machine code instruction with the program being loaded starting at memory location 0, and the memory for the program beginning after the last assembly instruction. The display shows the assembly program, the translated machine code, in the first column of the memory, the 16 (or 4 if you think better) registers, and the program counter. The program counter is initially set to zero, which is the first assembly instruction to be executed.   When the “next” instruction button is pressed, the emulator executes the instruction indicated in the program counter and the resulting memory is displayed in the next column to the right with the instruction that was executed and the next instruction to be executed highlighted. 
 
 The system will require a form screen type interface, with the memory displayed as 4 hex digits. Output is in a label, with a textbox for input and buttons for user commands. All I/0 are 16bit integers displayed as 4 hex digits, though you may want some numbers displayed as base 10. Provide a hex to/from signed int16 converter gadget in the corner of the screen. Memory is a 2D grid with horizontal/vertical scroll bars. Each column represents the memory, with the column to the right showing the memory after the next instruction executed. The top of each column indicates the instruction # that was executed to create the column below. That instruction is also highlighted. This is going to be far easier to implement as a C# windows form application, even if you have to spend some time learning C#. It might also be implemented as a Java app using some sort of event-driven-code library. However, that would take time to explore and might not work.
 
